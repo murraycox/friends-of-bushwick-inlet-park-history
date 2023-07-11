@@ -1,0 +1,23 @@
+{
+    "timeline": 
+        {
+            "eras":[
+                {
+                    "name": "Era 1"
+                },
+                {
+                    "name": "Era 2"
+                },
+                {
+                    "name": "Era 3"
+                },
+                {
+                    "name": "Era 4"
+                },
+                {
+                    "name": "Era 5"
+                }
+            ]
+
+        }
+}

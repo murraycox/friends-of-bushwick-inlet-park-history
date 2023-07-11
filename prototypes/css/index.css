@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+}
+
+#story-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+
+#story-controller {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+    height: 75px;
+    background-color: #ddd;
+    border: 1px solid black;
+    border-radius: 15px;
+    margin: 15px;
+}
+
+#story-container .map{
+  z-index: 1;
+}
+
+#story-container .map path{
+    fill: none;
+}
+
+#story-container .map.nyc-region path{
+    stroke: green;
+}
+
+#story-container .map.shoreline path{
+    stroke: blue;
+}
+
+#story-container .map.indian-trails path{
+    stroke: red;
+}
+
+#story-container .story-rect{
+  z-index: 2;
+}
+
+#story-container .story-rect path{
+  stroke: grey;
+  stroke-dasharray: 3 3;
+  fill: grey;
+  fill-opacity: 0.2;
+}
+
+#story-container .story-rect path:hover{
+  fill-opacity: 0.7;
+  cursor: pointer;
+}
+
+#story-controller div.era { 
+    display: inline-block;
+    border: 1px solid black;
+    padding: 1em;  
+    margin-right: 5em;
+    position:relative
+  }
+  
+  #story-controller div.era:before,
+  #story-controller div.era:after
+  {
+    content:'';
+    width:5em;
+    border-bottom:1px solid;
+    position:absolute;
+    top:50%;
+  
+  }
+  :after {
+    left:100%;
+  }
+  :before {
+    right:100%;
+  }
+  #story-controller div.era:first-of-type:before,
+  #story-controller div.era:last-of-type:after {
+    display:none;
+  }
