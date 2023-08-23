@@ -58,24 +58,24 @@ const storyGIS = {
 
 const eras = [
     {
-        "name": "Era 1",
+        "name": "pre-colonial Munsee/ Lenape",
         "view": storyGIS.views.intialView
     },
     {
-        "name": "Era 2",
+        "name": "Early European settlement",
         "view": storyGIS.views.bip
     },
     {
-        "name": "Era 3"
+        "name": "Industrialization"
     },
     {
-        "name": "Era 4"
+        "name": "Migration"
     },
     {
-        "name": "Era 5"
+        "name": "Recent past / activism"
     },
     {
-        "name": "Era 6"
+        "name": "the future"
     }
 ];
 
@@ -115,6 +115,11 @@ const g = svg.append("g");
 
 function setupTimeline(){
 
+    d3.select("#story-controller h1")
+        .on('click', function() {
+            d3.select("#story-controller").classed("collapsed", !d3.select("#story-controller").classed("collapsed"));
+        });
+
     const svgTimeline = d3.select("#story-controller-timeline").append("svg")
         .attr('width', "100%")
         .attr('height', "100%");
@@ -141,7 +146,8 @@ function setupTimeline(){
         .append("g")
         .classed("timeline-era-group", true);
 
-        var anchors = eraGroups.append("line")
+    var anchors = eraGroups.append("line")
+        .classed("story-controller-timeline-era-anchors", true)
         .attr('x1', 0)
         .attr('y1', 0)
         .attr('x2', 0)
@@ -159,22 +165,42 @@ function setupTimeline(){
             transitionToView(d.view);
         });
 
-
+    var eraTitleContainers = d3.select("#story-controller-timeline-era-titles")
+        .selectAll("div .story-controller-timeline-era-title-container")
+        .data(eras)
+        .join("div")
+        .classed("story-controller-timeline-era-title-container", true)
+        .on('click', function(e, d){ 
+            transitionToView(d.view);
+        })
+        .append("div")
+        .classed("story-controller-timeline-era-title", true)
+        .html(function(d){
+            return d.name;
+        });
 }
 
 function redrawTimeline(){
     
+    const TIMELINE_MARGIN = 55; //LEFT and RIGHT margin
+    const TIMELINE_TITLE_WIDTH = 80; //TODO, get this at run-time?
     const currentWidth = parseInt(d3.select('#story-controller-timeline').style('width'), 10);
     console.log(currentWidth);
 
     gTimeline.select('line')
-        .attr('x2', currentWidth);
+        .attr('x2', currentWidth-TIMELINE_MARGIN);
 
-    xTimeline.range([ 20, currentWidth-20 ]);
+    xTimeline.range([ TIMELINE_MARGIN, currentWidth-TIMELINE_MARGIN ]);
  
     gTimeline.selectAll('.timeline-era-group')
         .attr('transform', (d, i) => "translate(" + (xTimeline(i)) + ",15)");
 
+    const eraTitleContainers = d3.select("#story-controller-timeline-era-titles").selectAll(".story-controller-timeline-era-title-container")
+        //.style("left", "500px");
+        .style("left", function (d, i) {
+            return `${xTimeline(i) - (TIMELINE_TITLE_WIDTH/2)}px`;
+        });
+        // });
 }
 
 function setProjection(fitSizeRect){
