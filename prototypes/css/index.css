@@ -6,19 +6,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #fff;
-}
-
-#story-controller {
-    position: absolute;
-    bottom: 0;
-    width: calc(100% - 30px);
-    box-sizing: border-box;
-    height: 75px;
-    background-color: #ddd;
-    border: 1px solid black;
-    border-radius: 15px;
-    margin: 15px;
+    background-color: #f1f1f1;
 }
 
 #story-container .map{
@@ -30,7 +18,10 @@ body {
 }
 
 #story-container .map.nyc-region path{
-    stroke: green;
+    stroke: #99999a;
+    stroke-width: 0.25;
+    fill: #fcfcfc;
+
 }
 
 #story-container .map.shoreline path{
@@ -55,6 +46,54 @@ body {
 #story-container .story-rect path:hover{
   fill-opacity: 0.7;
   cursor: pointer;
+}
+
+#story-narrative-container {
+    position: absolute;
+    top: 30%;
+    bottom: 10%;
+    left: 5%;
+    width: 25%;
+    min-width: 200px;
+    background:#7f7f7f;
+    background:rgba(255,255,255,0.4);
+    border: 1px solid #99999a;
+    border-radius: 2px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#story-narrative-content {
+  position: relative;
+  padding: 20px;
+  font-family: 'Public Sans', sans-serif;
+}
+
+#story-narrative-content h1 {
+  font-weight: 600;
+  margin-block-start: 0.2em;
+  margin-block-end: 0.2em;
+  font-size: 1.5em;
+  color: #70AC00;
+}
+
+#story-narrative-content p {
+  font-weight: 100;
+  margin-block-start: 0.75em;
+  margin-block-end: 0.75em;
+  color: #212121;
+}
+
+#story-controller {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 30px);
+  box-sizing: border-box;
+  height: 75px;
+  background-color: #ddd;
+  border: 1px solid black;
+  border-radius: 15px;
+  margin: 15px;
 }
 
 #story-controller div.era { 
