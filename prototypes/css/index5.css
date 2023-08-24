@@ -1,0 +1,238 @@
+body {
+    margin: 0;
+}
+
+#story-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+}
+
+#story-container .map{
+  z-index: 1;
+}
+
+#story-container .map path{
+    fill: none;
+}
+
+#story-container .map.nyc-region path{
+    stroke: #cbcaca;
+    /* stroke-width: 0.25; */
+    fill: #fcfcfc;
+}
+
+#story-container .map.bip-final-lots path{
+  stroke: darkgreen;
+  /* stroke-width: 0.25; */
+  fill: url(#circles);
+  /* fill: green; */
+
+}
+
+#story-container .map.shoreline path{
+    stroke: blue;
+}
+
+#story-container .map.indian-trails path{
+    stroke: red;
+}
+
+#story-container .story-rect.hidden {
+  visibility: hidden;
+}
+
+#story-container .story-rect{
+  z-index: 2;
+}
+
+#story-container .story-rect path, #story-container .story-rect rect{
+  stroke: #70AC00;
+  stroke-dasharray: 0.2 0.2;
+  stroke-width: 0.1;
+  fill: url(#circles);
+  fill-opacity: 0.7;
+}
+
+#story-container .story-rect path:hover, #story-container .story-rect rect:hover{
+  fill-opacity: 0.9;
+  cursor: pointer;
+}
+
+#story-narrative-container, #story-controller {
+  position: absolute;
+  background:rgba(255,255,255,0.7);
+  border: 1px solid #53A3D5;
+  border-radius: 15px;
+}
+
+#story-narrative-container, #story-controller, #story-navigation {
+  left: 25px;
+}
+
+
+#story-navigation {
+  position: absolute;
+  top: 25px;
+}
+
+.story-navigation-button {
+  float: left;
+  /* border: grey 1px solid;
+  border-radius: 25px; */
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.story-navigation-button img {
+  width: 50px;
+  height: 50px;
+}
+
+#story-narrative-container, #story-controller {
+  position: absolute;
+  left: 25px;
+  background:rgba(255,255,255,0.7);
+  border: 1px solid #53A3D5;
+  border-radius: 15px;
+}
+
+#story-narrative-container {
+    top: 100px;
+    height: 40%;
+    width: 30%;
+    min-width: 250px;
+    /* background:#7f7f7f; */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#story-narrative-content, #story-controller {
+  font-family: 'Public Sans', sans-serif;
+}
+
+#story-narrative-content {
+  position: relative;
+  padding: 20px;
+}
+
+#story-narrative-content h1, #story-narrative-content h2, #story-controller h1 {
+  color: #70AC00;
+}
+
+#story-narrative-content h1 {
+  font-weight: 600;
+  margin-block-start: 0.2em;
+  margin-block-end: 0.2em;
+  font-size: 1.5em;
+}
+
+#story-narrative-content p {
+  font-weight: 100;
+  margin-block-start: 0.75em;
+  margin-block-end: 0.75em;
+  color: #212121;
+}
+
+#story-controller {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  max-width: 800px;
+  min-width: 675px;
+  /* width: calc(100% - 30px); */
+  /* box-sizing: border-box; */
+  height: 95px;
+  /* margin: 15px; */
+  padding: 5px 15px;
+}
+
+#story-controller.collapsed {
+  height: 50px;
+}
+
+#story-controller.collapsed #story-controller-timeline-era-titles, #story-controller.collapsed .story-controller-timeline-era-anchors {
+  visibility: hidden;
+}
+
+#story-controller h1 {
+  position: absolute;
+  bottom: 10px;
+  width: 150px;
+  font-weight: 600;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+#story-controller-timeline {
+  position: absolute;
+  left: 150px;
+  bottom: 10px;
+  right: 0;
+  height: 50px;
+}
+
+#story-controller-timeline circle {
+  cursor: pointer;
+}
+
+#story-controller-timeline-era-titles {
+  /* display: flex;
+  align-items: bottom; */
+  position: absolute;
+  left: 150px;
+  height: 52px;
+  top: 8px;
+  right: 0;
+  /* padding-bottom: 71px; */
+}
+
+.story-controller-timeline-era-title-container {
+  position: absolute;
+  cursor: pointer;
+}
+
+.story-controller-timeline-era-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 48px;
+  width: 80px;
+  border: 1px solid #53A3D5;
+  border-radius: 10px;
+  font-size: 0.60em;
+  padding: 1px;
+}
+
+#story-controller div.era { 
+    display: inline-block;
+    border: 1px solid black;
+    padding: 1em;  
+    margin-right: 5em;
+    position:relative
+  }
+  
+  #story-controller div.era:before,
+  #story-controller div.era:after
+  {
+    content:'';
+    width:5em;
+    border-bottom:1px solid;
+    position:absolute;
+    top:50%;
+  
+  }
+  :after {
+    left:100%;
+  }
+  :before {
+    right:100%;
+  }
+  #story-controller div.era:first-of-type:before,
+  #story-controller div.era:last-of-type:after {
+    display:none;
+  }
