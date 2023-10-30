@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/index6.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="story-container">
+        <div id="story-navigation-and-narrative-mobile-container">
+        </div>
+        <div id="story-navigation">
+            <div class="story-navigation-button">
+                <img src = "./images/intro_circle_active.svg" alt="Intro"/>
+            </div>
+            <div class="story-navigation-button">
+                <img src = "./images/era_circle_inactive.svg" alt="Intro" onClick="setupTimeline('The story of Bushwick Inlet', eras);redrawTimeline();"/>
+            </div>
+        </div>
+        <div id="story-narrative-container">
+            <div id="story-narrative-content">
+                <h1>Bushwick Inlet Park</h1>
+                <p>Bushwick Inlet Park is a 28-acre piece of land that sits along the East River at the juncture of Greenpoint and Williamsburg.</p>
+                <p>The park was created in 2005, a giveback from the City of New York to the residents of North Brooklyn as part of a massive waterfront rezoning that so far has added more than 50,000 new residents to these neighborhoods.</p>
+                <p>The design of the park is guided by a master plan designed by Donna Walcavage of Stantec and endorsed through a community process in 2007.</p>
+                <h2>When it is completed</h2>
+                Bushwick Inlet Park will be the crown jewel in the midst of 5 miles of almost continuous waterfront esplanades running from the Navy Yard to Newtown Creek.</p>
+                <p>Connecting to Marsha P. Johnson East River State Park to the south and the Greenpoint Monitor Museum to the north, BIP will provide close to 36 acres of contiguous public open space directly on the East River.</p>
+                <h2>But eighteen years (and counting) after the rezoning</h2>
+                <p>the park is still more of a concept than a reality. As of 2023, less than a third of the park has been constructed, and it was only in the past few years that the City acquired – at great expense – the final piece of the puzzle that makes up Bushwick Inlet Park.</p>
+            </div>
+        </div>
+        <div id="story-controller" class="collapsed">
+            <h1>The story of<br/>Bushwick Inlet</h1>
+            <div id="story-controller-timeline-era-titles">
+            </div>
+            <div id="story-controller-timeline">
+            </div>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="text/javascript" src="./js/index6.js"></script>
+</body>
+</html>
