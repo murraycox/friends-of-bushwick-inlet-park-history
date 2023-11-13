@@ -1,0 +1,189 @@
+body {
+    margin: 0;
+}
+
+/* #story-container{
+  margin: 0 44px;
+} */
+
+#story-navigation-and-narrative-mobile-container{
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  background-color: white;
+  border-bottom: grey 1px solid;
+}
+
+#story-navigation {
+  top: 44px;
+  /* position: absolute;
+  top: 25px; */
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+}
+
+.story-navigation-button-group {
+  background-color: white;
+  border: #8D8E8E 1px solid;
+  border-radius: 22.5px;
+  width: max-content;
+  /* width: 43px; */
+  /* height: 35px; */
+  line-height: 35px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.story-navigation-button-and-label{
+  display: flex;
+  flex-direction: row;
+}
+
+.story-navigation-label{
+  display: none;
+}
+
+.story-navigation-button-group:hover .story-navigation-label{
+  display: block;
+}
+
+.story-navigation-label{
+  height: 35px;
+  line-height: 35px;
+  color: #8D8E8E;
+  font-size: 10px;
+  font-weight: bold;
+  margin: 3px;
+  margin-right: 15px;
+}
+
+.story-navigation-button {
+  border: #8D8E8E 1px solid;
+  background-color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  cursor: pointer;
+  text-align: center;
+  color: #8D8E8E;
+  font-size: 10px;
+  font-weight: bold;
+  margin: 3px;
+}
+
+.story-navigation-button img {
+  width: 50px;
+  height: 50px;
+}
+
+#story-narrative-content, #story-controller, #story-narrative {
+  font-family: 'Public Sans', sans-serif;
+}
+
+.story-narrative-footer {
+  margin-top: 360px;
+  height: 500px;
+  width: 100%;
+  background-image: url("../images/brick_pattern_2.svg");
+  background-size: 10px 10px;
+  /* background-size: contain; */
+}
+
+#story-narrative h1, #story-controller h1 {
+  color: #70AC00;
+}
+
+#story-narrative h2 {
+  color: #4E4E4E;
+}
+
+#story-narrative h1 {
+  font-weight: 600;
+  margin-block-start: 44px;
+  margin-block-end: 72px;
+  font-size: 72px;
+}
+
+#story-narrative h1 {
+ font-size: 42px;
+}
+
+ #story-narrative p {
+  font-weight: 100;
+  margin-block-start: 0.75em;
+  margin-block-end: 0.75em;
+  color: #212121;
+}
+
+.images-container-side-by-side {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.image-container-side-by-side {
+  margin: 5px;
+}
+
+
+#story-narrative .figure {
+  padding-bottom: 244px;
+}
+/* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
+.figure-caption {
+  text-align: center!important;
+}
+
+.figure-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-padding-right{
+  padding-right: 40%;
+}
+
+
+/* Mobile first positioning */
+#story-navigation {
+  left: 10px;
+}
+
+#story-navigation a {
+  text-decoration: none;
+}
+
+#story-narrative {
+  margin: 0 65px;
+}
+
+/* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
+
+@media (min-width: 576px){
+
+}
+    
+@media (min-width: 768px){
+    
+}
+    
+@media (min-width: 992px){
+  
+}
+    
+@media (min-width: 1200px){
+
+  #story-navigation {
+    left: calc(((100% - 900px) / 2) - 60px);
+  } 
+
+  #story-narrative {
+    width: 900px;
+    margin: 0 auto;
+  }
+  
+}
