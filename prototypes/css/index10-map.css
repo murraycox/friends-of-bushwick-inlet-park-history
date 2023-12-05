@@ -1,0 +1,144 @@
+body {
+    margin: 0;
+}
+
+#story-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+}
+
+/* #story-navigation-and-narrative-mobile-container{
+  position: absolute;
+  width: 100%;
+  height: 30%;
+  background-color: white;
+  border-bottom: grey 1px solid;
+} */
+
+#story-container .map{
+  z-index: 1;
+}
+
+#story-container .map path{
+    fill: none;
+}
+
+#story-container .map.nyc-region path{
+    stroke: #cbcaca;
+    /* stroke-width: 0.25; */
+    fill: #fcfcfc;
+}
+
+#story-container .map.bip-final-lots path{
+  stroke: darkgreen;
+  /* stroke-width: 0.25; */
+  fill: url(#circles);
+  /* fill: green; */
+  cursor: pointer;
+}
+
+#story-container .map.bip-final-lots path.selected{
+  stroke: #A060C1;
+  fill: url(#circles-selected);
+}
+
+
+#story-container .map.bip-final-lots path.hover{
+  stroke: blue;
+  fill: white;
+}
+
+#story-container .map.shoreline path{
+    stroke: blue;
+}
+
+#story-container .map.indian-trails path{
+    stroke: red;
+}
+
+#story-container .story-rect.hidden {
+  visibility: hidden;
+}
+
+#story-container .story-rect{
+  z-index: 2;
+}
+
+#story-container .story-rect path, #story-container .story-rect rect{
+  stroke: #70AC00;
+  stroke-dasharray: 0.2 0.2;
+  stroke-width: 0.1;
+  fill: url(#circles);
+  fill-opacity: 0.7;
+}
+
+#story-container .story-rect path:hover, #story-container .story-rect rect:hover{
+  fill-opacity: 0.9;
+  cursor: pointer;
+}
+
+#story-narrative-content, #story-controller {
+  font-family: 'Public Sans', sans-serif;
+}
+
+#story-narrative-content {
+  position: relative;
+  padding: 20px;
+}
+
+#story-narrative-content h1, #story-narrative-content h2, #story-controller h1 {
+  color: #70AC00;
+}
+
+#story-narrative-content h1 {
+  font-weight: 600;
+  margin-block-start: 0.2em;
+  margin-block-end: 0.2em;
+  font-size: 1.5em;
+}
+
+#story-narrative-content p {
+  font-weight: 100;
+  margin-block-start: 0.75em;
+  margin-block-end: 0.75em;
+  color: #212121;
+}
+
+:after {
+  left:100%;
+}
+:before {
+  right:100%;
+}
+
+/* Mobile first positioning */
+
+#story-narrative-container {
+  position: absolute;
+  background:rgba(255,255,255,0.7);
+  border: 1px solid #53A3D5;
+  border-radius: 15px;
+  top: 44px;
+  bottom: 30%;
+  left: 65px;
+  height: 40%;
+  width: 30%;
+  min-width: 250px;
+  /* background:#7f7f7f; */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 1200px) {
+
+  #story-navigation-and-narrative-mobile-container{
+    display: none;
+  }
+
+  #story-narrative-container {
+    left: calc(((100% - 900px) / 2));
+  }
+
+}
