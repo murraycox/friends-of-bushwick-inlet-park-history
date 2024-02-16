@@ -1,7 +1,3 @@
-var mapNYCRegionUrl = "./gis/NYC_region_land_4326.geojson";
-var mapShorelineUrl = "./gis/georeferenced_1775_shoreline_2_vector_4326.geojson";
-var mapIndianVillagesUrl = "./gis/Indian_villages_ponds_paths_kings_cty_4326.geojson";
-var storyURL = "./data/fbip-story.json";
 var projection;
 
 var currentView;
@@ -82,6 +78,11 @@ const storyGIS = {
             url: "./gis/BIP_FinalLots.geojson",
             className: "bip-final-lots",
             intialVisibility: true,
+        },
+        storyFeatures : {
+            url: "./gis/story_features.geojson",
+            className: "bip-story-features",
+            intialVisibility: true,
         }
     }
 };
@@ -156,9 +157,8 @@ function addMap(map){
     //Do this before the map is fetched so that the order of the svg is established (first added will appear at the bottom)
     // var gMap = g.insert('g', ":first-child") //make sure it doesn't cover anything 
     //     .classed("map", true);
-
     var gMap = g.insert('g') //make sure it doesn't cover anything 
-        .classed("map", true);
+    .classed("map", true);
 
     d3.json(map.url).then(function(geoJsonData) {
 
@@ -182,6 +182,8 @@ function addMap(map){
                 this.classList.add("chapter-gas-petroleum");
             if ((map.className == "bip-final-lots") && (["Bayside"].includes(d.properties.label)))
                 this.classList.add("chapter-sugar");
+            if ((map.className == "bip-final-lots") && (["40 Quay"].includes(d.properties.label)))
+                this.classList.add("chapter-waterfront");
         });
         
         //store the g in the object
@@ -320,6 +322,7 @@ setProjection(getGeoJsonRect(storyGIS.views.intialView.extent));
 
 g0 = addMap(storyGIS.maps.nycRegion);
 g1 = addMap(storyGIS.maps.bipFinalLots);
+//g2 = addMap(storyGIS.maps.storyFeatures);
 
 setupMap();
 currentView = storyGIS.views.intialView;

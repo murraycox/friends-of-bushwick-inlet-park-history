@@ -44,8 +44,8 @@ const erasAndChapters = [
         "link": "index10-gas-petroleum.html"
     },
     {
-        "id": "chapter-3",
-        "name": "Another Chapter",
+        "id": "chapter-waterfront",
+        "name": "Waterfront",
         "type": "chapter", 
         "link": null
     },
