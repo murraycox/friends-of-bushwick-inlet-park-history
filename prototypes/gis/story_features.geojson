@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "story_features",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "name": "Domino Factory Site", "chapter": "chapter-sugar" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -73.968499274458566, 40.713102839916843 ], [ -73.968165971896667, 40.712653770788542 ], [ -73.967678928920449, 40.712536306277293 ], [ -73.966394906528564, 40.715456076968046 ], [ -73.967302577529722, 40.715741335054453 ], [ -73.968499274458566, 40.713102839916843 ] ] ] ] } }
+]
+}
