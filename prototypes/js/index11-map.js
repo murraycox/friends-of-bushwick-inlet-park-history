@@ -179,6 +179,8 @@ function addMap(map){
                 this.classList.add("chapter-sugar");
             if ((map.className == "bip-final-lots") && (["40 Quay"].includes(d.properties.label)))
                 this.classList.add("chapter-waterfront");
+            if ((map.className == "era-3-story") &&  d.properties && d.properties.section && (d.properties.section == "Petroleum"))
+                this.classList.add("chapter-gas-petroleum");
         });
         
         //store the g in the object
