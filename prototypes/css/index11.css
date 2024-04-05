@@ -23,6 +23,10 @@ body {
   z-index: 99;
 }
 
+#story-navigation a {
+  text-decoration: none;
+}
+
 .story-navigation-button-group {
   background-color: white;
   border: #8D8E8E 1px solid;
@@ -35,6 +39,12 @@ body {
   text-align: center;
   font-size: 10px;
   font-weight: bold;
+}
+
+.story-navigation-button-group-header {
+  text-align: left;
+  margin: 5px 10px;
+  line-height: 10px;
 }
 
 .story-navigation-button-and-label{
@@ -75,30 +85,26 @@ body {
   margin: 3px;
 }
 
-/* Styles for .era-urban-industrial */
-.story-navigation-button-and-label.era-urban-industrial .story-navigation-button {
-  background-color: #a160c1a7;
+.story-navigation-button-and-label .story-navigation-button {
+  background-color: lightgray;
 }
-.story-navigation-button-and-label.era-urban-industrial .story-navigation-label{
-  color: #a160c1a7;
+.story-navigation-button-and-label .story-navigation-label{
+  color: gray;
 }
 
-.story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-button {
-  background-color: #A060C1
-  ;
+#story-narrative h1, #story-controller h1, #story-narrative h1 .header-context-era {
+  color: gray;
 }
-.story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-label{
+
+/* Styles for .era-urban-industrial */
+.story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-button, .story-navigation-button-and-label.era-urban-industrial.active .story-navigation-button, body.era-urban-industrial .story-narrative-footer {
+  background-color: #A060C1;
+}
+.story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-label, .story-navigation-button-and-label.era-urban-industrial.active .story-navigation-label, body.era-urban-industrial #story-narrative h1{
   color: #A060C1;;
 }
 
 /* Styles for .era-early-european-settlement */
-.story-navigation-button-and-label.era-early-european-settlement .story-navigation-button {
-  background-color: #83BC6Ea7;
-}
-.story-navigation-button-and-label.era-early-european-settlement .story-navigation-label{
-  color: #83BC6Ea7;
-}
-
 .story-navigation-button-and-label.era-early-european-settlement:hover .story-navigation-button {
   background-color: #83BC6E;
 }
@@ -106,29 +112,15 @@ body {
   color: #83BC6E;
 }
 
-/* Styles for .era-pre-1600s */
-.story-navigation-button-and-label.era-pre-1600s .story-navigation-button {
-  background-color: #599FF0a7;
-}
-.story-navigation-button-and-label.era-pre-1600s .story-navigation-label{
-  color: #599FF0a7;
-}
-
-.story-navigation-button-and-label.era-pre-1600s:hover .story-navigation-button {
+/* Styles for .era-pre-colonial */
+.story-navigation-button-and-label.era-pre-colonial:hover .story-navigation-button, .story-navigation-button-and-label.era-pre-colonial.active .story-navigation-button, body.era-pre-colonial .story-narrative-footer {
   background-color: #599FF0;
 }
-.story-navigation-button-and-label.era-pre-1600s:hover .story-navigation-label{
+.story-navigation-button-and-label.era-pre-colonial:hover .story-navigation-label, .story-navigation-button-and-label.era-pre-colonial.active .story-navigation-label, body.era-pre-colonial #story-narrative h1{
   color: #599FF0;
 }
 
 /* Styles for .era-migration */
-.story-navigation-button-and-label.era-migration .story-navigation-button {
-  background-color: #FFA700a7;
-}
-.story-navigation-button-and-label.era-migration .story-navigation-label{
-  color: #FFA700a7;
-}
-
 .story-navigation-button-and-label.era-migration:hover .story-navigation-button {
   background-color: #FFA700;
 }
@@ -137,13 +129,6 @@ body {
 }
 
 /* Styles for .era-activism-deindustrialization */
-.story-navigation-button-and-label.era-activism-deindustrialization .story-navigation-button {
-  background-color: #EF5402a7;
-}
-.story-navigation-button-and-label.era-activism-deindustrialization .story-navigation-label{
-  color: #EF5402a7;
-}
-
 .story-navigation-button-and-label.era-activism-deindustrialization:hover .story-navigation-button {
   background-color: #EF5402;
 }
@@ -164,13 +149,18 @@ body {
   margin-top: 360px;
   height: 500px;
   width: 100%;
-  background-image: url("../images/brick_pattern_2.svg");
-  background-size: 10px 10px;
+  /* background-image: url("../images/brick_pattern_2.svg"); */
+  /* background-size: 10px 10px; */
   /* background-size: contain; */
+  background-color: gray;
+  -webkit-mask-image: url("../images/brick_pattern_2.svg");
+  -webkit-mask-size: 10px 10px;
+  mask-image: url("../images/brick_pattern_2.svg");
+  mask-size: 10px 10px;
 }
 
-#story-narrative h1, #story-controller h1 {
-  color: #70AC00;
+#story-narrative {
+  font-size: 20px;
 }
 
 #story-narrative h2 {
@@ -178,21 +168,32 @@ body {
 }
 
 #story-narrative h1 {
+  font-size: 2em;
   font-weight: 600;
   margin-block-start: 44px;
-  margin-block-end: 72px;
-  font-size: 72px;
+  margin-block-end: 30px;
 }
 
-#story-narrative h1 {
- font-size: 42px;
-}
+#story-narrative h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-block-start: 85px;
+  margin-block-end: 30px;
+ }
+
 
  #story-narrative p {
+  font-size: 1em;
+  line-height: 1.5em;
   font-weight: 100;
   margin-block-start: 0.75em;
   margin-block-end: 0.75em;
   color: #212121;
+  margin: 0 10%;
+}
+
+.text-padding-right{
+  padding-right: 10%;
 }
 
 .images-container-side-by-side {
@@ -207,11 +208,13 @@ body {
 
 
 #story-narrative .figure {
-  padding-bottom: 244px;
+  padding-bottom: 200px;
 }
 /* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
 .figure-caption {
-  text-align: center!important;
+  text-align: left!important;
+  color: black;
+  font-size: .7em;
 }
 
 .figure-img {
@@ -219,22 +222,13 @@ body {
   height: auto;
 }
 
-.text-padding-right{
-  padding-right: 40%;
-}
-
-
 /* Mobile first positioning */
 #story-navigation {
-  left: 10px;
-}
-
-#story-navigation a {
-  text-decoration: none;
+  left: 20px;
 }
 
 #story-narrative {
-  margin: 0 65px;
+  margin: 0 84px 0 84px;
 }
 
 /* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
@@ -244,7 +238,15 @@ body {
 }
     
 @media (min-width: 768px){
-    
+  
+  #story-navigation {
+    left: 40px;
+  }
+  
+  #story-narrative {
+    margin: 0 124px 0 124px;
+  }   
+
 }
     
 @media (min-width: 992px){
@@ -254,7 +256,7 @@ body {
 @media (min-width: 1200px){
 
   #story-navigation {
-    left: calc(((100% - 900px) / 2) - 60px);
+    left: 80px;
   } 
 
   #story-narrative {

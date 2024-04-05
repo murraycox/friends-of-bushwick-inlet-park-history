@@ -60,6 +60,11 @@ rect.timeline-background {
   fill-opacity: 0.7;
 }
 
+/* Styles for .era-pre-colonial */
+.era-pre-colonial rect.timeline-background {
+  fill: #599FF0;
+}
+
 /* Styles for .era-urban-industrial */
 .era-urban-industrial rect.timeline-background {
   fill: #a160c1a7;
@@ -144,10 +149,15 @@ rect.timeline-background {
 /* Mobile first positioning */
 
 #story-controller {
-  left: 25px;
+  left: 40px;
 }
 
 @media screen and (min-width: 1200px) {
 
+  #story-controller {
+    left: 80px;
+  }
+  
 
 }
+
