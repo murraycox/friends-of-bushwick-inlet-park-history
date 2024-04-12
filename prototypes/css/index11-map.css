@@ -62,7 +62,7 @@ body {
 
 #story-container .map.era-3-story path.hover{
   stroke: blue;
-  fill: white;
+  fill: darkgreen;
 }
 
 #story-container .map.shoreline path{
