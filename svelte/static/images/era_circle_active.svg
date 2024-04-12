@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72.247" height="72.247" viewBox="0 0 72.247 72.247">
+  <g id="era_circle_active" transform="translate(0.625 0.625)">
+    <g id="Group_2357" data-name="Group 2357" transform="translate(-0.375 -0.375)">
+      <g id="Group_2418" data-name="Group 2418">
+        <path id="Path_1483" data-name="Path 1483" d="M35.874.375a35.5,35.5,0,1,1-35.5,35.5A35.5,35.5,0,0,1,35.874.375Z" fill="#53a3d5" stroke="#2f95e0" stroke-width="1.25"/>
+      </g>
+    </g>
+    <text id="Eras" transform="translate(0.387 23.371)" fill="#fff" font-size="25" font-family="URWDIN-Bold, URW DIN" font-weight="700"><tspan x="9" y="18">Eras</tspan></text>
+  </g>
+</svg>
