@@ -183,13 +183,13 @@ body {
 
 
  #story-narrative p {
+  margin: 0 10%;
   font-size: 1em;
   line-height: 1.5em;
   font-weight: 100;
   margin-block-start: 0.75em;
-  margin-block-end: 0.75em;
+  margin-block-end: 3em;
   color: #212121;
-  margin: 0 10%;
 }
 
 .text-padding-right{

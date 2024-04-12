@@ -11,21 +11,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="era-urban-industrial">
     <div id="story-navigation" class="position-fixed">
-        <a href="index11-map.html">
-            <div class="story-navigation-button">
-                Intro
-            </div>
-        </a>
         <div class="story-navigation-button-group">
-            <div class="story-navigation-button-and-label era-pre-1600s">
-                <div class="story-navigation-button">
-                </div>
-                <div class="story-navigation-label">
-                    Pre 1600's
-                </div>
+            <div class="story-navigation-button-group-header">
+                eras
             </div>
+            <a href="index11-era-pre-colonial-intro.html">
+                <div class="story-navigation-button-and-label era-pre-colonial">
+                    <div class="story-navigation-button">
+                    </div>
+                    <div class="story-navigation-label">
+                        Pre Colonial
+                    </div>
+                </div>
+            </a>
             <div class="story-navigation-button-and-label era-early-european-settlement">
                 <div class="story-navigation-button">
                 </div>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <a href="index11-era-urban-industrial-intro.html">
-                <div class="story-navigation-button-and-label era-urban-industrial">
+                <div class="story-navigation-button-and-label era-urban-industrial active">
                     <div class="story-navigation-button">
                     </div>
                     <div class="story-navigation-label">
@@ -57,11 +57,24 @@
                 </div>
             </div>
         </div>
-        <div class="story-navigation-button">
-            Other            
-        </div>
-    </div>  
+    </div>   
     <div id="story-container">
+        <div id="tooltip" class="tooltipx">
+            <table>
+                <tr>
+                    <td width="75px">
+                        FBIP Lot:
+                    </td>
+                    <td>
+                        <div id="tooltip-lot-name"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Other info:</td>
+                    <td>Laboris laborum cupidatat amet sunt esse et officia amet laborum ut.</td>
+                </tr>
+            </table>
+        </div>
         <!-- <div id ="story-narrative-container"> -->
             <div id="story-narrative">
                 <h1>

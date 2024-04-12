@@ -33,9 +33,21 @@ body {
 
 #story-container .map.era-3-story path{
   stroke: darkgreen;
-  /* stroke-width: 0.25; */
+  stroke-width: 0.25;
   fill: url(#circles);
   /* fill: green; */
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+#story-container .map.era-1-polygons path, #story-container .map.era-1-polylines path{
+  stroke: darkblue;
+  /* stroke-width: 0.25; */
+  /* fill: url(#circles); */
+}
+
+#story-container .map.era-1-polygons path{
+  fill: lightblue;
   cursor: pointer;
 }
 
@@ -44,6 +56,9 @@ body {
   fill: url(#circles-selected);
 }
 
+#story-container .map.era-1-polygons.inactive path, #story-container .map.era-1-polylines.inactive path{
+  opacity: 0.2;
+}
 
 #story-container .map.era-3-story path.hover{
   stroke: blue;
@@ -111,6 +126,26 @@ body {
 }
 :before {
   right:100%;
+}
+
+.tooltipx {
+  position: absolute;
+  visibility: hidden;
+  z-index: 999;
+  font-size: 0.7em;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: white;
+  padding: 5px;
+  line-height: 1em;
+}
+
+.tooltipx table {
+  width: 150px;
+}
+
+.tooltipx table td {
+  vertical-align: top;
 }
 
 /* Mobile first positioning */

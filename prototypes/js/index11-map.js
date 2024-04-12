@@ -9,10 +9,10 @@ const storyGIS = {
     views: {
         intialView: {
             extent: {
-                nwLng: -73.96589979,
-                nwLat: 40.73083281,
-                seLng: -73.94426764,
-                seLat: 40.70897278
+                nwLng: -73.97,
+                nwLat: 40.735,
+                seLng: -73.94,
+                seLat: 40.700
             },
             center: {
                 lng: -73.98047953,
@@ -78,6 +78,16 @@ const storyGIS = {
             url: "./gis/era_3_1855-1950s_story_polys_sorted.geojson",
             className: "era-3-story",
             intialVisibility: true,
+        },
+        era1Story : {
+            url: "./gis/1776_wetlands_polygons_4326.geojson",
+            className: "era-1-polygons inactive",
+            intialVisibility: true,
+        },
+        era1Lines : {
+            url: "./gis/1776_shoreline_polylines_4326.geojson",
+            className: "era-1-polylines inactive",
+            intialVisibility: true,
         }
     }
 };
@@ -86,6 +96,8 @@ const margin = ({ top: 10, right: 0, bottom: 0, left: 10 });
 
 let mapWidth = document.documentElement.clientWidth; 
 let mapHeight = document.documentElement.clientHeight;
+
+var tooltip = d3.select("#story-container #tooltip");   
 
 const svg = d3.select("#story-container").append("svg")
     .attr('width', "100%")
@@ -132,18 +144,49 @@ function setProjection(fitSizeRect){
 
 };
 
-function featureMouseover(e, d) {
+function featureMouseOver(e, d) {
     d3.selectAll("path")
         .classed("hover", false);
     if (d.properties && d.properties.section) { //do we want to call this section, or chapter??
         d3.select(this)
             .classed("hover", true);
+        tooltip.select("#tooltip-lot-name").html(d.properties["section"]);
+        tooltip.style("visibility", "visible");
     };
+}
+
+function featureMouseMove(e, d){
+
+    if (d.properties && d.properties.section) { //do we want to call this section, or chapter??
+        tooltip.style("top", (e.pageY+5)+"px").style("left",(e.pageX+5)+"px");
+    }
+
+}
+
+function featureMouseOut(e, d){
+    
+    tooltip.style("visibility", "hidden");
+
 }
 
 function featureClick(e, d) {
     if (d.properties && d.properties.section && d.properties.section == "Petroleum") {
-        window.location = "index11-gas-petroleum";
+        window.location = "index11-petroleum.html";
+    };
+    if (d.properties && d.properties.section && d.properties.section == "Sugar") {
+            window.location = "index11-sugar.html";
+    };
+    if (d.properties && d.properties.section && d.properties.section == "Coal-Tar Gasification") {
+        window.location = "index11-coal-tar-gasification.html";
+    };
+    if (d.properties && d.properties.section && d.properties.section == "Shipbuilding and Ironworks") {
+        window.location = "index11-shipbuilding-and-ironworks.html";
+    };
+    if (d.properties && d.properties.section && d.properties.section == "The Creek Disappears") {
+        window.location = "index11-the-creek-disappears.html";
+    };
+    if (d.properties && d.properties.section && d.properties.section == "Eastern District Terminal") {
+        window.location = "index11-eastern-district-terminal-1.html";
     };
 }
 
@@ -168,7 +211,9 @@ function addMap(map){
             .enter()
             .append("path")
             .attr("d", path)
-            .on("mouseover", featureMouseover)
+            .on("mouseover", featureMouseOver)
+            .on("mousemove", featureMouseMove)
+            .on("mouseout", featureMouseOut)
             .on("click", featureClick);
 
         paths.each(function(d) {
@@ -318,7 +363,9 @@ function showClickableView(view){
 setProjection(getGeoJsonRect(storyGIS.views.intialView.extent));
 
 g0 = addMap(storyGIS.maps.nycRegion);
-g1 = addMap(storyGIS.maps.era3Story);
+g1 = addMap(storyGIS.maps.era1Story);
+g2 = addMap(storyGIS.maps.era1Lines);
+g3 = addMap(storyGIS.maps.era3Story);
 //g2 = addMap(storyGIS.maps.storyFeatures);
 
 setupMap();
@@ -356,3 +403,4 @@ function resize() {
     // g.attr("transform", transformStr);
 
 }
+
