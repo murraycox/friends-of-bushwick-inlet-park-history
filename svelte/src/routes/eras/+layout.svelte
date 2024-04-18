@@ -3,6 +3,7 @@
     import { page } from '$app/stores';
 
     import NavEras from "$lib/components/NavEras.svelte";
+    import NavTimeline from "$lib/components/NavTimeline.svelte";
     
     const eraMatch = $page.url.pathname.match(/\/eras\/(\w+-\w+)\/*/);
     const eraClass = eraMatch?eraMatch[0]:"era-unknown";
@@ -16,14 +17,10 @@
     </div>
     <div class="story-narrative-footer"></div>
 </div>
-<div id="story-controller" class="position-fixed">
-    <div id="story-controller-timeline-era-titles">
-    </div>
-    <div id="story-controller-timeline">
-    </div>
-</div>
+<NavTimeline />
 
 <style>
+
     #story-narrative-content, #story-controller, #story-narrative {
     font-family: 'Public Sans', sans-serif;
     }
@@ -53,7 +50,7 @@
     #story-narrative :global(h1) {
     font-size: 2em;
     font-weight: 600;
-    margin-block-start: 44px;
+    margin-block-start: 35px;
     margin-block-end: 30px;
     }
 
@@ -107,6 +104,10 @@
 
     /* Mobile first positioning */
 
+    #story-container {
+        padding-top: 52px;
+    }
+
     #story-narrative {
         margin: 0 84px 0 84px;
     }
@@ -114,7 +115,11 @@
     /* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
 
     @media (min-width: 768px){
-          
+
+        #story-container {
+            padding-top: 0;
+        }
+
         #story-narrative {
             margin: 0 124px 0 124px;
         }   
