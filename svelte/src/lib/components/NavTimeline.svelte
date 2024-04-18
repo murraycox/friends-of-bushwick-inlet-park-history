@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 
+    import erasAndChapters from '$lib/data/eras-and-chapters.json';
+
     const TIMELINE_HEIGHT = 45;
     const TIMELINE_MARGIN_TOP = 85;
     const TIMELINE_MARGIN_BOTTOM = 1; //to draw the bottom border
@@ -20,70 +22,71 @@
         initialiseTimeline();
         setupTimeline("The story of Bushwick Inlet", erasAndChapters);
         redrawTimeline();
+        window.addEventListener('resize', redrawTimeline);
     });
 
-    const erasAndChapters = [
-        {
-            "id": "pre-1600s",
-            "name": "Pre 1600s",
-            "type": "era", 
-            "link": null
-        },
-        {
-            "id": "early-european-settlement",
-            "name": "Early European Settlement",
-            "type": "era", 
-            "link": null
-        },
-        {   
-            "id": "urban-industrial-area",
-            "name": "Urban + Industrial Area",
-            "type": "era", 
-            "link": null
-        },
-        {
-            "id": "chapter-sugar",
-            "name": "Sugar",
-            "type": "chapter", 
-            "link": "index10-intro.html"
-        },
-        {
-            "id": "chapter-gas-petroleum",
-            "name": "Gas + Petroleum",
-            "type": "chapter", 
-            "link": "index10-gas-petroleum.html"
-        },
-        {
-            "id": "chapter-waterfront",
-            "name": "Waterfront",
-            "type": "chapter", 
-            "link": null
-        },
-        {
-            "id": "chapter-4",
-            "name": "Another Chapter",
-            "type": "chapter", 
-            "link": null
-        },
-        {
-            "id": "chapter-5",
-            "name": "Another Chapter",
-            "type": "chapter", 
-            "link": null
-        },
-        {
-            "id": "migration",
-            "name": "Migration",
-            "type": "era", 
-            "link": null
-        },
-        {
-            "id": "activism-deindustrialization",
-            "name": "Activism + Deindustrialization",
-            "type": "era", 
-            "link": null
-        },
-    ];
+    // const erasAndChapters = [
+    //     {
+    //         "id": "pre-1600s",
+    //         "name": "Pre 1600s",
+    //         "type": "era", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "early-european-settlement",
+    //         "name": "Early European Settlement",
+    //         "type": "era", 
+    //         "link": null
+    //     },
+    //     {   
+    //         "id": "urban-industrial-area",
+    //         "name": "Urban + Industrial Area",
+    //         "type": "era", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "chapter-sugar",
+    //         "name": "Sugar",
+    //         "type": "chapter", 
+    //         "link": "index10-intro.html"
+    //     },
+    //     {
+    //         "id": "chapter-gas-petroleum",
+    //         "name": "Gas + Petroleum",
+    //         "type": "chapter", 
+    //         "link": "index10-gas-petroleum.html"
+    //     },
+    //     {
+    //         "id": "chapter-waterfront",
+    //         "name": "Waterfront",
+    //         "type": "chapter", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "chapter-4",
+    //         "name": "Another Chapter",
+    //         "type": "chapter", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "chapter-5",
+    //         "name": "Another Chapter",
+    //         "type": "chapter", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "migration",
+    //         "name": "Migration",
+    //         "type": "era", 
+    //         "link": null
+    //     },
+    //     {
+    //         "id": "activism-deindustrialization",
+    //         "name": "Activism + Deindustrialization",
+    //         "type": "era", 
+    //         "link": null
+    //     },
+    // ];
 
     function initialiseTimeline(){
         // d3.select("#story-controller h1")
@@ -134,7 +137,7 @@
             .classed("timeline-era-group", true);
 
         var anchors = eraGroups.append("line")
-            .classed("story-controller-timeline-era-anchors", true)
+            .classed("timeline-node-anchors", true)
             .attr("id", d => "anchor-" + d.id)
             .attr('x1', 0)
             .attr('y1', 0)
@@ -150,6 +153,7 @@
             .classed("era", d => d.type == "era")
             .classed("chapter", d => d.type == "chapter")
             .style("stroke", "green");
+
         //     // .style("fill", "green")
         //     .on('click', function(e, d){ 
         //         //transitionToView(d.view);
@@ -276,12 +280,12 @@
     color: #70AC00;
     }
 
-    .timeline-timeline-era-anchors {
-    visibility: hidden;
+    :global(.timeline-node-anchors) {
+        visibility: hidden;
     }
 
-    .timeline-timeline-era-anchors .visible {
-    visibility: visible;
+    :global(.timeline-node-anchors .visible) {
+        visibility: visible;
     }
 
     #timeline-container h1 {
