@@ -166,9 +166,11 @@
         display: none;
     }
 
+    /* may be able to animate this, but it's a bit hacky, e.g. this: https://stackoverflow.com/questions/3508605/how-can-i-transition-height-0-to-height-auto-using-css/8331169#8331169 */
     .story-navigation-label:hover {
         width: auto;
     }
+
 
     .story-navigation-label:hover span {
         display: inline;
