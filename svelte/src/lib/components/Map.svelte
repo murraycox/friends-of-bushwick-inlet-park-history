@@ -6,7 +6,7 @@
     export let url = "";
     export let projection; //get the overall projection from the Maps component?
     export let id;
-    export let enableHover = false;
+    export let enableHover = false; //whether to track mouse events like mouseenter, mouseout and mousemove
 
     let dataset = [];
     let path = null;
@@ -23,17 +23,17 @@
         });
     });
 
+    //we pass the feature in as the parameter. Tried to instead use event or this, but this seem to work the best.
     function onFeatureMouseOver(feature) {
-        // console.log("Map:onFeatureMouseOver(event: " + JSON.stringify(event));
-        // console.log("Map:onFeatureMouseOver(this:" + JSON.stringify(this));
-        // console.log("Map:onFeatureMouseOver(this:" + JSON.stringify(this.properties.section));
+        
         console.log("Map:onFeatureMouseOver(feature:" + JSON.stringify(feature) + ")");
         if (feature.properties && feature.properties.section)
             console.log("Map:onFeatureMouseOver(section:" + JSON.stringify(feature.properties.section) + ")");
 
+        // Dispatch the id of the map and the feature id to the parent component
         dispatch('featureMouseOver', {
 			mapID: id,
-            featureID: (feature.properties && feature.properties.section)? feature.properties.section : '?'
+            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
 		});
         // d3.selectAll("path")
         //     .classed("hover", false);
@@ -64,7 +64,11 @@
 
 <g class="map-svg-g" id={id}>
 {#each dataset as data}
-  <path d={path(data)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut}/>
+    {#if enableHover}
+        <path d={path(data)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut}/>
+    {:else}
+        <path d={path(data)}/>
+    {/if}
 {/each}
 </g>
 

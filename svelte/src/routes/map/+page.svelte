@@ -7,7 +7,7 @@
     let navTimeline;
 
     function onMapFeatureMouseOver(event) {
-        console.log("routes/map:onFeatureMouseOver:" + event);
+        console.log("routes/map:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
         navTimeline.onMapFeatureMouseOver(event);
     }
     
@@ -15,7 +15,4 @@
 
 <NavEras />
 <Maps on:featureMouseOver={onMapFeatureMouseOver}/>    
-<NavTimeline 
-    bind:this={navTimeline}
-/>
-
+<NavTimeline bind:this={navTimeline} />

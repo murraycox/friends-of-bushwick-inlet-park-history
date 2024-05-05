@@ -6,7 +6,8 @@
     import erasAndChapters from '$lib/data/eras-and-chapters.json';
 
     export function onMapFeatureMouseOver(event){
-        console.log("NavTimeline:onMapFeatureMouseOver:" + event);
+        console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
+        onMouseOver(event.detail.featureID);
     }
 
     const TIMELINE_HEIGHT = 45;
@@ -32,6 +33,32 @@
         window.addEventListener('resize', redrawTimeline);
     });
 
+    function onMouseOver(id){
+        console.log("NavTimeline:onMouseOver(id:" + JSON.stringify(id) + ")");
+
+        d3.selectAll("#title-" + id + ", #anchor-" + id)
+            .classed("visible", true);
+
+        //TODO highlight matching features on the map
+        // d3.selectAll(".map ." + d.id)
+        //     .classed("selected", true);
+
+    };
+
+    function onMouseLeave(id){
+
+        d3.timeout(
+                    function(){
+                        d3.selectAll("#title-" + id + ", #anchor-" + id)
+                            .classed("visible", false);
+                    }, 100);
+
+                // TODO un-highlight matching features on the map
+                // d3.selectAll(".map ." + d.id)
+                //     .classed("selected", false);
+
+    }
+    
     function initialiseTimeline(){
         // d3.select("#story-controller h1")
         //     .on('click', function() {
@@ -104,24 +131,12 @@
         //     })
             .on('mouseover', function(e, d){ 
                 
-                d3.selectAll("#title-" + d.id + ", #anchor-" + d.id)
-                    .classed("visible", true);
-                
-                //highlight matching features on the map
-                // d3.selectAll(".map ." + d.id)
-                //     .classed("selected", true);
-                
+                onMouseOver(d.id)
+                 
             })
             .on('mouseleave', function(e, d){ 
-                d3.timeout(
-                    function(){
-                        d3.selectAll("#title-" + d.id + ", #anchor-" + d.id)
-                            .classed("visible", false);
-                    }, 100);
 
-                //un-highlight matching features on the map
-                // d3.selectAll(".map ." + d.id)
-                //     .classed("selected", false);
+                onMouseLeave(d.id)
 
             });
         //     ;

@@ -24,10 +24,10 @@
         "link": "index10-intro.html"
     },
     {
-        "id": "chapter-gas-petroleum",
-        "name": "Gas + Petroleum",
+        "id": "chapter-petroleum",
+        "name": "Petroleum",
         "type": "chapter", 
-        "link": "index10-gas-petroleum.html"
+        "link": "index10-petroleum.html"
     },
     {
         "id": "chapter-waterfront",

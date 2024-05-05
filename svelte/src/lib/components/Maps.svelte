@@ -46,10 +46,10 @@
         ));
 
     function onFeatureMouseOver(event) {
-        console.log("Maps:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail));
+        console.log("Maps:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
 
         // TODO, add info about which map?
-        dispatch('featureMouseOver', event);
+        dispatch('featureMouseOver', event.detail);
     }
 
 </script>
@@ -58,7 +58,7 @@
     <svg id="map-svg">
         <Map url="/gis/NYC_region_land_4326.geojson" projection={projection} id="map-nyc-region-land"/>
         <Map url="/gis/1776_shoreline_polylines_4326.geojson" projection={projection} id="map-era-1-shorelines"/>
-        <Map url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story"on:featureMouseOver={onFeatureMouseOver}/>
+        <Map url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story" enableHover={true} on:featureMouseOver={onFeatureMouseOver}/>
     </svg>
 </div>
 
