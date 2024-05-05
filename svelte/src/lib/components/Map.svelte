@@ -27,8 +27,8 @@
     function onFeatureMouseOver(feature) {
         
         console.log("Map:onFeatureMouseOver(feature:" + JSON.stringify(feature) + ")");
-        if (feature.properties && feature.properties.section)
-            console.log("Map:onFeatureMouseOver(section:" + JSON.stringify(feature.properties.section) + ")");
+        if (feature.properties && feature.properties.id)
+            console.log("Map:onFeatureMouseOver(section:" + JSON.stringify(feature.properties.id) + ")");
 
         // Dispatch the id of the map and the feature id to the parent component
         dispatch('featureMouseOver', {
@@ -53,9 +53,17 @@
 
     // }
 
-    function onFeatureMouseOut(event){
-        console.log("Map:onFeatureMouseOut:" + event);
-        // tooltip.style("visibility", "hidden");
+    function onFeatureMouseOut(feature){
+ 
+        console.log("Map:onFeatureMouseOut(feature:" + JSON.stringify(feature) + ")");
+        if (feature.properties && feature.properties.id)
+            console.log("Map:onFeatureMouseOut(id:" + JSON.stringify(feature.properties.id) + ")");
+
+        // Dispatch the id of the map and the feature id to the parent component
+        dispatch('featureMouseOut', {
+			mapID: id,
+            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
+		});
 
     }
 
@@ -65,7 +73,7 @@
 <g class="map-svg-g" id={id}>
 {#each dataset as data}
     {#if enableHover}
-        <path d={path(data)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut}/>
+        <path d={path(data)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)}/>
     {:else}
         <path d={path(data)}/>
     {/if}

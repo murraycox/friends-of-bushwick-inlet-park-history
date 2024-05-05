@@ -10,9 +10,14 @@
         console.log("routes/map:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
         navTimeline.onMapFeatureMouseOver(event);
     }
+
+    function onMapFeatureMouseOut(event) {
+        console.log("routes/map:onMapFeatureMouseOut(event.detail:" + JSON.stringify(event.detail) + ")");
+        navTimeline.onMapFeatureMouseOut(event);
+    }
     
 </script>
 
 <NavEras />
-<Maps on:featureMouseOver={onMapFeatureMouseOver}/>    
+<Maps on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut}/>    
 <NavTimeline bind:this={navTimeline} />

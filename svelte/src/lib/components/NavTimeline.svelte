@@ -10,6 +10,11 @@
         onMouseOver(event.detail.featureID);
     }
 
+    export function onMapFeatureMouseOut(event){
+        console.log("NavTimeline:onMapFeatureMouseOut(event:" + JSON.stringify(event.detail) + ")");
+        onMouseLeave(event.detail.featureID);
+    }
+
     const TIMELINE_HEIGHT = 45;
     const TIMELINE_MARGIN_TOP = 85;
     const TIMELINE_MARGIN_BOTTOM = 1; //to draw the bottom border
