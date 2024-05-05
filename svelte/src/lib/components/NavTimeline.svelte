@@ -5,6 +5,10 @@
 
     import erasAndChapters from '$lib/data/eras-and-chapters.json';
 
+    export function onMapFeatureMouseOver(event){
+        console.log("NavTimeline:onMapFeatureMouseOver:" + event);
+    }
+
     const TIMELINE_HEIGHT = 45;
     const TIMELINE_MARGIN_TOP = 85;
     const TIMELINE_MARGIN_BOTTOM = 1; //to draw the bottom border

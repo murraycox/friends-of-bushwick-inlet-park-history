@@ -187,6 +187,7 @@
         #story-navigation {
             left: 40px;
             top: 44px;
+            width: fit-content;
             flex-direction: column;
             background-color: inherit;
             padding: 0;
