@@ -1,9 +1,10 @@
 <script lang="ts">
     
     import { createEventDispatcher } from 'svelte';
-    import { geoAlbers } from  "d3";
+    import { geoAlbers, geoMercator } from  "d3";
 
     import Map from "$lib/components/Map.svelte"
+    import TileMap from "$lib/components/TileMap.svelte"
 
     const dispatch = createEventDispatcher();
 
@@ -34,7 +35,8 @@
         return geoJsonRect;
     };
 
-    const projection = geoAlbers()
+    // Need to use Mercator projection when using tiles, or at least I couldn't get the tiles to work with geoAlbers and the examples in the documentaiton
+    const projection = geoMercator()
         .rotate([74, 0]) //Rotate the projection
         .fitSize([800, 600], getGeoJsonRect(
             {
@@ -65,6 +67,7 @@
     <svg id="map-svg">
         <Map url="/gis/NYC_region_land_4326.geojson" projection={projection} id="map-nyc-region-land"/>
         <Map url="/gis/1776_shoreline_polylines_4326.geojson" projection={projection} id="map-era-1-shorelines"/>
+        <TileMap projection={projection} />
         <Map url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story" enableHover={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut}/>
     </svg>
 </div>
