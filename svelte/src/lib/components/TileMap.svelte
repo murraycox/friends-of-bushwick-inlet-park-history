@@ -4,6 +4,8 @@
     import { json, geoAlbers, geoPath } from  "d3";
     import { tile } from "d3-tile";
 
+    export let urlPath;
+    export let urlExtension;
     export let projection; //get the overall projection from the Maps component?
 
     const dispatch = createEventDispatcher();
@@ -30,7 +32,7 @@
         console.log(`tile ${x}/${y}/${z} is at ${(x + tx) * k}, ${(y + ty) * k}`);
     }
 
-    const url = (x, y, z) => `/gis/pluto/${z}/${x}/${y}.png`
+    const url = (x, y, z) => `${urlPath}${z}/${x}/${y}.${urlExtension}`
 
     function position(tile, tiles) {
         const [x, y] = tile;
@@ -51,7 +53,7 @@
 <style>
 
     image{
-      opacity: 0.4;
+      opacity: 0.2;
     }
 
 </style>

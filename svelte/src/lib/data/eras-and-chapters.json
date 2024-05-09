@@ -3,7 +3,13 @@
         "id": "pre-1600s",
         "name": "Pre 1600s",
         "type": "era", 
-        "link": null
+        "link": null,
+        "extent": {
+            "nwLng": -74.6,
+            "nwLat": 40.95368295,
+            "seLng": -73.3,
+            "seLat": 40.47071658
+        }
     },
     {
         "id": "early-european-settlement",
@@ -21,13 +27,13 @@
         "id": "chapter-sugar",
         "name": "Sugar",
         "type": "chapter", 
-        "link": "index10-intro.html"
+        "link": "/eras/urban-industrial/sugar"
     },
     {
         "id": "chapter-petroleum",
         "name": "Petroleum",
         "type": "chapter", 
-        "link": "index10-petroleum.html"
+        "link": "/eras/urban-industrial/petroleum"
     },
     {
         "id": "chapter-waterfront",

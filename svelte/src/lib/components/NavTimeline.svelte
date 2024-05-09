@@ -1,6 +1,7 @@
 <script>
 
-	import { onMount } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
+
 	import * as d3 from 'd3';
 
     import erasAndChapters from '$lib/data/eras-and-chapters.json';
@@ -14,6 +15,14 @@
         console.log("NavTimeline:onMapFeatureMouseOut(event:" + JSON.stringify(event.detail) + ")");
         onMouseLeave(event.detail.featureID);
     }
+
+    export function onMapFeatureClick(event){
+        console.log("NavTimeline:onMapFeatureClick(event:" + JSON.stringify(event.detail) + ")");
+        onChapterClick(event.detail.featureID);
+    }
+
+    const dispatch = createEventDispatcher();
+
 
     const TIMELINE_HEIGHT = 45;
     const TIMELINE_MARGIN_TOP = 85;
@@ -44,6 +53,11 @@
         d3.selectAll("#title-" + id + ", #anchor-" + id)
             .classed("visible", true);
 
+        // Dispatch the id of the chapter to the parent (Map page)
+        dispatch('chapterMouseOver', {
+            id: id
+		});
+
         //TODO highlight matching features on the map
         // d3.selectAll(".map ." + d.id)
         //     .classed("selected", true);
@@ -51,6 +65,7 @@
     };
 
     function onMouseLeave(id){
+        console.log("NavTimeline:onMouseLeave(id:" + JSON.stringify(id) + ")");
 
         d3.timeout(
                     function(){
@@ -61,8 +76,27 @@
                 // TODO un-highlight matching features on the map
                 // d3.selectAll(".map ." + d.id)
                 //     .classed("selected", false);
+                // Dispatch the id of the chapter to the parent (Map page)
+        dispatch('chapterMouseLeave', {
+            id: id
+		});
 
-    }
+    };
+
+    function onChapterClick(id){
+        // lookup the chapter
+        erasAndChapters.forEach((timeLineNode) => {
+            if (timeLineNode.type == "chapter" && timeLineNode.link && timeLineNode.id == id )
+                window.location = timeLineNode.link;
+        }); 
+    };
+
+    function onEraClick(id){
+        console.log(`NavTimeline:onEraClick(${id})`);
+        dispatch('eraClick', {
+            id: id
+		});
+    };
     
     function initialiseTimeline(){
         // d3.select("#story-controller h1")
@@ -130,10 +164,13 @@
             .classed("chapter", d => d.type == "chapter")
             .style("stroke", "green")
         //     // .style("fill", "green")
-        //     .on('click', function(e, d){ 
-        //         //transitionToView(d.view);
-        //         window.location = d.link;
-        //     })
+            .on('click', function(e, d){ 
+                //transitionToView(d.view);
+                if (d.type == "chapter")
+                    onChapterClick(d.id)
+                else
+                    onEraClick(d.id);
+            })
             .on('mouseover', function(e, d){ 
                 
                 onMouseOver(d.id)

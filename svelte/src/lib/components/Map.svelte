@@ -8,8 +8,19 @@
     export let id;
     export let enableHover = false; //whether to track mouse events like mouseenter, mouseout and mousemove
 
+    export function onChapterMouseOver(event){
+        console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
+        highlightedChapterID = event.detail.id;
+    }
+
+    export function onChapterMouseLeave(event){
+        console.log("Map(id: " + id + "):onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
+        highlightedChapterID = null;
+    }
+
     let dataset = [];
     let path = null;
+    let highlightedChapterID = null;
 
     const dispatch = createEventDispatcher();
 
@@ -67,13 +78,22 @@
 
     }
 
+    function onFeatureClick(feature){
+        console.log("Map:onFeatureClick(feature:" + JSON.stringify(feature) + ")");
+        // Dispatch the id of the map and the feature id to the parent component
+        dispatch('featureClick', {
+			mapID: id,
+            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
+		});
+    }
+
 
 </script>
 
 <g class="map-svg-g" id={id}>
 {#each dataset as data}
     {#if enableHover}
-        <path d={path(data)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)}/>
+        <path d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
     {:else}
         <path d={path(data)}/>
     {/if}
@@ -83,31 +103,48 @@
 
 <style>
 
-#map-nyc-region-land path{
-    stroke: #cbcaca;
+    #nyc-landline path{
+        stroke: #cbcaca;
+        /* stroke-width: 0.25; */
+        fill: #fcfcfc;
+    }
+
+    #bip-lots path {
+    stroke: darkgreen;
+    stroke-width: 1;
+    /* fill: url(#circles); */
+    fill: green;
+    cursor: pointer;
+    opacity: 0.9;
+    }
+
+    #bip-lots path:hover, #bip-lots path.hover{
+    fill: darkgreen;
+    }
+
+    /* we had to escale the 1 as \31 */
+    #seventeenseventysix-shoreline path{
+    stroke: darkblue;
+    opacity: 0.2;
+    fill: none;
     /* stroke-width: 0.25; */
-    fill: #fcfcfc;
-}
+    /* fill: url(#circles); */
+    }
 
-#map-era-3-story path {
-  stroke: darkgreen;
-  stroke-width: 1;
-  /* fill: url(#circles); */
-  fill: green;
-  cursor: pointer;
-  opacity: 0.9;
-}
+    #historical-waterline{
+        fill: #378ed5;
+        opacity: 0.17;
+    }
 
-#map-era-3-story path:hover{
-  fill: darkgreen;
-}
 
-#map-era-1-shorelines path{
-  stroke: darkblue;
-  opacity: 0.2;
-  fill: none;
-  /* stroke-width: 0.25; */
-  /* fill: url(#circles); */
-}
+    #map-era-1-indian-paths-kings-county path{
+        stroke: red;
+        fill: none;
+    }
+
+    #map-era-1-indian-paths-nyc path{
+        stroke: green;
+        fill: none;
+    }
 
 </style>

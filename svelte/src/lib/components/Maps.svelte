@@ -1,12 +1,68 @@
 <script lang="ts">
     
     import { createEventDispatcher } from 'svelte';
-    import { geoAlbers, geoMercator } from  "d3";
+    import { geoAlbers, geoMercator, geoPath } from "d3";
+    import * as d3 from 'd3';
 
-    import Map from "$lib/components/Map.svelte"
-    import TileMap from "$lib/components/TileMap.svelte"
+    import Map from "$lib/components/Map.svelte";
+    import TileMap from "$lib/components/TileMap.svelte";
+
+    import story from '$lib/data/story.json';
+
+    export function onChapterMouseOver(event){
+        console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
+        mapEra3Story.onChapterMouseOver(event);
+    };
+
+    export function onChapterMouseLeave(event){
+        console.log("Maps:onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
+        mapEra3Story.onChapterMouseLeave(event);
+    };
+
+    export function onEraClick(event){
+        console.log(`Maps:onEraClick(event:${JSON.stringify(event.detail)})`);
+        console.log(`Maps:onEraClick(era.extent:${JSON.stringify(story.eras[event.detail.id].extent)})`)
+        if (story.eras[event.detail.id].extent){
+
+            const rectGeoJsonExtent = getGeoJsonRect(story.eras[event.detail.id].extent);
+            var path = d3.geoPath()
+                .projection(projection);
+            const boundsRectExtent = path.bounds(rectGeoJsonExtent);
+
+            const [[x0, y0], [x1, y1]] = boundsRectExtent; //path.bounds(d);
+            d3.select(gMap).transition()
+                .duration(3000)
+                .ease(d3.easeCubicOut)
+                .call(
+                    zoom.transform,
+                    d3.zoomIdentity
+                        .translate(mapWidth / 2, mapHeight / 2) // I think this is here so that the transform implements the translate to the middle of the screen, not the top/left?
+                        .scale(0.9 / Math.max((x1 - x0) / mapWidth, (y1 - y0) / mapHeight))
+                        .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
+                );
+        };
+    };
+
+    let mapEra3Story;
+    let gMap;
+
+    let mapWidth = 800;
+    let mapHeight = 600;
+
+    let zoom;
+
+    let currentView = story.intialView;
+
+    zoom = d3.zoom()
+        .on("zoom", zoomed);
 
     const dispatch = createEventDispatcher();
+
+    function zoomed(event) {
+        const {transform} = event;
+        d3.select(gMap).attr("transform", transform);
+        // gMap.attr("stroke-width", 1 / transform.k);
+    }
 
     function getGeoJsonRect(extent: {nwLng: number, nwLat: number, seLng: number, seLat: number}): any{
         
@@ -38,14 +94,8 @@
     // Need to use Mercator projection when using tiles, or at least I couldn't get the tiles to work with geoAlbers and the examples in the documentaiton
     const projection = geoMercator()
         .rotate([74, 0]) //Rotate the projection
-        .fitSize([800, 600], getGeoJsonRect(
-            {
-                    nwLng: -73.97,
-                    nwLat: 40.735,
-                    seLng: -73.94,
-                    seLat: 40.700
-            }
-        ));
+        //TODO get the correct height and width, and respond to resizing
+        .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.eras[story.intialView].extent));
 
     function onFeatureMouseOver(event) {
         console.log("Maps:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
@@ -61,14 +111,30 @@
         dispatch('featureMouseOut', event.detail);
     }
 
+    function onFeatureClick(event) {
+        console.log("Maps:onFeatureClick(event.detail:" + JSON.stringify(event.detail) + ")");
+
+        // TODO, add info about which map?
+        dispatch('featureClick', event.detail);
+    }
+
+    console.log(JSON.stringify())
 </script>
 
 <div id="map">
     <svg id="map-svg">
-        <Map url="/gis/NYC_region_land_4326.geojson" projection={projection} id="map-nyc-region-land"/>
-        <Map url="/gis/1776_shoreline_polylines_4326.geojson" projection={projection} id="map-era-1-shorelines"/>
-        <TileMap projection={projection} />
-        <Map url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story" enableHover={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut}/>
+        <g bind:this={gMap}>
+            {#each Object.values(story.maps) as map }
+                {#if (story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))}
+                    {#if map.type == "shapefile"}
+                        <Map url={map.url} id={map.id} projection={projection} />
+                        <!-- <Map bind:this={mapEra3Story} url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story" enableHover={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick}/> -->
+                    {:else if map.type == "tile"}
+                        <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} />
+                    {/if}
+                {/if}
+            {/each}
+         </g>
     </svg>
 </div>
 
