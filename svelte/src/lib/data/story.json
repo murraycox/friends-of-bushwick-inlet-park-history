@@ -1,0 +1,141 @@
+{
+    "intialView": "urban-industrial-area",
+    "maps":{
+       "nyc-region-land":{
+          "id":"nyc-landline",
+          "type":"shapefile",
+          "url":"/gis/NYC_region_land_4326.geojson"
+       },
+       "nyc-historical_waterline":{
+            "id":"nyc-historical_waterline",
+            "type":"shapefile",
+            "url":"/gis/historical_water_polygons_final_4326.geojson"
+            },       
+        "seventeenseventysix-shoreline":{
+            "id":"seventeenseventysix-shoreline",
+            "type":"shapefile",
+            "url":"/gis/1776_shoreline_polylines_4326.geojson"
+        },       
+        "pluto":{
+            "id":"pluto",
+            "type":"tile",
+            "urlPath":"/gis/pluto/",
+            "urlExtension":"png"
+        },
+        "indian-paths-kings-county":{
+            "id":"indian-paths-kings-county",
+            "type":"shapefile",
+            "url":"/gis/Indian_villages_ponds_paths_kings_cty_4326.geojson"
+        }, 
+        "indian-paths-ny":{
+            "id":"indian-paths-nyc",
+            "type":"shapefile",
+            "url":"/gis/Indian_paths_of_great_metropolis_NYC_bolton_1912_4326.geojson"
+        }, 
+        "bip-lots":{
+            "id":"bip-lots",
+            "type":"shapefile",
+            "url":"/gis/era_3_1855-1950s_story_polys_sorted.geojson"
+        }
+    },
+    "eras":{
+       "pre-1600s":{
+          "id":"pre-1600s",
+          "name":"Pre 1600s",
+          "link":null,
+          "extent":{
+            "nwLng": -74.005,
+            "nwLat": 40.745,
+            "seLng": -73.94,
+            "seLat": 40.670
+          },
+          "chapters":{ 
+          }
+       },
+       "early-european-settlement":{
+          "id":"early-european-settlement",
+          "name":"Early European Settlement",
+          "link":null,
+          "extent":{
+            "nwLng": -73.980,
+            "nwLat": 40.740,
+            "seLng": -73.94,
+            "seLat": 40.695
+          },
+          "chapters":{
+             
+          }
+       },
+       "urban-industrial-area":{
+          "id":"urban-industrial",
+          "name":"Urban + Industrial Area",
+          "link":null,
+          "extent":{
+            "nwLng": -73.965,
+            "nwLat": 40.735,
+            "seLng": -73.945,
+            "seLat": 40.705
+          },
+          "maps": [
+            "nyc-landline",
+            "historical-waterline",
+            "seventeenseventysix-shoreline",
+            "pluto",
+            "bip-lots"
+          ],
+          "chapters":{
+             "sugar":{
+                "id":"sugar",
+                "name":"Sugar",
+                "link":"/eras/urban-industrial/sugar"
+             },
+             "petroleum":{
+                "id":"petroleum",
+                "name":"Petroleum",
+                "link":"/eras/urban-industrial/petroleum"
+             },
+             "coal-tar-gasification":{
+                "id":"coal-tar-gasification",
+                "name":"Coal-tar Gasification",
+                "link":"/eras/urban-industrial/coal-tar-gasification"
+             },
+             "shipbuilding-and-ironworks":{
+                "id":"shipbuilding-and-ironworks",
+                "name":"Shipbuilding and Ironworks",
+                "link":"/eras/urban-industrial/shipbuilding-and-ironworks"
+             },
+             "the-creek-disappears":{
+                "id":"the-creek-disappears",
+                "name":"The Creek Disappears",
+                "link":"/eras/urban-industrial/the-creek-disappears"
+             },
+             "eastern-district-terminal":{
+                "id":"eastern-district-terminal",
+                "name":"Eastern District Terminal",
+                "link":"/eras/urban-industrial/eastern-district-terminal"
+             },
+             "demographics":{
+                "id":"demographics",
+                "name":"Demographics",
+                "link":"/eras/urban-industrial/demographics"
+             }
+          }
+       },
+       "migration":{
+          "id":"migration",
+          "name":"Migration",
+          "link":null,
+          "chapters":{
+             
+          }
+       },
+       "Activism + Deindustrialization":{
+          "id":"activism-deindustrialization",
+          "name":"Activism + Deindustrialization",
+          "link":null,
+          "chapters":{
+             
+          }
+       }
+    }
+ }
