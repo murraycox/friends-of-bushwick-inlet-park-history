@@ -6,7 +6,8 @@
     export let url = "";
     export let projection; //get the overall projection from the Maps component?
     export let id;
-    export let enableHover = false; //whether to track mouse events like mouseenter, mouseout and mousemove
+    export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
+    export let visible = false;
 
     export function onChapterMouseOver(event){
         console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -90,9 +91,9 @@
 
 </script>
 
-<g class="map-svg-g" id={id}>
+<g class="map-svg-g" class:visible={visible} class:hidden={!visible} id={id}>
 {#each dataset as data}
-    {#if enableHover}
+    {#if interactive}
         <path d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
     {:else}
         <path d={path(data)}/>
@@ -103,6 +104,18 @@
 
 <style>
 
+    .map-svg-g.visible path{
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 4s linear;
+    }
+
+    .map-svg-g.hidden path {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 4s, opacity 4s linear;
+    }
+    
     #nyc-landline path{
         stroke: #cbcaca;
         /* stroke-width: 0.25; */
@@ -110,12 +123,16 @@
     }
 
     #bip-lots path {
-    stroke: darkgreen;
-    stroke-width: 1;
-    /* fill: url(#circles); */
-    fill: green;
-    cursor: pointer;
-    opacity: 0.9;
+        stroke: darkgreen;
+        stroke-width: 1;
+        /* fill: url(#circles); */
+        fill: green;
+        cursor: pointer;
+    }
+
+    #bip-lots.map-svg-g.visible path {
+        opacity: 0.75;
+        transition: opacity 4s linear;
     }
 
     #bip-lots path:hover, #bip-lots path.hover{
@@ -125,25 +142,32 @@
     /* we had to escale the 1 as \31 */
     #seventeenseventysix-shoreline path{
     stroke: darkblue;
-    opacity: 0.2;
     fill: none;
     /* stroke-width: 0.25; */
     /* fill: url(#circles); */
     }
 
-    #historical-waterline{
-        fill: #378ed5;
-        opacity: 0.17;
+    #seventeenseventysix-shoreline.map-svg-g.visible path {
+        opacity: 0.2;
+        transition: opacity 4s linear;
     }
 
+    #historical-waterline{
+        fill: #378ed5; 
+    }
 
-    #map-era-1-indian-paths-kings-county path{
-        stroke: red;
+    #historical-waterline.map-svg-g.visible path {
+        opacity: 0.17;
+        transition: opacity 4s linear;
+    }
+
+    #indian-paths-kings-county path{
+        stroke: blue;
         fill: none;
     }
 
-    #map-era-1-indian-paths-nyc path{
-        stroke: green;
+    #indian-paths-nyc path{
+        stroke: blue;
         fill: none;
     }
 

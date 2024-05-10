@@ -7,6 +7,7 @@
     export let urlPath;
     export let urlExtension;
     export let projection; //get the overall projection from the Maps component?
+    export let visible = false;
 
     const dispatch = createEventDispatcher();
 
@@ -42,7 +43,7 @@
 
 </script>
 
-<g class="map-svg-g">
+<g class="map-svg-g" class:visible={visible}>
     {#each tiles as tile}
         {@const [x, y] = position(tile, tiles)}
         <image xlink:href={url(...tile)} x={x} y={y} width={k} height={k}/>
@@ -52,8 +53,16 @@
 
 <style>
 
-    image{
-      opacity: 0.2;
+    .map-svg-g image {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 4s, opacity 4s linear;
+    }
+
+    .map-svg-g.visible image{
+        visibility: visible;
+        opacity: 0.2;
+        transition: opacity 4s linear;
     }
 
 </style>
