@@ -32,6 +32,11 @@
             "type":"shapefile",
             "url":"/gis/Indian_paths_of_great_metropolis_NYC_bolton_1912_4326.geojson"
         }, 
+        "oyster-bed-sites":{
+         "id": "oyster-bed-sites",
+         "type": "shapefile",
+         "url": "/gis/recent_restoration_sites_oysters_2018_HEP.geojson"
+        },
         "bip-lots":{
             "id":"bip-lots",
             "type":"shapefile",
@@ -49,6 +54,13 @@
             "seLng": -73.94,
             "seLat": 40.670
           },
+          "maps": [
+            "nyc-landline",
+            "historical-waterline",
+            "indian-paths-kings-county",
+            "indian-paths-nyc",
+            "oyster-bed-sites"
+          ],
           "chapters":{ 
           }
        },
@@ -62,6 +74,10 @@
             "seLng": -73.94,
             "seLat": 40.695
           },
+          "maps": [
+            "nyc-landline",
+            "historical-waterline"
+          ],
           "chapters":{
              
           }
