@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72.625" height="74.996" viewBox="0 0 72.625 74.996">
+  <g id="intro_circle_nav_inactive" transform="translate(0.625 0.625)">
+    <path id="Path_1476" data-name="Path 1476" d="M35.874.375a35.5,35.5,0,1,1-35.5,35.5A35.5,35.5,0,0,1,35.874.375Z" transform="translate(-0.375 -0.375)" fill="none" stroke="#599ff0" stroke-width="1.25"/>
+    <text id="Intro" transform="translate(0 23.371)" fill="#53a3d5" font-size="25" font-family="URWDIN-Bold, URW DIN" font-weight="700"><tspan x="7" y="18">Intro</tspan></text>
+  </g>
+</svg>
