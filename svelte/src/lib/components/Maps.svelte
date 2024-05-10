@@ -130,8 +130,11 @@
         <g bind:this={gMap}>
             {#each Object.values(story.maps) as map }
                 {#if map.type == "shapefile"}
-                    <Map url={map.url} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
-                    <!-- <Map bind:this={mapEra3Story} url="/gis/era_3_1855-1950s_story_polys_sorted.geojson" projection={projection} id="map-era-3-story" enableHover={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick}/> -->
+                    {#if map.interactive}
+                        <Map bind:this={map.this} url={map.url} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
+                    {:else}
+                        <Map url={map.url} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
+                    {/if}
                 {:else if map.type == "tile"}
                     <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
                 {/if}

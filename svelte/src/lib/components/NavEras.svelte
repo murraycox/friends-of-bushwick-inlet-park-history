@@ -1,5 +1,16 @@
 <script>
     import { page } from '$app/stores';
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
+    function onEraClick(id){
+        console.log(`NavEras:onEraClick(${id})`);
+        dispatch('eraClick', {
+            id: id
+		});
+    };
+
 </script>
 
 <div id="story-navigation" class="position-fixed">
@@ -7,7 +18,7 @@
         <div class="story-navigation-button-group-header">
             eras
         </div>
-        <a href="/eras/pre-colonial">
+        <a href="#" on:click={() => onEraClick("pre-1600s")}>
             <div class="story-navigation-button-and-label era-pre-colonial"  class:active={$page.url.pathname.includes("/eras/pre-colonial")}>
                 <div class="story-navigation-button">
                 </div>
@@ -16,14 +27,16 @@
                 </div>
             </div>
         </a>
-        <div class="story-navigation-button-and-label era-early-european-settlement">
-            <div class="story-navigation-button">
+        <a href="#" on:click={() => onEraClick("early-european-settlement")}>
+            <div class="story-navigation-button-and-label era-early-european-settlement">
+                <div class="story-navigation-button">
+                </div>
+                <div class="story-navigation-label">
+                    <span>Early European Settlement</span>
+                </div>
             </div>
-            <div class="story-navigation-label">
-                <span>Early European Settlement</span>
-            </div>
-        </div>
-        <a href="/eras/urban-industrial">
+        </a>
+        <a href="#" on:click={() => onEraClick("urban-industrial-area")}>
             <div class="story-navigation-button-and-label era-urban-industrial" class:active={$page.url.pathname.includes("/eras/urban-industrial")}>
                 <div class="story-navigation-button">
                 </div>

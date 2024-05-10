@@ -10,7 +10,7 @@
             "id":"nyc-historical_waterline",
             "type":"shapefile",
             "url":"/gis/historical_water_polygons_final_4326.geojson"
-            },       
+        },       
         "seventeenseventysix-shoreline":{
             "id":"seventeenseventysix-shoreline",
             "type":"shapefile",
@@ -40,7 +40,8 @@
         "bip-lots":{
             "id":"bip-lots",
             "type":"shapefile",
-            "url":"/gis/era_3_1855-1950s_story_polys_sorted.geojson"
+            "url":"/gis/era_3_1855-1950s_story_polys_sorted.geojson",
+            "interactive":true
         }
     },
     "eras":{

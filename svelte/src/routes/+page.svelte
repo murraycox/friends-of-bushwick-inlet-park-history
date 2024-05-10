@@ -39,6 +39,6 @@
     
 </script>
 
-<NavEras />
+<NavEras on:eraClick={onEraClick}/>
 <Maps bind:this={maps} on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut} on:featureClick={onFeatureClick}/>    
 <NavTimeline bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:eraClick={onEraClick}/>
