@@ -4,7 +4,8 @@
 
 	import * as d3 from 'd3';
 
-    import erasAndChapters from '$lib/data/eras-and-chapters.json';
+    import story from '$lib/data/story.json';
+	import { error } from '@sveltejs/kit';
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -30,19 +31,35 @@
 
     const TIMELINE_ANCHOR_LENGTH = 15;
 
-    const TIMELINE_CHAPTER_RADIUS = 5;
-    const TIMELINE_ERA_RADIUS = 7;
+    const TIMELINE_CHAPTER_RADIUS = 4;
+    const TIMELINE_ERA_RADIUS = 5;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
     const TIMELINE_TITLE_WIDTH = 80;
 
-    var gTimeline;
-    var xTimeline; //d3 scale
+    let gTimeline; //DOM group
+    
+    let currentWidth;
+
+    let erasAndActiveChapters = [];
+    Object.values(story.eras).forEach((era) => {
+        era.type = "era";
+        erasAndActiveChapters.push(era);
+        if (era.chapters) {
+            Object.values(era.chapters).forEach((chapter) => {
+                chapter.type = "chapter";
+                erasAndActiveChapters.push(chapter);
+            });
+        };
+    });
+    console.log(erasAndActiveChapters.length);
+
+    let xTimeline = d3.scaleLinear()
+            .domain([0, erasAndActiveChapters.length-1]);
 
     onMount(() => {
         console.log("NavTimeline:onMount")
-        initialiseTimeline();
-        setupTimeline("The story of Bushwick Inlet", erasAndChapters);
+        //setupTimeline("The story of Bushwick Inlet", erasAndChapters);
         redrawTimeline();
         window.addEventListener('resize', redrawTimeline);
     });
@@ -73,10 +90,6 @@
                             .classed("visible", false);
                     }, 100);
 
-                // TODO un-highlight matching features on the map
-                // d3.selectAll(".map ." + d.id)
-                //     .classed("selected", false);
-                // Dispatch the id of the chapter to the parent (Map page)
         dispatch('chapterMouseLeave', {
             id: id
 		});
@@ -91,158 +104,97 @@
         }); 
     };
 
-    function onEraClick(id){
+    function onEraClick(id, name){
         console.log(`NavTimeline:onEraClick(${id})`);
         dispatch('eraClick', {
-            id: id
+            id: id,
+            name: name
 		});
     };
     
-    function initialiseTimeline(){
-        // d3.select("#story-controller h1")
-        //     .on('click', function() {
-        //         d3.select("#story-controller").classed("collapsed", !d3.select("#story-controller").classed("collapsed"));
-        //     });
-
-        const svgTimeline = d3.select("#timeline").append("svg")
-            .attr('width', "100%")
-            .attr('height', "100%");
-            //.attr("preserveAspectRatio", "xMinYMin meet");
-            // .attr("viewBox", "0 0 100 50");
-
-        gTimeline = svgTimeline.insert('g');
-
-        //width gets setup in redraw
-        gTimeline.append('rect')
-            .attr('x', 0)
-            .attr('y', TIMELINE_MARGIN_TOP)
-            .attr('height', TIMELINE_HEIGHT)
-            .attr('width', 300)
-            .attr('rx', (TIMELINE_HEIGHT/2))
-            .attr('ry', (TIMELINE_HEIGHT/2))
-            .attr('fill', 'none')
-            // .style('stroke-width', 1)
-            // .style('stroke', "lightgrey")
-            .classed("timeline-background", true);
-            ; 
-        
-        //x2 gets setup in redraw
-        gTimeline.append('line')
-            .attr('x1', TIMELINE_PADDING)
-            .attr('y1', TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2))
-            .attr('y2', TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2))
-            .style('stroke-width', 1)
-            .style('stroke', "grey");
-    }
-
-    function setupTimeline(name, timeLineNodes){
-
-        // Add X axis. Note that we don't know the range yet, so we cannot draw it.
-        xTimeline = d3.scaleLinear()
-            .domain([0, timeLineNodes.length-1]);
-
-        var eraGroups = gTimeline.selectAll("g")
-            .data(timeLineNodes)
-            .join("g")
-            .classed("timeline-era-group", true);
-
-        var anchors = eraGroups.append("line")
-            .classed("timeline-node-anchors", true)
-            .attr("id", d => "anchor-" + d.id)
-            .attr('x1', 0)
-            .attr('y1', 0)
-            .attr('x2', 0)
-            .attr('y2', TIMELINE_ANCHOR_LENGTH)
-            .style('stroke-width', 1)
-            .style('stroke', "grey");
-
-        var circles = eraGroups.append("circle")
-            .attr("cx", 0)
-            .attr("cy", TIMELINE_ANCHOR_LENGTH)
-            .attr("r", d => d.type == "era" ? TIMELINE_ERA_RADIUS : TIMELINE_CHAPTER_RADIUS)
-            .classed("era", d => d.type == "era")
-            .classed("chapter", d => d.type == "chapter")
-            .style("stroke", "green")
-        //     // .style("fill", "green")
-            .on('click', function(e, d){ 
-                //transitionToView(d.view);
-                if (d.type == "chapter")
-                    onChapterClick(d.id)
-                else
-                    onEraClick(d.id);
-            })
-            .on('mouseover', function(e, d){ 
-                
-                onMouseOver(d.id)
-                 
-            })
-            .on('mouseleave', function(e, d){ 
-
-                onMouseLeave(d.id)
-
-            });
-        //     ;
-
-        var eraTitleContainers = d3.select("#timeline-titles")
-            .selectAll("div .timeline-title-container")
-            .data(timeLineNodes)
-            .join("div")
-            .attr("id", d => "title-" + d.id)
-            .classed("timeline-title-container", true)
-            .on('click', function(e, d){ 
-                if (d.view)
-                    transitionToView(d.view);
-                else
-                    setupTimeline(d.name, d.stories);
-                    redrawTimeline();
-            })
-            // .append("div")
-            // .classed("story-controller-timeline-era-title", true)
-            .html(function(d){
-                return d.name;
-            });
-        //     .on('mouseover', function(e, d){ 
-        //         d3.selectAll("#title-" + d.id + ", #anchor-" + d.id)
-        //             .classed("visible", true);
-        //     })
-        //     .on('mouseleave', function(e, d){ 
-        //         d3.timeout(
-        //             function(){
-        //                 d3.selectAll("#title-" + d.id + ", #anchor-" + d.id)
-        //                     .classed("visible", false);
-        //             }, 100);
-        //     })
-        //     ;
-    }
-
     function redrawTimeline(){
-        
-        const currentWidth = parseInt(d3.select('#timeline').style('width'), 10);
+
+        currentWidth = parseInt(d3.select('#timeline').style('width'), 10);
         console.log(currentWidth);
-
-        gTimeline.select('line')
-            .attr('x2', currentWidth-TIMELINE_PADDING);
-
-        gTimeline.select('rect')
-            .attr('width', currentWidth);
-
-        xTimeline.range([ TIMELINE_PADDING, currentWidth-TIMELINE_PADDING ]);
-    
-        gTimeline.selectAll('.timeline-era-group')
-            .attr('transform', (d, i) => "translate(" + (xTimeline(i)) + "," + (TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2) - TIMELINE_ANCHOR_LENGTH) + ")");
-
-        const titleContainers = d3.select("#timeline-titles").selectAll(".timeline-title-container")
-            .style("left", function (d, i) {
-                return `${xTimeline(i) - (TIMELINE_TITLE_WIDTH/2)}px`;
-            });
+        //We only need to update the range (the domain doesn't change), but we recreate the whole object to force it to render
+        xTimeline = d3.scaleLinear()
+            .domain([0, erasAndActiveChapters.length-1])
+            .range([ TIMELINE_PADDING, currentWidth-TIMELINE_PADDING ]);
     };
 
 </script>
 
 <div id="timeline-container" class="position-fixed">
     <div id="timeline-titles">
+        {#each erasAndActiveChapters as eraOrActiveChapter,i}
+        <div 
+            id={"title-" + eraOrActiveChapter.id} 
+            class="timeline-title-container"
+            style={`left:${xTimeline(i) - (TIMELINE_TITLE_WIDTH/2)}px`}
+        >
+            <div class="story-controller-timeline-era-title">
+                {eraOrActiveChapter.name}
+            </div>
+        </div>
+        {/each}
     </div>
     <div id="timeline">
+        <svg width="100%" height="100%">
+            <g bind:this={gTimeline}>
+                <!-- Background of the timeline -->
+                <rect class="timeline-background" 
+                    x=0 
+                    y={TIMELINE_MARGIN_TOP} 
+                    height={TIMELINE_HEIGHT}
+                    width={currentWidth} 
+                    rx={TIMELINE_HEIGHT/2}
+                    ry={TIMELINE_HEIGHT/2}
+                />
+                <!-- Horizontal axis of the Line  -->
+                <line 
+                    x1={TIMELINE_PADDING}
+                    y1={TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2)}
+                    y2={TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2)}
+                    x2={currentWidth-TIMELINE_PADDING} 
+                    stroke-width=1
+                    stroke="grey"
+                />
+                {#each erasAndActiveChapters as eraOrActiveChapter,i}
+                <g 
+                    class="timeline-era-and-chapter-group"
+                    transform={`translate(${xTimeline(i)},${(TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2) - TIMELINE_ANCHOR_LENGTH)})`}
+                >
+                    <circle 
+                        cx=0
+                        cy={TIMELINE_ANCHOR_LENGTH}
+                        r={eraOrActiveChapter.type == "era" ? TIMELINE_ERA_RADIUS : TIMELINE_CHAPTER_RADIUS}
+                        class:era={true}
+                        class:chapter={false}
+                        stroke-width=1
+                        stroke="grey"
+                        on:mouseover={() => onMouseOver(eraOrActiveChapter.id)}
+                        on:mouseleave={() => onMouseLeave(eraOrActiveChapter.id)}
+                        on:click={() => {
+                            if (eraOrActiveChapter.type == "chapter")
+                                onChapterClick(eraOrActiveChapter.id)
+                            else
+                                onEraClick(eraOrActiveChapter.id, eraOrActiveChapter.name);
+                        }}
+                    />
+                    <line 
+                        class="timeline-node-anchors"
+                        id={`anchor-${eraOrActiveChapter.id}`}
+                        x1=0
+                        y1=0
+                        x2=0
+                        y2={TIMELINE_ANCHOR_LENGTH}
+                        stroke-width=1
+                        stroke="grey"
+                    />
+                </g>                    
+                {/each}
+            </g>
+        </svg>
     </div>
 </div>
 
@@ -254,9 +206,9 @@
         position: absolute;
         bottom: 25px;
         right: 300px;
-        max-width: 800px;
-        min-width: 400px;
-        /* width: calc(100% - 30px); */
+        max-width: 600px;
+        min-width: 300px;
+        width: calc(35%);
         /* box-sizing: border-box; */
         height: 95px;
     }
@@ -269,11 +221,11 @@
     color: #70AC00;
     }
 
-    :global(.timeline-node-anchors) {
+    .timeline-node-anchors {
         visibility: hidden;
     }
 
-    :global(.timeline-node-anchors .visible) {
+    .timeline-node-anchors.visible {
         visibility: visible;
     }
 
