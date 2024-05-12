@@ -16,6 +16,12 @@
             "type":"shapefile",
             "url":"/gis/1776_shoreline_polylines_4326.geojson"
         },       
+        "pluto":{
+            "id":"pluto",
+            "type":"tile",
+            "urlPath":"/gis/pluto/",
+            "urlExtension":"png"
+        },
         "indian-paths-kings-county":{
             "id":"indian-paths-kings-county",
             "type":"shapefile",
