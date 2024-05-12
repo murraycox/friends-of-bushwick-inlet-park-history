@@ -53,6 +53,10 @@
             // Simulate the loading of the previous page
             console.log(`routes/:popstate:event.state:${JSON.stringify(event.state)}`);
             console.log(`routes/:popstate:page.state:${JSON.stringify($page.state)}`);//make sure to use the reactive $, i.e. $page
+            if ($page.state.view && $page.state.view == "era"){
+                maps.onEraClick({detail: {id: $page.state.id}});
+            }
+
         }
     };
     
