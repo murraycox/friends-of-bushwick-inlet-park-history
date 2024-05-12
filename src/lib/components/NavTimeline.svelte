@@ -98,9 +98,11 @@
 
     function onChapterClick(id){
         // lookup the chapter
-        erasAndChapters.forEach((timeLineNode) => {
-            if (timeLineNode.type == "chapter" && timeLineNode.link && timeLineNode.id == id )
-                window.location = timeLineNode.link;
+        Object.values(story.eras).forEach((era) => {
+            Object.values(era.chapters).forEach((chapter) => {
+                if (chapter.link && chapter.id == id )
+                    window.location = chapter.link;
+            });
         }); 
     };
 
