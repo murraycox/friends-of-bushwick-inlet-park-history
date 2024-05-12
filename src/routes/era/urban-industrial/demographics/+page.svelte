@@ -1,6 +1,10 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1>Demographics</h1>
 <figure class="figure">
-    <img src="/media/03_22_1949_Aerial_view_Bushwick_toward_McCarrenPk_Prattoil_works_on_rt_GreenpointTerminalMarket_bottom_left_NYSA.jpg" class="figure-img" alt="Aerial view of Bushwick Inlet looking toward McCarren Park, 1949. The tanks of the former Pratt oil works can be seen on the south side of the inlet, far right. Greenpoint Terminal Market is at bottom left in photo. (NYSA).">
+    <img src="{base}/media/03_22_1949_Aerial_view_Bushwick_toward_McCarrenPk_Prattoil_works_on_rt_GreenpointTerminalMarket_bottom_left_NYSA.jpg" class="figure-img" alt="Aerial view of Bushwick Inlet looking toward McCarren Park, 1949. The tanks of the former Pratt oil works can be seen on the south side of the inlet, far right. Greenpoint Terminal Market is at bottom left in photo. (NYSA).">
     <figcaption class="figure-caption">Aerial view of Bushwick Inlet looking toward McCarren Park, 1949. The tanks of the former Pratt oil works can be seen on the south side of the inlet, far right. Greenpoint Terminal Market is at bottom left in photo. (NYSA).</figcaption>
 </figure>
 <p>

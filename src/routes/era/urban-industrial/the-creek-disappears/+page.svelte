@@ -1,6 +1,10 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1><span class="header-context-era">The Creek Disappears</h1>
 <figure class="figure">
-    <img src="/media/03_1916_BK_Bromley_pl_33_Greenpoint.jpg" class="figure-img" alt="1905 Bromley map of Greenpoint, the Northside and Bushwick Inlet. (NYPL).">
+    <img src="{base}/media/03_1916_BK_Bromley_pl_33_Greenpoint.jpg" class="figure-img" alt="1905 Bromley map of Greenpoint, the Northside and Bushwick Inlet. (NYPL).">
     <figcaption class="figure-caption">1905 Bromley map of Greenpoint, the Northside and Bushwick Inlet. (NYPL).</figcaption>
 </figure>
 <p>

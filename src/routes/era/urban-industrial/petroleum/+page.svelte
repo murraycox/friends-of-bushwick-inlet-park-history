@@ -1,18 +1,22 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1><span class="header-context-era">1855 to 1950's:</span> Petroleum</h1>
 <figure class="figure">
-    <img src="/media/03_1904_Hyde_FBIP_SO.png" class="figure-img" alt="Bayside and CitStorage South.">
+    <img src="{base}/media/03_1904_Hyde_FBIP_SO.png" class="figure-img" alt="Bayside and CitStorage South.">
     <figcaption class="figure-caption">Bayside and CitStorage South.</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_03_1879_Pratt_Astral_Oil_Works_Bushwick_Inlet_Scientific_American.jpg" class="figure-img" alt="Pratt's Astral Oil Works at Bushwick Inlet, 1879? (Source: Scientific American).">
+    <img src="{base}/media/03_03_1879_Pratt_Astral_Oil_Works_Bushwick_Inlet_Scientific_American.jpg" class="figure-img" alt="Pratt's Astral Oil Works at Bushwick Inlet, 1879? (Source: Scientific American).">
     <figcaption class="figure-caption">Pratt's Astral Oil Works at Bushwick Inlet, 1879? (Source: Scientific American).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_04_1879_Gasoline_still_Pratts_Astral_Oil_Works_Bushwick_Inlet_Scientific_American.jpg" class="figure-img" alt="Gasoline still at Pratt's Astral Oil Works,  Bushwick Inlet, 1879? (Source: Scientific American).">
+    <img src="{base}/media/03_04_1879_Gasoline_still_Pratts_Astral_Oil_Works_Bushwick_Inlet_Scientific_American.jpg" class="figure-img" alt="Gasoline still at Pratt's Astral Oil Works,  Bushwick Inlet, 1879? (Source: Scientific American).">
     <figcaption class="figure-caption">Gasoline still at Pratt's Astral Oil Works,  Bushwick Inlet, 1879? (Source: Scientific American).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_06_1879_Loading_cans_Pratt_Astral_Oil_East_River_Scientific_American.jpg" class="figure-img" alt="Pratt's Astral Oil Works at Bushwick Inlet, 1879? (Source: Scientific American).">
+    <img src="{base}/media/03_06_1879_Loading_cans_Pratt_Astral_Oil_East_River_Scientific_American.jpg" class="figure-img" alt="Pratt's Astral Oil Works at Bushwick Inlet, 1879? (Source: Scientific American).">
     <figcaption class="figure-caption">Loading cans of Pratt's Astral Oil, East River, 1879? (Source: Scientific American).</figcaption>
 </figure>           
 <p>

@@ -1,14 +1,18 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1>Eastern District Terminal - 1</h1>
 <figure class="figure">
-    <img src="/media/03_1904_Hyde_FBIP_BEDT.png" class="figure-img" alt="Locomotive and float bridge, BEDT. (??).">
+    <img src="{base}/media/03_1904_Hyde_FBIP_BEDT.png" class="figure-img" alt="Locomotive and float bridge, BEDT. (??).">
     <figcaption class="figure-caption">Locomotive and float bridge, BEDT. (??).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_18_BEDT_yard_btw_N_8th_N_9th_St_TrainWeb.jpg" class="figure-img" alt="View of the BEDT yard between North 8th and North 9th Streets, date? (TrainWeb).">
+    <img src="{base}/media/03_18_BEDT_yard_btw_N_8th_N_9th_St_TrainWeb.jpg" class="figure-img" alt="View of the BEDT yard between North 8th and North 9th Streets, date? (TrainWeb).">
     <figcaption class="figure-caption">View of the BEDT yard between North 8th and North 9th Streets, date? (TrainWeb).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_19_BEDT_headquarters_N_9th_St_Ken_Ave_TrainWeb.jpg" class="figure-img" alt="BEDT headquarters, North 9th Street and Kent Avenue. (TrainWeb).">
+    <img src="{base}/media/03_19_BEDT_headquarters_N_9th_St_Ken_Ave_TrainWeb.jpg" class="figure-img" alt="BEDT headquarters, North 9th Street and Kent Avenue. (TrainWeb).">
     <figcaption class="figure-caption">BEDT headquarters, North 9th Street and Kent Avenue. (TrainWeb).</figcaption>
 </figure>
 <p>

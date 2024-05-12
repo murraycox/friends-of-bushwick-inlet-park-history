@@ -1,18 +1,22 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1>Coal-tar Gasification</h1>
 <figure class="figure">
-    <img src="/media/03_1904_Hyde_FBIP_BUG.png" class="figure-img" alt="Dick & Meyer Sugar refinery (1886, NYPL).">
+    <img src="{base}/media/03_1904_Hyde_FBIP_BUG.png" class="figure-img" alt="Dick & Meyer Sugar refinery (1886, NYPL).">
     <figcaption class="figure-caption">50 Kent and CitiStorage North<br/>Dick & Meyer Sugar refinery (1886, NYPL).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_07_Williamsburgh_Gas_Works.png" class="figure-img" alt="Williamsburgh Gas Works (Source).">
+    <img src="{base}/media/03_07_Williamsburgh_Gas_Works.png" class="figure-img" alt="Williamsburgh Gas Works (Source).">
     <figcaption class="figure-caption">Williamsburgh Gas Works (Source).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_08_Brooklyn_Union_Gas_manufactured_gas_plant_National_Grid.jpg" class="figure-img" alt="Brooklyn Union Gas manufactured gas plant (National Grid).">
+    <img src="{base}/media/03_08_Brooklyn_Union_Gas_manufactured_gas_plant_National_Grid.jpg" class="figure-img" alt="Brooklyn Union Gas manufactured gas plant (National Grid).">
     <figcaption class="figure-caption">Brooklyn Union Gas manufactured gas plant (National Grid).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_09_1922_Brooklyn_Union_Gas_headquarters_S2nd_St_Bedford_Ave_Merlis.png" class="figure-img" alt="Brooklyn Union Gas' headquarters at South 2nd Street and Bedford Avenue, 1922. (Merlis).">
+    <img src="{base}/media/03_09_1922_Brooklyn_Union_Gas_headquarters_S2nd_St_Bedford_Ave_Merlis.png" class="figure-img" alt="Brooklyn Union Gas' headquarters at South 2nd Street and Bedford Avenue, 1922. (Merlis).">
     <figcaption class="figure-caption">Brooklyn Union Gas' headquarters at South 2nd Street and Bedford Avenue, 1922. (Merlis).</figcaption>
 </figure>
 <p>

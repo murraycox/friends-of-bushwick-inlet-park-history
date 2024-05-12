@@ -1,14 +1,18 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1>Shipbuilding and Ironworks</h1>
 <figure class="figure">
-    <img src="/media/03_1904_Hyde_FBIP_Continental.png" class="figure-img" alt="North side of Bushwick Inlet.">
+    <img src="{base}/media/03_1904_Hyde_FBIP_Continental.png" class="figure-img" alt="North side of Bushwick Inlet.">
     <figcaption class="figure-caption">North side of Bushwick Inlet.</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_10_1924_aerial_view_East River_w_Williamsburg_Greenpoint_on_rt_NYSA.jpg" class="figure-img" alt="1924 aerial view of the East River with Williamsburg and Greenpoint on right (NYSA).">
+    <img src="{base}/media/03_10_1924_aerial_view_East River_w_Williamsburg_Greenpoint_on_rt_NYSA.jpg" class="figure-img" alt="1924 aerial view of the East River with Williamsburg and Greenpoint on right (NYSA).">
     <figcaption class="figure-caption">1924 aerial view of the East River with Williamsburg and Greenpoint on right (NYSA).</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_11_1910_Continental_Iron_Works_operations.png" class="figure-img" alt="Continental Iron Works operations, circa 1910 (Source?).">
+    <img src="{base}/media/03_11_1910_Continental_Iron_Works_operations.png" class="figure-img" alt="Continental Iron Works operations, circa 1910 (Source?).">
     <figcaption class="figure-caption">Continental Iron Works operations, circa 1910 (Source?).</figcaption>
 </figure>
 <p>
