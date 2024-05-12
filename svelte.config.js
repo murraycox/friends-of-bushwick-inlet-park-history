@@ -14,7 +14,7 @@ const config = {
 		}),
 		paths: {	
 			//base: process.argv.includes('dev') ? '' : '/build' //: process.env.BASE_PATH
-			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+            base: process.env.NODE_ENV === 'production' ? process.env.BASE_PATH : ''
 		}
 	}
 };
