@@ -1,10 +1,14 @@
+<script>
+    import { base } from '$app/paths';
+</script>
+
 <h1>Sugar</h1>
 <figure class="figure">
-    <img src="/media/03_1886+sugar.png" class="figure-img" alt="Marsha P. Johnson Park, North 7th Street.">
+    <img src="{base}/media/03_1886+sugar.png" class="figure-img" alt="Marsha P. Johnson Park, North 7th Street.">
     <figcaption class="figure-caption">Marsha P. Johnson Park, North 7th Street.</figcaption>
 </figure>
 <figure class="figure">
-    <img src="/media/03_sugar_Dick_Meyer_1879.png" class="figure-img" alt="Dick & Meyer sugar refinery (1879, LOC).">
+    <img src="{base}/media/03_sugar_Dick_Meyer_1879.png" class="figure-img" alt="Dick & Meyer sugar refinery (1879, LOC).">
     <figcaption class="figure-caption">Dick & Meyer sugar refinery (1879, LOC).</figcaption>
 </figure>
 <p>

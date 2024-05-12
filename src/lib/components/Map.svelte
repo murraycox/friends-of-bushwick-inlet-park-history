@@ -2,6 +2,7 @@
 
     import { onMount, createEventDispatcher } from 'svelte';
     import { json, geoAlbers, geoPath } from  "d3";
+    import { base } from '$app/paths';
 
     export let url = "";
     export let projection; //get the overall projection from the Maps component?
@@ -27,7 +28,7 @@
     const dispatch = createEventDispatcher();
 
     onMount(() => {
-        json(url).then((geoJsonData) => {
+        json(base + url).then((geoJsonData) => {
 
             dataset = geoJsonData.features;
             path = geoPath()

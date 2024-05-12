@@ -1,6 +1,7 @@
 <script>
 
 	import { onMount, createEventDispatcher } from 'svelte';
+    import { base } from '$app/paths';
 
 	import * as d3 from 'd3';
 
@@ -101,7 +102,7 @@
         Object.values(story.eras).forEach((era) => {
             Object.values(era.chapters).forEach((chapter) => {
                 if (chapter.link && chapter.id == id )
-                    window.location = chapter.link;
+                    window.location = base + chapter.link;
             });
         }); 
     };
