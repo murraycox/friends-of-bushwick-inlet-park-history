@@ -12,13 +12,15 @@
     export function onChapterMouseOver(event){
         console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
         // TODO Broadcast events to all of just some maps
-        // mapEra3Story.onChapterMouseOver(event);
+        if (interactivemap)
+            interactivemap.onChapterMouseOver(event);
     };
 
     export function onChapterMouseLeave(event){
         console.log("Maps:onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
         // TODO Broadcast events to all of just some maps
-        // mapEra3Story.onChapterMouseLeave(event);
+        if (interactivemap)
+            interactivemap.onChapterMouseLeave(event);
     };
 
     export function onEraClick(event){
@@ -47,7 +49,8 @@
         };
     };
 
-    let mapEra3Story;
+
+    let interactivemap;
     let gMap;
 
     let mapWidth = 800;
@@ -122,18 +125,24 @@
         dispatch('featureClick', event.detail);
     }
 
-    console.log(JSON.stringify())
+    console.log(JSON.stringify(story.eras[currentView].maps));
+
 </script>
 
 <div id="map">
+    <div id="story-narrative">
+        <h1>
+            {story.eras[currentView].name}
+        </h1>
+    </div>
     <svg id="map-svg">
         <g bind:this={gMap}>
             {#each Object.values(story.maps) as map }
                 {#if map.type == "shapefile"}
                     {#if map.interactive}
-                        <Map bind:this={map.this} url={map.url} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
+                        <Map bind:this={interactivemap} url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
                     {:else}
-                        <Map url={map.url} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
+                        <Map url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
                     {/if}
                 {:else if map.type == "tile"}
                     <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
@@ -150,6 +159,33 @@
         position: absolute;
         width: 100%;
         height: 100%
+    }
+
+    #story-narrative {
+        position: absolute;
+        top: 0;
+        z-index: 999;
+        margin: 40px 44px 0 44px;
+    }
+
+    #story-narrative h1 {
+        font-size: 2em;
+        font-weight: 600;
+        margin-top: 44px;
+    }
+
+    @media screen and (min-width: 768px) {
+        #story-narrative {
+            margin: 0 124px 0 124px;
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+
+        #story-narrative {
+            margin: 0 204px 0 204px;
+        }
+
     }
 
 </style>

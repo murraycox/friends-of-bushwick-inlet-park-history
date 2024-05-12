@@ -8,6 +8,7 @@
     export let id;
     export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
     export let visible = false;
+    export let geometryType = "polygons";
 
     export function onChapterMouseOver(event){
         console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -92,11 +93,27 @@
 </script>
 
 <g class="map-svg-g" class:visible={visible} class:hidden={!visible} id={id}>
+    <pattern id="circles-urban-industrial-era" x=0 y=0 width=5 height=5 patternUnits="userSpaceOnUse">
+        <circle cx=1 cy=1 r=3 fill=#A060C1></circle>
+    </pattern>
+    <pattern id="circles-pre-1600s" x=0 y=0 width=50 height=50 patternUnits="userSpaceOnUse">
+        <circle cx=50 cy=50 r=20 fill=#599FF0></circle>
+    </pattern>
+
 {#each dataset as data}
-    {#if interactive}
-        <path d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
+    {#if geometryType == 'polygons'}
+        {#if interactive}
+            <path d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
+        {:else}
+            <path d={path(data)}/>
+        {/if}
     {:else}
-        <path d={path(data)}/>
+        <circle
+            cx={projection(data)[0]}
+            cy={projection(data)[1]}
+            r=30
+            fill="#599FF0"
+        />
     {/if}
 {/each}
 </g>
@@ -118,15 +135,16 @@
     
     #nyc-landline path{
         stroke: #cbcaca;
-        /* stroke-width: 0.25; */
+        stroke-width: 1;
         fill: #fcfcfc;
     }
 
     #bip-lots path {
-        stroke: darkgreen;
+        stroke: #A060C1;
+        stroke-dasharray: 0.2 0.2;
         stroke-width: 1;
-        /* fill: url(#circles); */
-        fill: green;
+        fill: url(#circles-urban-industrial-era);
+        fill-opacity: 0.5;
         cursor: pointer;
     }
 
@@ -136,10 +154,21 @@
     }
 
     #bip-lots path:hover, #bip-lots path.hover{
-    fill: darkgreen;
+        fill: url(#circles-urban-industrial-era);
+        fill-opacity: 1;
     }
 
-    /* we had to escale the 1 as \31 */
+    #oyster-historic-beds{
+        stroke: #599FF0;
+        stroke-width: 5;
+        fill: url(#circles-pre-1600s);
+        fill-opacity: 0.5;
+    }
+
+    #oyster-restoration-sites {
+        fill: #599FF0;
+    }
+
     #seventeenseventysix-shoreline path{
     stroke: darkblue;
     fill: none;
