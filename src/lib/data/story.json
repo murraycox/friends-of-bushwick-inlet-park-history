@@ -1,5 +1,5 @@
 {
-    "intialView": "urban-industrial-area",
+    "intialView": "urban-industrial-era",
     "maps":{
        "nyc-region-land":{
           "id":"nyc-landline",
@@ -32,9 +32,15 @@
             "type":"shapefile",
             "url":"/gis/Indian_paths_of_great_metropolis_NYC_bolton_1912_4326.geojson"
         }, 
-        "oyster-bed-sites":{
-         "id": "oyster-bed-sites",
+        "oyster-historic-beds":{
+         "id": "oyster-historic-beds",
          "type": "shapefile",
+         "url": "/gis/historic_oyster_beds_HEP.geojson"
+        },
+        "oyster-restoration-sites":{
+         "id": "oyster-restoration-sites",
+         "type": "shapefile",
+         "geometryType": "polygons",
          "url": "/gis/recent_restoration_sites_oysters_2018_HEP.geojson"
         },
         "bip-lots":{
@@ -50,17 +56,18 @@
           "name":"Pre 1600s",
           "link":null,
           "extent":{
-            "nwLng": -74.005,
-            "nwLat": 40.745,
+            "nwLng": -74.09,
+            "nwLat": 40.8,
             "seLng": -73.94,
-            "seLat": 40.670
+            "seLat": 40.600
           },
           "maps": [
             "nyc-landline",
             "historical-waterline",
             "indian-paths-kings-county",
             "indian-paths-nyc",
-            "oyster-bed-sites"
+            "oyster-historic-beds",
+            "oyster-restoration-sites"
           ],
           "chapters":{ 
           }
@@ -83,9 +90,9 @@
              
           }
        },
-       "urban-industrial-area":{
-          "id":"urban-industrial",
-          "name":"Urban + Industrial Area",
+       "urban-industrial-era":{
+          "id":"urban-industrial-era",
+          "name":"Urban + Industrial Era",
           "link":null,
           "extent":{
             "nwLng": -73.965,
@@ -104,37 +111,37 @@
              "sugar":{
                 "id":"sugar",
                 "name":"Sugar",
-                "link":"/eras/urban-industrial/sugar"
+                "link":"/era/urban-industrial/sugar"
              },
              "petroleum":{
                 "id":"petroleum",
                 "name":"Petroleum",
-                "link":"/eras/urban-industrial/petroleum"
+                "link":"/era/urban-industrial/petroleum"
              },
              "coal-tar-gasification":{
                 "id":"coal-tar-gasification",
                 "name":"Coal-tar Gasification",
-                "link":"/eras/urban-industrial/coal-tar-gasification"
+                "link":"/era/urban-industrial/coal-tar-gasification"
              },
              "shipbuilding-and-ironworks":{
                 "id":"shipbuilding-and-ironworks",
                 "name":"Shipbuilding and Ironworks",
-                "link":"/eras/urban-industrial/shipbuilding-and-ironworks"
+                "link":"/era/urban-industrial/shipbuilding-and-ironworks"
              },
              "the-creek-disappears":{
                 "id":"the-creek-disappears",
                 "name":"The Creek Disappears",
-                "link":"/eras/urban-industrial/the-creek-disappears"
+                "link":"/era/urban-industrial/the-creek-disappears"
              },
              "eastern-district-terminal":{
                 "id":"eastern-district-terminal",
                 "name":"Eastern District Terminal",
-                "link":"/eras/urban-industrial/eastern-district-terminal"
+                "link":"/era/urban-industrial/eastern-district-terminal"
              },
              "demographics":{
                 "id":"demographics",
                 "name":"Demographics",
-                "link":"/eras/urban-industrial/demographics"
+                "link":"/era/urban-industrial/demographics"
              }
           }
        },

@@ -4,10 +4,11 @@
 
     const dispatch = createEventDispatcher();
 
-    function onEraClick(id){
+    function onEraClick(id, name){
         console.log(`NavEras:onEraClick(${id})`);
         dispatch('eraClick', {
-            id: id
+            id: id,
+            name: name
 		});
     };
 
@@ -18,7 +19,7 @@
         <div class="story-navigation-button-group-header">
             eras
         </div>
-        <a href="#" on:click={() => onEraClick("pre-1600s")}>
+        <a href="#" on:click={() => onEraClick("pre-1600s", "Pre Colonial")}>
             <div class="story-navigation-button-and-label era-pre-colonial"  class:active={$page.url.pathname.includes("/eras/pre-colonial")}>
                 <div class="story-navigation-button">
                 </div>
@@ -27,7 +28,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" on:click={() => onEraClick("early-european-settlement")}>
+        <a href="#" on:click={() => onEraClick("early-european-settlement", "Early European Settlement")}>
             <div class="story-navigation-button-and-label era-early-european-settlement">
                 <div class="story-navigation-button">
                 </div>
@@ -36,7 +37,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" on:click={() => onEraClick("urban-industrial-area")}>
+        <a href="#" on:click={() => onEraClick("urban-industrial-era", "Urban + Industrial Era")}>
             <div class="story-navigation-button-and-label era-urban-industrial" class:active={$page.url.pathname.includes("/eras/urban-industrial")}>
                 <div class="story-navigation-button">
                 </div>
@@ -132,10 +133,11 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        z-index: 99;
+        z-index: 9999;
         background-color: white;
         padding: 5px 20px;
         border-bottom: 1px solid lightgray;
+        opacity: 0.9;
     }
 
     .story-navigation-button-group {
