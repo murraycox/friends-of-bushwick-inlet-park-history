@@ -7,8 +7,16 @@
     import NavTimeline from "$lib/components/NavTimeline.svelte";
     import Maps from "$lib/components/Maps.svelte"
 
+    import story from '$lib/data/story.json';
+
     let navTimeline;
     let maps;
+
+    let activeViewID = "intro";
+    let activeView = story.views[activeViewID];
+
+    let activeEraID = null;
+    let activeEra = null;
 
     function onMapFeatureMouseOver(event) {
         console.log("routes/map:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
@@ -35,9 +43,19 @@
         navTimeline.onMapFeatureClick(event);
     }
 
-    function onEraClick(event) {
-        console.log(`routes/map:onEraClick(event.detail:${JSON.stringify(event.detail)})`); 
-        maps.onEraClick(event);
+    function onNavigate(event) {
+        console.log(`routes/map:onNavigate(event.detail:${JSON.stringify(event.detail)})`); 
+
+        activeViewID = event.detail.viewID;
+        activeView = story.views[activeViewID];
+        
+        activeEraID = event.detail.eraID;
+        if (activeEraID)
+            activeEra = story.eras[activeEraID];
+        else    
+            activeEra = null;
+
+        maps.onNavigate(event);
         // pushState(`/#/era/${event.detail.id}`, {
 		// 	view: 'era',
         //     id: event.detail.id
@@ -48,7 +66,7 @@
     // Handle forward/back buttons
     function popState(event) {
         // If a state has been provided, we have a "simulated" page
-        // and we update the current page.
+        // and we update the active page.
         if (event.state) {
             // Simulate the loading of the previous page
             console.log(`routes/:popstate:event.state:${JSON.stringify(event.state)}`);
@@ -62,6 +80,6 @@
     
 </script>
 <svelte:window on:popstate={popState}/>
-<NavEras on:eraClick={onEraClick}/>
-<Maps bind:this={maps} on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut} on:featureClick={onFeatureClick}/>    
-<NavTimeline bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:eraClick={onEraClick}/>
+<NavEras on:navigate={onNavigate}/>
+<Maps {story} bind:this={maps} on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut} on:featureClick={onFeatureClick}/>    
+<NavTimeline eras={story.eras} {activeEra} bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:navigate={onNavigate}/>

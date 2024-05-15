@@ -7,7 +7,7 @@
     import Map from "$lib/components/Map.svelte";
     import TileMap from "$lib/components/TileMap.svelte";
 
-    import story from '$lib/data/story.json';
+    export let story = {};
 
     export function onChapterMouseOver(event){
         console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -23,16 +23,16 @@
             interactivemap.onChapterMouseLeave(event);
     };
 
-    export function onEraClick(event){
-        console.log(`Maps:onEraClick(event:${JSON.stringify(event.detail)})`);
+    export function onNavigate(event){
+        console.log(`Maps:onNavigate(event:${JSON.stringify(event.detail)})`);
         //Updating the current view should automatically change the visibility of the maps?
-        //currentView = story.eras[event.detail.id].view;
-        currentView = story.views[event.detail.id].id;
-        if (story.views[currentView].extent){
+        //activeView = story.eras[event.detail.id].view;
+        activeViewID = event.detail.viewID;
+        if (story.views[activeViewID].extent){
 
-            console.log(`Maps:onEraClick(era.extent:${JSON.stringify(story.views[currentView].extent)})`)
+            console.log(`Maps:onNavigate(era.extent:${JSON.stringify(story.views[activeViewID].extent)})`)
 
-            const rectGeoJsonExtent = getGeoJsonRect(story.views[currentView].extent);
+            const rectGeoJsonExtent = getGeoJsonRect(story.views[activeViewID].extent);
             var path = d3.geoPath()
                 .projection(projection);
             const boundsRectExtent = path.bounds(rectGeoJsonExtent);
@@ -59,7 +59,7 @@
 
     let zoom;
 
-    let currentView = story.intialView;
+    let activeViewID = story.intialView;
 
     zoom = d3.zoom()
         .on("zoom", zoomed);
@@ -126,14 +126,14 @@
         dispatch('featureClick', event.detail);
     }
 
-    //console.log(JSON.stringify(story.eras[currentView].maps));
+    //console.log(JSON.stringify(story.eras[activeView].maps));
 
 </script>
 
 <div id="map">
     <div id="story-narrative">
         <h1>
-            {story.views[currentView].name}
+            {story.views[activeViewID].name}
         </h1>
     </div>
     <svg id="map-svg">
@@ -141,12 +141,12 @@
             {#each Object.values(story.maps) as map }
                 {#if map.type == "shapefile"}
                     {#if map.interactive}
-                        <Map bind:this={interactivemap} url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
+                        <Map bind:this={interactivemap} url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
                     {:else}
-                        <Map url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} />
+                        <Map url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id))} />
                     {/if}
                 {:else if map.type == "tile"}
-                    <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} />
+                    <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id))} />
                 {/if}
             {/each}
          </g>

@@ -3,19 +3,29 @@
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();
-
-    function onEraClick(id, name){
+    
+    function onViewClick(id){
+        console.log(`NavEras:onViewClick(${id})`);
+        //Tell the page to change view
+        dispatch('navigate', {
+            viewID: id,
+            eraID: null
+		});
+    };
+    
+    function onEraClick(id){
         console.log(`NavEras:onEraClick(${id})`);
-        dispatch('eraClick', {
-            id: id,
-            name: name
+        //Tell the page to change view
+        dispatch('navigate', {
+            viewID: id, //TODO lookup the view, don't assume they're the same?
+            eraID: id
 		});
     };
 
 </script>
 
 <div id="story-navigation" class="position-fixed">
-    <a href="#" on:click={() => onEraClick("intro", "Intro")}>
+    <a href="#" on:click={() => onViewClick("intro")}>
         <div class="story-navigation-button">
             Intro
         </div>
@@ -24,7 +34,7 @@
         <div class="story-navigation-button-group-header">
             eras
         </div>
-        <a href="#" on:click={() => onEraClick("pre-1600s", "Pre Colonial")}>
+        <a href="#" on:click={() => onEraClick("pre-1600s")}>
             <div class="story-navigation-button-and-label era-pre-colonial"  class:active={$page.url.pathname.includes("/eras/pre-colonial")}>
                 <div class="story-navigation-button">
                 </div>
@@ -33,7 +43,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" on:click={() => onEraClick("early-european-settlement", "Early European Settlement")}>
+        <a href="#" on:click={() => onEraClick("early-european-settlement")}>
             <div class="story-navigation-button-and-label era-early-european-settlement">
                 <div class="story-navigation-button">
                 </div>
@@ -42,7 +52,7 @@
                 </div>
             </div>
         </a>
-        <a href="#" on:click={() => onEraClick("urban-industrial-era", "Urban + Industrial Era")}>
+        <a href="#" on:click={() => onEraClick("urban-industrial-era")}>
             <div class="story-navigation-button-and-label era-urban-industrial" class:active={$page.url.pathname.includes("/eras/urban-industrial")}>
                 <div class="story-navigation-button">
                 </div>

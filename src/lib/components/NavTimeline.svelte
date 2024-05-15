@@ -5,8 +5,10 @@
 
 	import * as d3 from 'd3';
 
-    import story from '$lib/data/story.json';
 	import { error } from '@sveltejs/kit';
+
+    export let eras;
+    export let activeEra;
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -43,16 +45,18 @@
     let currentWidth;
 
     let erasAndActiveChapters = [];
-    Object.values(story.eras).forEach((era) => {
-        era.type = "era";
-        erasAndActiveChapters.push(era);
-        if (era.chapters) {
-            Object.values(era.chapters).forEach((chapter) => {
-                chapter.type = "chapter";
-                erasAndActiveChapters.push(chapter);
-            });
-        };
-    });
+    if (eras){
+        Object.values(eras).forEach((era) => {
+            era.type = "era";
+            erasAndActiveChapters.push(era);
+            if (era.id == activeEra && era.chapters) {
+                Object.values(era.chapters).forEach((chapter) => {
+                    chapter.type = "chapter";
+                    erasAndActiveChapters.push(chapter);
+                });
+            };
+        });
+    };
     console.log(erasAndActiveChapters.length);
 
     let xTimeline = d3.scaleLinear()
@@ -99,7 +103,7 @@
 
     function onChapterClick(id){
         // lookup the chapter
-        Object.values(story.eras).forEach((era) => {
+        Object.values(eras).forEach((era) => {
             Object.values(era.chapters).forEach((chapter) => {
                 if (chapter.link && chapter.id == id )
                     window.location = base + chapter.link;
@@ -109,9 +113,8 @@
 
     function onEraClick(id, name){
         console.log(`NavTimeline:onEraClick(${id})`);
-        dispatch('eraClick', {
-            id: id,
-            name: name
+        dispatch('gotoView', {
+            id: id
 		});
     };
     
