@@ -25,12 +25,14 @@
 
     export function onEraClick(event){
         console.log(`Maps:onEraClick(event:${JSON.stringify(event.detail)})`);
-        console.log(`Maps:onEraClick(era.extent:${JSON.stringify(story.eras[event.detail.id].extent)})`)
         //Updating the current view should automatically change the visibility of the maps?
-        currentView = event.detail.id;
-        if (story.eras[event.detail.id].extent){
+        //currentView = story.eras[event.detail.id].view;
+        currentView = story.views[event.detail.id].id;
+        if (story.views[currentView].extent){
 
-            const rectGeoJsonExtent = getGeoJsonRect(story.eras[event.detail.id].extent);
+            console.log(`Maps:onEraClick(era.extent:${JSON.stringify(story.views[currentView].extent)})`)
+
+            const rectGeoJsonExtent = getGeoJsonRect(story.views[currentView].extent);
             var path = d3.geoPath()
                 .projection(projection);
             const boundsRectExtent = path.bounds(rectGeoJsonExtent);
@@ -48,7 +50,6 @@
                 );
         };
     };
-
 
     let interactivemap;
     let gMap;
@@ -102,7 +103,7 @@
     const projection = geoMercator()
         .rotate([74, 0]) //Rotate the projection
         //TODO get the correct height and width, and respond to resizing
-        .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.eras[story.intialView].extent));
+        .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.views[story.intialView].extent));
 
     function onFeatureMouseOver(event) {
         console.log("Maps:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
@@ -125,14 +126,14 @@
         dispatch('featureClick', event.detail);
     }
 
-    console.log(JSON.stringify(story.eras[currentView].maps));
+    //console.log(JSON.stringify(story.eras[currentView].maps));
 
 </script>
 
 <div id="map">
     <div id="story-narrative">
         <h1>
-            {story.eras[currentView].name}
+            {story.views[currentView].name}
         </h1>
     </div>
     <svg id="map-svg">
@@ -140,12 +141,12 @@
             {#each Object.values(story.maps) as map }
                 {#if map.type == "shapefile"}
                     {#if map.interactive}
-                        <Map bind:this={interactivemap} url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
+                        <Map bind:this={interactivemap} url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} interactive={true} on:featureMouseOver={onFeatureMouseOver} on:featureMouseOut={onFeatureMouseOut} on:featureClick={onFeatureClick} />
                     {:else}
-                        <Map url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
+                        <Map url={map.url} geometryType={map.geometryType? map.geometryType : 'polygons'} id={map.id} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} />
                     {/if}
                 {:else if map.type == "tile"}
-                    <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.eras[currentView].maps && story.eras[currentView].maps.includes(map.id))} />
+                    <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.views[currentView].maps && story.views[currentView].maps.includes(map.id))} />
                 {/if}
             {/each}
          </g>

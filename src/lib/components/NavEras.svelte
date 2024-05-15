@@ -15,6 +15,11 @@
 </script>
 
 <div id="story-navigation" class="position-fixed">
+    <a href="#" on:click={() => onEraClick("intro", "Intro")}>
+        <div class="story-navigation-button">
+            Intro
+        </div>
+    </a>
     <div class="story-navigation-button-group">
         <div class="story-navigation-button-group-header">
             eras

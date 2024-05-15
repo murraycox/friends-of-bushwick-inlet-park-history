@@ -1,5 +1,5 @@
 {
-    "intialView": "urban-industrial-era",
+    "intialView": "intro",
     "maps":{
        "nyc-region-land":{
           "id":"nyc-landline",
@@ -50,25 +50,86 @@
             "interactive":true
         }
     },
+    "views": {
+      "intro": {
+         "id": "intro",
+         "name": "Intro",
+         "extent":{
+            "nwLng": -73.980,
+            "nwLat": 40.740,
+            "seLng": -73.94,
+            "seLat": 40.695
+          },
+         "maps": [
+            "nyc-landline",
+            "historical-waterline",
+            "seventeenseventysix-shoreline"
+         ]
+      },
+      "pre-1600s":{
+         "id":"pre-1600s",
+         "name":"Pre 1600s",
+         "extent":{
+           "nwLng": -74.09,
+           "nwLat": 40.8,
+           "seLng": -73.94,
+           "seLat": 40.600
+         },
+         "maps": [
+           "nyc-landline",
+           "historical-waterline",
+           "indian-paths-kings-county",
+           "indian-paths-nyc",
+           "oyster-historic-beds",
+           "oyster-restoration-sites"
+         ]
+      },
+      "early-european-settlement":{
+         "id":"early-european-settlement",
+         "name":"Early European Settlement",
+         "extent":{
+           "nwLng": -73.980,
+           "nwLat": 40.740,
+           "seLng": -73.94,
+           "seLat": 40.695
+         },
+         "maps": [
+           "nyc-landline",
+           "historical-waterline"
+         ]
+      },
+      "urban-industrial-era":{
+         "id":"urban-industrial-era",
+         "name":"Urban + Industrial Era",
+         "extent":{
+           "nwLng": -73.965,
+           "nwLat": 40.735,
+           "seLng": -73.945,
+           "seLat": 40.705
+         },
+         "maps": [
+           "nyc-landline",
+           "historical-waterline",
+           "seventeenseventysix-shoreline",
+           "pluto",
+           "bip-lots"
+         ]
+      },
+      "migration":{
+         "id":"migration",
+         "name":"Migration"
+      },
+      "Activism + Deindustrialization":{
+         "id":"activism-deindustrialization",
+         "name":"Activism + Deindustrialization"
+      }
+    },
     "eras":{
        "pre-1600s":{
           "id":"pre-1600s",
           "name":"Pre 1600s",
           "link":null,
-          "extent":{
-            "nwLng": -74.09,
-            "nwLat": 40.8,
-            "seLng": -73.94,
-            "seLat": 40.600
-          },
-          "maps": [
-            "nyc-landline",
-            "historical-waterline",
-            "indian-paths-kings-county",
-            "indian-paths-nyc",
-            "oyster-historic-beds",
-            "oyster-restoration-sites"
-          ],
+          "view": "pre-1600s",
           "chapters":{ 
           }
        },
@@ -76,16 +137,7 @@
           "id":"early-european-settlement",
           "name":"Early European Settlement",
           "link":null,
-          "extent":{
-            "nwLng": -73.980,
-            "nwLat": 40.740,
-            "seLng": -73.94,
-            "seLat": 40.695
-          },
-          "maps": [
-            "nyc-landline",
-            "historical-waterline"
-          ],
+          "view": "early-european-settlement",
           "chapters":{
              
           }
@@ -94,18 +146,7 @@
           "id":"urban-industrial-era",
           "name":"Urban + Industrial Era",
           "link":null,
-          "extent":{
-            "nwLng": -73.965,
-            "nwLat": 40.735,
-            "seLng": -73.945,
-            "seLat": 40.705
-          },
-          "maps": [
-            "nyc-landline",
-            "historical-waterline",
-            "seventeenseventysix-shoreline",
-            "bip-lots"
-          ],
+          "view": "urban-industrial-era",
           "chapters":{
              "sugar":{
                 "id":"sugar",
@@ -148,14 +189,15 @@
           "id":"migration",
           "name":"Migration",
           "link":null,
+          "view": "migration",
           "chapters":{
-             
           }
        },
        "Activism + Deindustrialization":{
           "id":"activism-deindustrialization",
           "name":"Activism + Deindustrialization",
           "link":null,
+          "view": "activism-deindustrialization",
           "chapters":{
              
           }
