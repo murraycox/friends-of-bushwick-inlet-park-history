@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
 package-lock.json
-static/gis/pluto
-build/gis/pluto
 .svelte-kit
 package-lock.json
+gis/pluto
