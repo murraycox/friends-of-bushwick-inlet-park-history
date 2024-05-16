@@ -1,6 +1,8 @@
 <script>
 
     import { onMount, createEventDispatcher } from 'svelte';
+    import { base } from '$app/paths';
+
     import { json, geoAlbers, geoPath } from  "d3";
     import { tile } from "d3-tile";
 
@@ -27,7 +29,7 @@
     const tiles = _tile();
     
     const {translate: [tx, ty], scale: k} = tiles;
-    const url = (x, y, z) => `${urlPath}${z}/${x}/${y}.${urlExtension}`;
+    const url = (x, y, z) => `${base}${urlPath}${z}/${x}/${y}.${urlExtension}`;
 
     function position(tile, tiles) {
         const [x, y] = tile;
