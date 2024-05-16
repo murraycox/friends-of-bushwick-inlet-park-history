@@ -27,19 +27,13 @@
     const tiles = _tile();
     
     const {translate: [tx, ty], scale: k} = tiles;
-    console.log(`tx:${tx}, ty:${ty}, k:${k}`);
-
-    for (const [x, y, z] of tiles) {
-        console.log(`tile ${x}/${y}/${z} is at ${(x + tx) * k}, ${(y + ty) * k}`);
-    }
-
-    const url = (x, y, z) => `${urlPath}${z}/${x}/${y}.${urlExtension}`
+    const url = (x, y, z) => `${urlPath}${z}/${x}/${y}.${urlExtension}`;
 
     function position(tile, tiles) {
         const [x, y] = tile;
         const {translate: [tx, ty], scale: k} = tiles;
         return [(x + tx) * k, (y + ty) * k];
-    }
+    };
 
 </script>
 

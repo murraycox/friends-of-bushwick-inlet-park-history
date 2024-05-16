@@ -43,7 +43,7 @@
         navTimeline.onMapFeatureClick(event);
     }
 
-    function onNavigate(event) {
+    function onNavigate(event, pushHistory = true) {
         console.log(`routes/map:onNavigate(event.detail:${JSON.stringify(event.detail)})`); 
 
         activeViewID = event.detail.viewID;
@@ -56,11 +56,13 @@
             activeEra = null;
 
         maps.onNavigate(event);
+        navTimeline.onNavigate(event);
         // pushState(`/#/era/${event.detail.id}`, {
 		// 	view: 'era',
         //     id: event.detail.id
 		// });
-        goto(`#/era/${event.detail.id}`, { state: {view: 'era', id: event.detail.id}, noScroll: true });
+        if (pushHistory)
+        goto(`#/view/${event.detail.viewID}`, { state: event.detail});
     }
 
     // Handle forward/back buttons
@@ -71,8 +73,8 @@
             // Simulate the loading of the previous page
             console.log(`routes/:popstate:event.state:${JSON.stringify(event.state)}`);
             console.log(`routes/:popstate:page.state:${JSON.stringify($page.state)}`);//make sure to use the reactive $, i.e. $page
-            if ($page.state.view && $page.state.view == "era"){
-                maps.onEraClick({detail: {id: $page.state.id}});
+            if (event.state["sveltekit:states"].viewID){
+                onNavigate({detail: {...event.state["sveltekit:states"]}}, false);
             }
 
         }
@@ -82,4 +84,4 @@
 <svelte:window on:popstate={popState}/>
 <NavEras on:navigate={onNavigate}/>
 <Maps {story} bind:this={maps} on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut} on:featureClick={onFeatureClick}/>    
-<NavTimeline eras={story.eras} {activeEra} bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:navigate={onNavigate}/>
+<NavTimeline eras={story.eras} bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:navigate={onNavigate}/>

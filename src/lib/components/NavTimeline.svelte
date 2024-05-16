@@ -8,7 +8,6 @@
 	import { error } from '@sveltejs/kit';
 
     export let eras;
-    export let activeEra;
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -24,6 +23,16 @@
         console.log("NavTimeline:onMapFeatureClick(event:" + JSON.stringify(event.detail) + ")");
         onChapterClick(event.detail.featureID);
     }
+
+    export function onNavigate(event){
+        console.log(`NavTimeline:onNavigate(event:${JSON.stringify(event.detail)})`);
+        
+        activeEraID = event.detail.eraID;
+
+        recalculateActiveChapters();
+        redrawTimeline();
+    };
+
 
     const dispatch = createEventDispatcher();
 
@@ -44,20 +53,8 @@
     
     let currentWidth;
 
+    let activeEraID = null;
     let erasAndActiveChapters = [];
-    if (eras){
-        Object.values(eras).forEach((era) => {
-            era.type = "era";
-            erasAndActiveChapters.push(era);
-            if (era.id == activeEra && era.chapters) {
-                Object.values(era.chapters).forEach((chapter) => {
-                    chapter.type = "chapter";
-                    erasAndActiveChapters.push(chapter);
-                });
-            };
-        });
-    };
-    console.log(erasAndActiveChapters.length);
 
     let xTimeline = d3.scaleLinear()
             .domain([0, erasAndActiveChapters.length-1]);
@@ -68,6 +65,26 @@
         redrawTimeline();
         window.addEventListener('resize', redrawTimeline);
     });
+
+    function recalculateActiveChapters() {
+        console.log(`NavTimeline:recalculateActiveChapters(activeEraID:${activeEraID})`);
+        if (eras){
+            erasAndActiveChapters = [];
+            Object.values(eras).forEach((era) => {
+                era.type = "era";
+                erasAndActiveChapters.push(era);
+                if (activeEraID && era.id == activeEraID && era.chapters) {
+                    Object.values(era.chapters).forEach((chapter) => {
+                        chapter.type = "chapter";
+                        erasAndActiveChapters.push(chapter);
+                    });
+                };
+            });
+        };
+    };
+    console.log(erasAndActiveChapters.length);
+    
+    recalculateActiveChapters();
 
     function onMouseOver(id){
         console.log("NavTimeline:onMouseOver(id:" + JSON.stringify(id) + ")");
@@ -111,10 +128,11 @@
         }); 
     };
 
-    function onEraClick(id, name){
+    function onEraClick(id){
         console.log(`NavTimeline:onEraClick(${id})`);
-        dispatch('gotoView', {
-            id: id
+        dispatch('navigate', {
+            viewID: eras[id].view,
+            eraID: id
 		});
     };
     
@@ -126,6 +144,7 @@
         xTimeline = d3.scaleLinear()
             .domain([0, erasAndActiveChapters.length-1])
             .range([ TIMELINE_PADDING, currentWidth-TIMELINE_PADDING ]);
+    
     };
 
 </script>
