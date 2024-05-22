@@ -6,6 +6,7 @@
 
     import Map from "$lib/components/Map.svelte";
     import TileMap from "$lib/components/TileMap.svelte";
+    import Labels from "$lib/components/Labels.svelte"
 
     export let story = {};
 
@@ -137,7 +138,7 @@
         </h1>
     </div>
     <svg id="map-svg">
-        <g bind:this={gMap}>
+        <g bind:this={gMap}>         
             {#each Object.values(story.maps) as map }
                 {#if map.type == "shapefile"}
                     {#if map.interactive}
@@ -147,6 +148,8 @@
                     {/if}
                 {:else if map.type == "tile"}
                     <TileMap urlPath={map.urlPath} urlExtension={map.urlExtension} projection={projection} visible={(story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id))} />
+                {:else if map.type == "label"}
+                    <Labels path={map.path} id={map.id} projection={projection} />
                 {/if}
             {/each}
          </g>

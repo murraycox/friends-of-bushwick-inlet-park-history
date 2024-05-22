@@ -32,6 +32,11 @@
             "type":"shapefile",
             "url":"/gis/Indian_paths_of_great_metropolis_NYC_bolton_1912_4326.geojson"
         }, 
+        "fbip-labels":{
+         "id":"fbip-labels",
+         "type":"label",
+         "path":"/gis/fbip_labels.geojson"
+         },
         "oyster-historic-beds":{
          "id": "oyster-historic-beds",
          "type": "shapefile",
@@ -63,7 +68,11 @@
          "maps": [
             "nyc-landline",
             "historical-waterline",
-            "seventeenseventysix-shoreline"
+            "seventeenseventysix-shoreline",
+            "fbip-labels"
+         ],
+         "labels": [
+            "fbip-labels"
          ]
       },
       "pre-1600s":{
