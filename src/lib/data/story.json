@@ -68,7 +68,8 @@
          "maps": [
             "nyc-landline",
             "nyc-historical-waterline",
-            "seventeenseventysix-shoreline"
+            "seventeenseventysix-shoreline",
+            "bip-lots"
          ],
          "labels": [
             "fbip-labels"
