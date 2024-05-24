@@ -169,9 +169,19 @@
     }
 
     .story-navigation-button {
-        display: none;
+            border: #8D8E8E 1px solid;
+            background-color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            cursor: pointer;
+            text-align: center;
+            color: #8D8E8E;
+            font-size: 10px;
+            font-weight: bold;
+            margin: 3px;
     }
-
 
     .story-navigation-label{
         height: 35px;
@@ -180,7 +190,6 @@
         font-size: 10px;
         font-weight: bold;
         margin: 3px;
-        margin-right: 15px;
     }
 
     .story-navigation-label{
@@ -204,6 +213,16 @@
 
     .story-navigation-label:hover span {
         display: inline;
+    }
+
+    /* Mobile first */
+
+    .story-navigation-button {
+        margin-right: 3px;
+    }
+
+    .story-navigation-button-group .story-navigation-button {
+        display: none;
     }
     
     /* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
@@ -242,28 +261,19 @@
         }
 
         .story-navigation-button {
+            margin-right: 3px;
+        }
+
+        .story-navigation-button-group .story-navigation-button {
             display: block;
-            border: #8D8E8E 1px solid;
-            background-color: white;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            cursor: pointer;
-            text-align: center;
-            color: #8D8E8E;
-            font-size: 10px;
-            font-weight: bold;
-            margin: 3px;
         }
 
         .story-navigation-label{
             display: none;
             border: none; 
             width: auto;
+            margin-right: 15px;
         }
-
-
     
         .story-navigation-label span{
             display: inline;

@@ -58,7 +58,7 @@
     "views": {
       "intro": {
          "id": "intro",
-         "name": "Intro",
+         "name": "Bushwick Inlet Park History Project",
          "extent":{
             "nwLng": -73.980,
             "nwLat": 40.740,
@@ -68,12 +68,57 @@
          "maps": [
             "nyc-landline",
             "historical-waterline",
-            "seventeenseventysix-shoreline",
-            "fbip-labels"
+            "seventeenseventysix-shoreline"
          ],
          "labels": [
             "fbip-labels"
-         ]
+         ],
+         "story": [
+            {"type":"p", "text":"Bushwick Inlet Park is a 28-acre piece of land that sits along the East River at the juncture of Greenpoint and Williamsburg. The park was created in 2005, a giveback from the City of New York to the residents of North Brooklyn as part of a massive waterfront rezoning that so far has added more than 50,000 new residents to these neighborhoods[WD1] . The design of the park is guided by a master plan design prepared by Donna Walcavage of Stantec and endorsed through a community process in 2007."},
+            {"type":"h", "stop": "when-it-is-completed", "text":"When it is completed"},
+            {"type":"p", "text":"When it is completed, Bushwick Inlet Park will be the crown jewel set in the midst of 5 miles of almost continuous waterfront esplanades running from the Wallabout Creek to Newtown Creek. Set between Marsha P. Johnson East River State Park to the south and the Greenpoint Monitor Museum to the north, BIP and its immediate neighbors will provide close to 36 acres of contiguous public open space [WD2] directly on the East River. But almost 20 years after the rezoning, the park is still more of a concept than a reality. As of 2023, less than a third of the park has been constructed, and it was only in the past few years that the City acquired – at great expense – the final piece of the puzzle that makes up Bushwick Inlet Park. Completion of the full park is likely decades away."},
+            {"type":"p", "text":"The Bushwick Inlet Park “puzzle” consists of 5 pieces of property[WD3] , acquired at various times between 2007 and 2016 and scheduled to be developed in phases."},
+            {"type":"h", "text":"2-acre Motiva site"},
+            {"type":"p", "text":"At the north end of the park, wrapping the inlet itself on three sides is the 2-acre Motiva site, the only part of the park within Greenpoint."},
+            {"type":"h", "text":"10.4-acre Bayside Oil site"},
+            {"type":"p", "text":"On the south side of the inlet is the 10.4-acre Bayside Oil site, whose large oil tanks were a stark reminder of the environmental degradation of waterfront until their demolition in 2019."},
+            {"type":"h", "stop": "50-kent-st", "text":"2-acre 50 Kent Avenue"},
+            {"type":"p", "text":"South of the Bayside property on Kent Avenue is a 2-acre, half-block parcel known as 50 Kent Avenue that opened in 2021 as the newest piece of green space to be added to the Park. The western half of this block and the full block to the south comprise the CitiStorage property, 8.5 acres in total."},
+            {"type":"h", "text":"4.6-acre soccer field site"},
+            {"type":"p", "text":"The southernmost block of Bushwick Inlet Park is the 4.6-acre soccer field site, also home to the North Brooklyn Parks headquarter/community house."}
+         ],
+         "stops": {
+            "when-it-is-completed" : {
+               "extent":{
+                  "nwLng": -73.965,
+                  "nwLat": 40.735,
+                  "seLng": -73.945,
+                  "seLat": 40.705
+                },
+                "maps": [
+                  "nyc-landline",
+                  "historical-waterline",
+                  "seventeenseventysix-shoreline",
+                  "pluto",
+                  "bip-lots"
+                ]
+            },
+            "50-kent-st" : {
+               "extent":{
+                  "nwLng": -73.965,
+                  "nwLat": 40.725,
+                  "seLng": -73.945,
+                  "seLat": 40.705
+               },
+               "maps": [
+                  "nyc-landline",
+                  "historical-waterline",
+                  "seventeenseventysix-shoreline",
+                  "pluto",
+                  "bip-lots"
+                ]
+            }
+         }
       },
       "pre-1600s":{
          "id":"pre-1600s",
@@ -121,6 +166,7 @@
            "historical-waterline",
            "seventeenseventysix-shoreline",
            "pluto",
+           "fbip-labels",
            "bip-lots"
          ]
       },
@@ -139,7 +185,27 @@
           "name":"Pre 1600s",
           "link":null,
           "view": "pre-1600s",
-          "chapters":{ 
+          "chapters":{             
+            "geography":{
+               "id":"geography",
+               "name":"Geography",
+               "link":"/era/pre-1600s/geography"
+            },
+            "waterways":{
+               "id":"waterways",
+               "name":"Waterways",
+               "link":"/era/pre-1600s/waterways"
+            },
+            "the-strand":{
+               "id":"the-strand",
+               "name":"The Strand",
+               "link":"/era/pre-1600s/the-strand"
+            },
+            "indigenous-population":{
+               "id":"indigenous-population",
+               "name":"Indigenous Population",
+               "link":"/era/pre-1600s/indigenous-population"
+            }
           }
        },
        "early-european-settlement":{
@@ -148,7 +214,66 @@
           "link":null,
           "view": "early-european-settlement",
           "chapters":{
-             
+            "bushwick-patent":{
+               "id":"bushwick-patent",
+               "name":"Bushwick Patent",
+               "link":"/era/early-european-settlement/bushwick-patent"
+            },
+            "original-settlers":{
+               "id":"original-settlers",
+               "name":"Original Settlers",
+               "link":"/era/early-european-settlement/original-settlers"
+            },
+            "bushwick-village":{
+               "id":"bushwick-village",
+               "name":"Bushwick Village",
+               "link":"/era/early-european-settlement/bushwick-village"
+            },
+            "early-farms":{
+               "id":"early-farms",
+               "name":"Early Farms",
+               "link":"/era/early-european-settlement/early-farms"
+            },
+            "founding-of-williamsburgh":{
+               "id":"founding-of-williamsburgh",
+               "name":"Founding of Williamsburgh",
+               "link":"/era/early-european-settlement/founding-of-williamsburgh"
+            },
+            "williamsburgh-grows":{
+               "id":"williamsburgh-grows",
+               "name":"Williamsburgh Grows",
+               "link":"/era/early-european-settlement/williamsburgh-grows"
+            },
+            "greenpoint-urbanizes":{
+               "id":"greenpoint-urbanizes",
+               "name":"Greenpoint Urbanizes",
+               "link":"/era/early-european-settlement/greenpoint-urbanizes"
+            },
+            "back-at-the-creek":{
+               "id":"back-at-the-creek",
+               "name":"Back at the-Creek",
+               "link":"/era/early-european-settlement/back-at-the-creek"
+            },
+            "changing-the-creek":{
+               "id":"changing-the-creek",
+               "name":"Changing the Creek",
+               "link":"/era/early-european-settlement/changing-the-creek"
+            },
+            "early-industrialization":{
+               "id":"early-industrialization",
+               "name":"Early Industrialization",
+               "link":"/era/early-european-settlement/early-industrialization"
+            },
+            "continental-ironworks":{
+               "id":"continental-ironworks",
+               "name":"Continental Ironworks",
+               "link":"/era/early-european-settlement/continental-ironworks"
+            },
+            "williamsburgh-becomes-a-city":{
+               "id":"williamsburgh-becomes-a-city",
+               "name":"Williamsburgh Becomes a City",
+               "link":"/era/early-european-settlement/williamsburgh-becomes-a-city"
+            }
           }
        },
        "urban-industrial-era":{
