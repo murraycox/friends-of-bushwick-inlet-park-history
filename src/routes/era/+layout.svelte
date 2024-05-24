@@ -4,20 +4,22 @@
 
     import NavEras from "$lib/components/NavEras.svelte";
     import NavTimeline from "$lib/components/NavTimeline.svelte";
+
+    import story from '$lib/data/story.json';
     
     const eraMatch = $page.url.pathname.match(/\/eras\/(\w+-\w+)\/*/);
     const eraClass = eraMatch?eraMatch[0]:"era-unknown";
 
 </script>
 
-<NavEras />         
+<NavEras navigateWithinMap={false} />         
 <div id="story-container" class={eraClass}>
     <div id="story-narrative">
         <slot></slot>
     </div>
     <div class="story-narrative-footer"></div>
 </div>
-<NavTimeline />
+<NavTimeline eras={story.eras} navigateWithinMap={false}/>
 
 <style>
 
@@ -109,7 +111,7 @@
     }
 
     #story-narrative {
-        margin: 0 84px 0 84px;
+        margin: 0 15px;
     }
 
     /* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */

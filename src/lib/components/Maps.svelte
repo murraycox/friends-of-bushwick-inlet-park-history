@@ -30,7 +30,8 @@
         //Updating the current view should automatically change the visibility of the maps?
         //activeView = story.eras[event.detail.id].view;
         activeViewID = event.detail.viewID;
-        activeStopId = null; //until we move through the story
+        activeEraID = event.detail.eraID;
+        activeStopID = null; //until we move through the story
         if (story.views[activeViewID].extent){
             moveMap(story.views[activeViewID].extent);
         };
@@ -45,7 +46,8 @@
     let zoom;
 
     let activeViewID = story.intialView;
-    let activeStopId = null;
+    let activeEraID = null;
+    let activeStopID = null;
 
     zoom = d3.zoom()
         .on("zoom", zoomed);
@@ -139,17 +141,17 @@
     function onStop(stopId){
         //A stop on the narrative
         console.log(`Maps:onStop(stopID:${stopId}`);
-        activeStopId = stopId;
+        activeStopID = stopId;
         //look up the stop
-        if (story.views[activeViewID].stops && story.views[activeViewID].stops[activeStopId]) {
-            moveMap(story.views[activeViewID].stops[activeStopId].extent)
+        if (story.views[activeViewID].stops && story.views[activeViewID].stops[activeStopID]) {
+            moveMap(story.views[activeViewID].stops[activeStopID].extent)
         };
 
     };
 
 </script>
 
-<div id="map">
+<div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}">
     <div id="story-narrative-container">
         <div id="story-narrative">
             <h1 use:onScroll={onStop}>
@@ -168,19 +170,6 @@
                     {/if}
                 {/each}
             {/if}
-            <!-- <p>Bushwick Inlet Park is a 28-acre piece of land that sits along the East River at the juncture of Greenpoint and Williamsburg.</p>
-            <p>The park was created in 2005, a giveback from the City of New York to the residents of North Brooklyn as part of a massive waterfront rezoning that so far has added more than 50,000 new residents to these neighborhoods.</p>
-            <p>The design of the park is guided by a master plan designed by Donna Walcavage of Stantec and endorsed through a community process in 2007.</p>
-            <h2
-                data-chapter-id="5678"
-                use:onScroll={bleep}
-            >
-                When it is completed
-            </h2>
-            <p>Bushwick Inlet Park will be the crown jewel in the midst of 5 miles of almost continuous waterfront esplanades running from the Navy Yard to Newtown Creek.</p>
-            <p>Connecting to Marsha P. Johnson East River State Park to the south and the Greenpoint Monitor Museum to the north, BIP will provide close to 36 acres of contiguous public open space directly on the East River.</p>
-            <h2>But eighteen years (and counting) after the rezoning</h2>
-            <p>the park is still more of a concept than a reality. As of 2023, less than a third of the park has been constructed, and it was only in the past few years that the City acquired – at great expense – the final piece of the puzzle that makes up Bushwick Inlet Park.</p> -->
         </div>
     </div>
     <svg id="map-svg">
@@ -190,21 +179,23 @@
                     {#if map.interactive}
                         <Map 
                             bind:this={interactiveMap} 
+                            {activeViewID} {activeEraID} {activeStopID}
                             url={map.url} 
                             geometryType={map.geometryType? map.geometryType : 'polygons'} 
                             id={map.id} projection={projection} 
-                            visible={(activeStopId == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopId && story.views[activeViewID].stops[activeStopId].maps && story.views[activeViewID].stops[activeStopId].maps.includes(map.id))} 
+                            visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                             interactive={true} 
                             on:featureMouseOver={onFeatureMouseOver} 
                             on:featureMouseOut={onFeatureMouseOut} 
                             on:featureClick={onFeatureClick} />
                     {:else}
                         <Map 
+                            {activeViewID} {activeEraID} {activeStopID}
                             url={map.url} 
                             geometryType={map.geometryType? map.geometryType : 'polygons'} 
                             id={map.id} 
                             projection={projection} 
-                            visible={(activeStopId == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopId && story.views[activeViewID].stops[activeStopId].maps && story.views[activeViewID].stops[activeStopId].maps.includes(map.id))} 
+                            visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                         />
                     {/if}
                 {:else if map.type == "tile"}
@@ -212,14 +203,14 @@
                         urlPath={map.urlPath} 
                         urlExtension={map.urlExtension} 
                         projection={projection} 
-                        visible={(activeStopId == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopId && story.views[activeViewID].stops[activeStopId].maps && story.views[activeViewID].stops[activeStopId].maps.includes(map.id))} 
+                        visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                     />
                 {:else if map.type == "label"}
                     <Labels 
                         path={map.path} 
                         id={map.id} 
                         projection={projection} 
-                        visible={(activeStopId == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopId && story.views[activeViewID].stops[activeStopId].maps && story.views[activeViewID].stops[activeStopId].maps.includes(map.id))} 
+                        visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                     />
                 {/if}
             {/each}
@@ -254,6 +245,10 @@
         overflow-y: auto;
     }
 
+    #story-narrative {
+        padding: 5px 10px;
+    }
+
 
     #story-narrative h1 {
         font-size: 2em;
@@ -266,6 +261,36 @@
         font-weight: 500;
         margin-top: 0;
     }
+
+    /* Styles for .view-intro */
+    .view-intro #story-narrative h1, .view-intro #story-narrative h2 {
+        color: #83BC6E;
+    }
+
+    /* Styles for .era-pre-colonial */
+    .era-pre-1600s #story-narrative h1, .era-pre-1600s #story-narrative h2 {
+        color: #5199C7;
+    }
+
+    /* Styles for .era-early-european-settlement */
+    .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2 {
+        color: #70AC00;
+    }    
+
+    /* Styles for .era-urban-industrial-era */
+    .era-urban-industrial-era #story-narrative h1, .era-urban-industrial-era #story-narrative h2 {
+        color: #9762AF;
+    } 
+    
+    /* Styles for .era-migration */
+    .era-era-migration #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
+        color: #D0B000;
+    } 
+
+    /* Styles for .era-activism-deindustrialization */
+    .era-activism-deindustrialization #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
+        color: #E36900;
+    } 
 
     @media screen and (min-width: 768px) {
 

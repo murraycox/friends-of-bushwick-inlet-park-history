@@ -6,8 +6,8 @@
           "type":"shapefile",
           "url":"/gis/NYC_region_land_4326.geojson"
        },
-       "nyc-historical_waterline":{
-            "id":"nyc-historical_waterline",
+       "nyc-historical-waterline":{
+            "id":"nyc-historical-waterline",
             "type":"shapefile",
             "url":"/gis/historical_water_polygons_final_4326.geojson"
         },       
@@ -67,7 +67,7 @@
           },
          "maps": [
             "nyc-landline",
-            "historical-waterline",
+            "nyc-historical-waterline",
             "seventeenseventysix-shoreline"
          ],
          "labels": [
@@ -131,11 +131,10 @@
          },
          "maps": [
            "nyc-landline",
-           "historical-waterline",
+           "nyc-historical-waterline",
            "indian-paths-kings-county",
            "indian-paths-nyc",
-           "oyster-historic-beds",
-           "oyster-restoration-sites"
+           "oyster-historic-beds"
          ]
       },
       "early-european-settlement":{
@@ -149,7 +148,7 @@
          },
          "maps": [
            "nyc-landline",
-           "historical-waterline"
+           "nyc-historical-waterline"
          ]
       },
       "urban-industrial-era":{
@@ -163,7 +162,7 @@
          },
          "maps": [
            "nyc-landline",
-           "historical-waterline",
+           "nyc-historical-waterline",
            "seventeenseventysix-shoreline",
            "pluto",
            "fbip-labels",

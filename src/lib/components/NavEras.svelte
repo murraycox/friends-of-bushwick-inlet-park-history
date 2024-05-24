@@ -1,6 +1,9 @@
 <script>
     import { page } from '$app/stores';
     import { createEventDispatcher } from 'svelte';
+    import { base } from '$app/paths';
+
+    export let navigateWithinMap = true;
 
     const dispatch = createEventDispatcher();
     
@@ -25,12 +28,12 @@
 </script>
 
 <div id="story-navigation" class="position-fixed">
-    <a href="#" on:click={() => onViewClick("intro")}>
+    <a href="{navigateWithinMap?"#":`${base}/`}" on:click={() => onViewClick("intro")}>
         <div class="story-navigation-button">
             Intro
         </div>
     </a>
-    <a href="#" on:click={() => onEraClick("pre-1600s")}>
+    <a href="{navigateWithinMap?"#":`${base}/`}" on:click={() => onEraClick("pre-1600s")}>
         <div class="story-navigation-button-and-label era-pre-colonial"  class:active={$page.url.pathname.includes("/eras/pre-colonial")}>
             <div class="story-navigation-button">
             </div>
@@ -39,7 +42,7 @@
             </div>
         </div>
     </a>
-    <a href="#" on:click={() => onEraClick("early-european-settlement")}>
+    <a href="{navigateWithinMap?"#":`${base}/`}" on:click={() => onEraClick("early-european-settlement")}>
         <div class="story-navigation-button-and-label era-early-european-settlement">
             <div class="story-navigation-button">
             </div>
@@ -48,7 +51,7 @@
             </div>
         </div>
     </a>
-    <a href="#" on:click={() => onEraClick("urban-industrial-era")}>
+    <a href="{navigateWithinMap?"#":`${base}/`}" on:click={() => onEraClick("urban-industrial-era")}>
         <div class="story-navigation-button-and-label era-urban-industrial" class:active={$page.url.pathname.includes("/eras/urban-industrial")}>
             <div class="story-navigation-button">
             </div>
@@ -91,11 +94,11 @@
 
     /* Styles for .era-pre-colonial */
     .story-navigation-button-and-label.era-pre-colonial .story-navigation-button {
-        background-image: url("/images/icons/era1_icon_5199C7.svg");
+        background-image: url($lib/images/icons/era1_icon_5199C7.svg);
         border-color: #5199C7;
     }
     .story-navigation-button-and-label.era-pre-colonial:hover .story-navigation-button {
-        background-image: url("/images/icons/era1_icon_5199C7_inverted.svg");
+        background-image: url($lib/images/icons/era1_icon_5199C7_inverted.svg);
     }
 
     .story-navigation-button-and-label.era-pre-colonial, .story-navigation-button-and-label.era-pre-colonial:hover .story-navigation-button, .story-navigation-button-and-label.era-pre-colonial.active .story-navigation-button, body.era-pre-colonial .story-narrative-footer {
@@ -104,11 +107,11 @@
 
     /* Styles for .era-early-european-settlement */
     .story-navigation-button-and-label.era-early-european-settlement .story-navigation-button {
-        background-image: url("/images/icons/era2_icon_70AC00.svg");
+        background-image: url($lib/images/icons/era2_icon_70AC00.svg);
         border-color: #70AC00;
     }
     .story-navigation-button-and-label.era-early-european-settlement:hover .story-navigation-button {
-        background-image: url("/images/icons/era2_icon_70AC00_inverted.svg");
+        background-image: url($lib/images/icons/era2_icon_70AC00_inverted.svg);
     }
 
     .story-navigation-button-and-label.era-early-european-settlement, .story-navigation-button-and-label.era-early-european-settlement:hover .story-navigation-button {
@@ -117,11 +120,11 @@
 
     /* Styles for .era-urban-industrial */
     .story-navigation-button-and-label.era-urban-industrial .story-navigation-button {
-        background-image: url("/images/icons/era3_icon_9762AF.svg");
+        background-image: url($lib/images/icons/era3_icon_9762AF.svg);
         border-color: #9762AF;
     }
     .story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-button {
-        background-image: url("/images/icons/era3_icon_9762AF_inverted.svg");
+        background-image: url($lib/images/icons/era3_icon_9762AF_inverted.svg);
     }
 
     .story-navigation-button-and-label.era-urban-industrial, .story-navigation-button-and-label.era-urban-industrial:hover .story-navigation-button, .story-navigation-button-and-label.era-urban-industrial.active .story-navigation-button, body.era-urban-industrial .story-narrative-footer {
@@ -130,11 +133,11 @@
     
     /* Styles for .era-migration */
     .story-navigation-button-and-label.era-migration .story-navigation-button {
-        background-image: url("/images/icons/era4_icon_D0B000.svg");
+        background-image: url($lib/images/icons/era4_icon_D0B000.svg);
         border-color: #D0B000;
     }
     .story-navigation-button-and-label.era-migration:hover .story-navigation-button {
-        background-image: url("/images/icons/era4_icon_D0B000_inverted.svg");
+        background-image: url($lib/images/icons/era4_icon_D0B000_inverted.svg);
     }
 
     .story-navigation-button-and-label.era-migration, .story-navigation-button-and-label.era-migration:hover .story-navigation-button {
@@ -143,11 +146,11 @@
 
     /* Styles for .era-activism-deindustrialization */
     .story-navigation-button-and-label.era-activism-deindustrialization .story-navigation-button {
-        background-image: url("/images/icons/era5_icon_E36900.svg");
+        background-image: url($lib/images/icons/era5_icon_E36900.svg);
         border-color: #E36900;
     }
     .story-navigation-button-and-label.era-activism-deindustrialization:hover .story-navigation-button {
-        background-image: url("/images/icons/era5_icon_E36900_inverted.svg");
+        background-image: url($lib/images/icons/era5_icon_E36900_inverted.svg);
     }
 
     .story-navigation-button-and-label.era-activism-deindustrialization, .story-navigation-button-and-label.era-activism-deindustrialization:hover .story-navigation-button {

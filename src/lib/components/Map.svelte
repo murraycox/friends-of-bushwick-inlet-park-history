@@ -10,6 +10,9 @@
     export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
     export let visible = false;
     export let geometryType = "polygons";
+    export let activeViewID;
+    export let activeEraID;
+    export let activeStopID;
 
     export function onChapterMouseOver(event){
         console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -93,12 +96,15 @@
 
 </script>
 
-<g class="map-svg-g" class:visible={visible} class:hidden={!visible} id={id}>
+<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id}>
     <pattern id="circles-urban-industrial-era" x=0 y=0 width=5 height=5 patternUnits="userSpaceOnUse">
         <circle cx=1 cy=1 r=3 fill=#A060C1></circle>
     </pattern>
     <pattern id="circles-pre-1600s" x=0 y=0 width=50 height=50 patternUnits="userSpaceOnUse">
         <circle cx=50 cy=50 r=20 fill=#599FF0></circle>
+    </pattern>
+    <pattern id="circles-intro" x=0 y=0 width=5 height=5 patternUnits="userSpaceOnUse">
+        <circle cx=1 cy=1 r=3 fill=#83BC6E></circle>
     </pattern>
 
 {#each dataset as data}
@@ -149,13 +155,17 @@
         cursor: pointer;
     }
 
+    #bip-lots.view-intro path {
+        stroke: #83BC6E;
+        fill: url(#circles-intro);
+    }
+
     #bip-lots.map-svg-g.visible path {
         opacity: 0.75;
         transition: opacity 4s linear;
     }
 
     #bip-lots path:hover, #bip-lots path.hover{
-        fill: url(#circles-urban-industrial-era);
         fill-opacity: 1;
     }
 
@@ -182,11 +192,11 @@
         transition: opacity 4s linear;
     }
 
-    #historical-waterline{
+    #nyc-historical-waterline{
         fill: #378ed5; 
     }
 
-    #historical-waterline.map-svg-g.visible path {
+    #nyc-historical-waterline.map-svg-g.visible path {
         opacity: 0.17;
         transition: opacity 4s linear;
     }

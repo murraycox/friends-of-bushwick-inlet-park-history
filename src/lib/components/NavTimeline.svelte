@@ -8,6 +8,7 @@
 	import { error } from '@sveltejs/kit';
 
     export let eras;
+    export let navigateWithinMap = true;
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -41,10 +42,10 @@
     const TIMELINE_MARGIN_TOP = 85;
     const TIMELINE_MARGIN_BOTTOM = 1; //to draw the bottom border
 
-    const TIMELINE_ANCHOR_LENGTH = 15;
+    const TIMELINE_ANCHOR_LENGTH = 20;
 
     const TIMELINE_CHAPTER_RADIUS = 4;
-    const TIMELINE_ERA_RADIUS = 5;
+    const TIMELINE_ERA_RADIUS = 6;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
     const TIMELINE_TITLE_WIDTH = 80;
@@ -76,6 +77,7 @@
                 if (activeEraID && era.id == activeEraID && era.chapters) {
                     Object.values(era.chapters).forEach((chapter) => {
                         chapter.type = "chapter";
+                        chapter.eraID = era.id;
                         erasAndActiveChapters.push(chapter);
                     });
                 };
@@ -154,7 +156,7 @@
         {#each erasAndActiveChapters as eraOrActiveChapter,i}
         <div 
             id={"title-" + eraOrActiveChapter.id} 
-            class="timeline-title-container"
+            class="timeline-title-container {`era-${eraOrActiveChapter.type == "era"? eraOrActiveChapter.id : eraOrActiveChapter.eraID }`}"
             style={`left:${xTimeline(i) - (TIMELINE_TITLE_WIDTH/2)}px`}
         >
             <div class="story-controller-timeline-era-title">
@@ -193,8 +195,9 @@
                         cx=0
                         cy={TIMELINE_ANCHOR_LENGTH}
                         r={eraOrActiveChapter.type == "era" ? TIMELINE_ERA_RADIUS : TIMELINE_CHAPTER_RADIUS}
-                        class:era={true}
-                        class:chapter={false}
+                        class:era={(eraOrActiveChapter.type == "era")}
+                        class:chapter={(eraOrActiveChapter.type == "chapter")}
+                        class="{`era-${eraOrActiveChapter.type == "era"? eraOrActiveChapter.id : eraOrActiveChapter.eraID }`}"
                         stroke-width=1
                         stroke="grey"
                         on:mouseover={() => onMouseOver(eraOrActiveChapter.id)}
@@ -296,20 +299,12 @@
         cursor: pointer;
     }
 
-    #timeline circle.era {
+    #timeline circle {
     fill: black;
     }
 
-    #timeline circle.chapter {
-    fill: white;
-    }
-
-    #timeline circle:hover {
-    fill: green;
-    }
-
     #timeline-titles {
-        height: 52px;
+        height: 47px;
         top: 0;
         visibility: hidden;
         /* padding-bottom: 71px; */
@@ -319,24 +314,56 @@
         visibility: visible;
     }
 
-    :global(.timeline-title-container) {
+    .timeline-title-container {
         position: absolute;
         cursor: pointer;
     }
 
-    :global(.timeline-title-container) {
+    .timeline-title-container {
         background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-        height: 48px;
+        height: 43px;
         width: 80px;
         border: 1px solid #53A3D5;
         border-radius: 10px;
         font-size: 0.60em;
         padding: 1px;
+        z-index: 9;
     }
+
+    /* Styles for .era-pre-colonial */
+    #timeline circle.era-pre-1600s, .timeline-title-container.era-pre-1600s {
+        fill: #5199C7; /* for circle */
+        background-color: #5199C7; /* for div */
+    }
+
+    /* Styles for .era-early-european-settlement */
+    #timeline circle.era-early-european-settlement, .timeline-title-container.era-early-european-settlement {
+        fill: #70AC00;
+        background-color: #70AC00; /* for div */
+    }    
+
+    /* Styles for era-urban-industrial-era */
+    #timeline circle.era-urban-industrial-era, .timeline-title-container.era-urban-industrial-era {
+        fill: #9762AF;
+        background-color: #9762AF; /* for div */
+    }
+    
+    /* Styles for .era-migration */
+    #timeline circle.era-migration, .timeline-title-container.era-migration  {
+        fill: #D0B000;
+        background-color: #D0B000; /* for div */
+    } 
+
+    /* Styles for .era-activism-deindustrialization */
+    #timeline circle.era-activism-deindustrialization, .timeline-title-container.era-activism-deindustrialization {
+        fill: #E36900;
+        background-color: #E36900; /* for div */
+    }
+
 
     #timeline div.era { 
         display: inline-block;

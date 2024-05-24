@@ -18,6 +18,9 @@
     let activeEraID = null;
     let activeEra = null;
 
+    //TO Not used yet
+    let activeStopId = null;
+    
     function onMapFeatureMouseOver(event) {
         console.log("routes/map:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
         navTimeline.onMapFeatureMouseOver(event);
@@ -82,6 +85,19 @@
     
 </script>
 <svelte:window on:popstate={popState}/>
-<NavEras on:navigate={onNavigate}/>
-<Maps {story} bind:this={maps} on:featureMouseOver={onMapFeatureMouseOver} on:featureMouseOut={onMapFeatureMouseOut} on:featureClick={onFeatureClick}/>    
-<NavTimeline eras={story.eras} bind:this={navTimeline} on:chapterMouseOver={onChapterMouseOver} on:chapterMouseLeave={onChapterMouseLeave} on:navigate={onNavigate}/>
+<NavEras 
+    on:navigate={onNavigate}
+/>
+<Maps 
+    bind:this={maps} 
+    {story} 
+    on:featureMouseOver={onMapFeatureMouseOver} 
+    on:featureMouseOut={onMapFeatureMouseOut} 
+    on:featureClick={onFeatureClick}
+/>    
+<NavTimeline 
+    bind:this={navTimeline} 
+    eras={story.eras} 
+    on:chapterMouseOver={onChapterMouseOver} 
+    on:chapterMouseLeave={onChapterMouseLeave} 
+    on:navigate={onNavigate}/>
