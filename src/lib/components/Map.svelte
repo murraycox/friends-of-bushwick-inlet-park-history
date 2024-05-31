@@ -152,7 +152,6 @@
         stroke-width: 1;
         fill: url(#circles-urban-industrial-era);
         fill-opacity: 0.5;
-        cursor: pointer;
     }
 
     #bip-lots.view-intro path {
@@ -165,7 +164,21 @@
         transition: opacity 4s linear;
     }
 
-    #bip-lots path:hover, #bip-lots path.hover{
+    #era3-story-polygons path {
+        stroke: #A060C1;
+        stroke-dasharray: 0.2 0.2;
+        stroke-width: 1;
+        fill: url(#circles-urban-industrial-era);
+        fill-opacity: 0.5;
+        cursor: pointer;
+    }
+
+    #era3-story-polygons.map-svg-g.visible path {
+        opacity: 0.75;
+        transition: opacity 4s linear;
+    }
+
+    #era3-story-polygons path:hover, #era3-story-polygons path.hover{
         fill-opacity: 1;
     }
 
@@ -210,5 +223,13 @@
         stroke: blue;
         fill: none;
     }
+
+    /* We might be able to build scaling the stroke-width into the map zoom, but for now we will use styles */
+    /* .stop-when-it-is-completed and 50-kent-st */
+    #nyc-landline.stop-when-it-is-completed path, #historical-waterline.stop-when-it-is-completed path, #seventeenseventysix-shoreline.stop-when-it-is-completed path, #bip-lots.stop-when-it-is-completed path,
+    #nyc-landline.stop-50-kent-st path, #historical-waterline.stop-50-kent-st path, #seventeenseventysix-shoreline.stop-50-kent-st path, #bip-lots.stop-50-kent-st path {
+        stroke-width: 0.3;
+    }
+
 
 </style>

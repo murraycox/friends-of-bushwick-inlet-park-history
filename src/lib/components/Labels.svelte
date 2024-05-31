@@ -9,6 +9,9 @@
     export let id;
     export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
     export let visible = false;
+    export let activeViewID;
+    export let activeEraID;
+    export let activeStopID;
 
     let dataset = [];
 
@@ -24,15 +27,16 @@
 
 </script>
 
-<g class="map-svg-g" class:visible={visible} class:hidden={!visible} id={id}>
+<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id}>
 {#each dataset as data}
+    {#if data.properties.era == activeEraID }
         <text
             transform={`translate(${projection(data.geometry.coordinates)})`}
             dy=".35em"
         >
             {data.properties.label}
         </text>
-
+    {/if}
 {/each}
 </g>
 
@@ -55,8 +59,16 @@
         fill: #1d1d1d;
         fill-opacity: .8;
         font-size: 8px;
-        font-weight: 300;
+        font-weight: 500;
         text-anchor: middle;
+    }
+
+    /* We might be able to build scaling the stroke-width into the map zoom, but for now we will use styles */
+    /* .stop-when-it-is-completed and 50-kent-st */
+    #fbip-labels.stop-when-it-is-completed text,
+    #fbip-labels.stop-50-kent-st text
+    {
+        font-size: 2px;
     }
 
 </style>

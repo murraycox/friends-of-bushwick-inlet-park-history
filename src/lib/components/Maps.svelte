@@ -1,6 +1,7 @@
 <script lang="ts">
     
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
+
     import { geoAlbers, geoMercator, geoPath } from "d3";
     import * as d3 from 'd3';
 
@@ -38,16 +39,37 @@
     };
 
     let interactiveMap;
+    let svgMap;
     let gMap;
 
-    let mapWidth = 800;
-    let mapHeight = 600;
+    let mapWidth;
+    let mapHeight;
 
     let zoom;
 
     let activeViewID = story.intialView;
     let activeEraID = null;
     let activeStopID = null;
+
+	let projection;
+
+    let isLoading = true;
+
+    onMount(() => {
+        console.log(`Maps:onMount()`);
+
+        mapWidth = parseInt(d3.select(svgMap).style('width'), 10);
+        mapHeight = parseInt(d3.select(svgMap).style('height'), 10);
+        console.log(`Map width: ${mapWidth}; height: ${mapHeight}`);
+
+        projection = geoMercator()
+            .rotate([74, 0]) //Rotate the projection
+            //TODO get the correct height and width, and respond to resizing
+            .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.views[story.intialView].extent));
+
+        isLoading = false;
+
+    });
 
     zoom = d3.zoom()
         .on("zoom", zoomed);
@@ -56,6 +78,10 @@
 
     function moveMap(extent){
         console.log(`Maps:moveMap(extent:${JSON.stringify(extent)}`);
+
+        mapWidth = parseInt(d3.select("#map-svg").style('width'), 10);
+        mapHeight = parseInt(d3.select("#map-svg").style('height'), 10);
+        console.log(`Map width: ${mapWidth}; height: ${mapHeight}`);
 
         const rectGeoJsonExtent = getGeoJsonRect(extent);
         var path = d3.geoPath()
@@ -111,10 +137,6 @@
     };
 
     // Need to use Mercator projection when using tiles, or at least I couldn't get the tiles to work with geoAlbers and the examples in the documentaiton
-    const projection = geoMercator()
-        .rotate([74, 0]) //Rotate the projection
-        //TODO get the correct height and width, and respond to resizing
-        .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.views[story.intialView].extent));
 
     function onFeatureMouseOver(event) {
         console.log("Maps:onFeatureMouseOver(event.detail:" + JSON.stringify(event.detail) + ")");
@@ -139,12 +161,15 @@
 
     //console.log(JSON.stringify(story.eras[activeView].maps));
     function onStop(stopId){
-        //A stop on the narrative
-        console.log(`Maps:onStop(stopID:${stopId}`);
+        //A "stop" on the narrative
+        console.log(`Maps:onStop(stopID:${stopId})`);
         activeStopID = stopId;
         //look up the stop
-        if (story.views[activeViewID].stops && story.views[activeViewID].stops[activeStopID]) {
-            moveMap(story.views[activeViewID].stops[activeStopID].extent)
+        if (!stopId){
+            moveMap(story.views[activeViewID].extent);
+        }
+        else if (story.views[activeViewID].stops && story.views[activeViewID].stops[activeStopID]) {
+            moveMap(story.views[activeViewID].stops[activeStopID].extent);
         };
 
     };
@@ -172,48 +197,51 @@
             {/if}
         </div>
     </div>
-    <svg id="map-svg">
-        <g bind:this={gMap}>         
-            {#each Object.values(story.maps) as map }
-                {#if map.type == "shapefile"}
-                    {#if map.interactive}
-                        <Map 
-                            bind:this={interactiveMap} 
-                            {activeViewID} {activeEraID} {activeStopID}
-                            url={map.url} 
-                            geometryType={map.geometryType? map.geometryType : 'polygons'} 
-                            id={map.id} projection={projection} 
+    <svg bind:this={svgMap} id="map-svg">
+        <g bind:this={gMap}>   
+            {#if !isLoading }      
+                {#each Object.values(story.maps) as map }
+                    {#if map.type == "shapefile"}
+                        {#if map.interactive}
+                            <Map 
+                                bind:this={interactiveMap} 
+                                {activeViewID} {activeEraID} {activeStopID}
+                                url={map.url} 
+                                geometryType={map.geometryType? map.geometryType : 'polygons'} 
+                                id={map.id} projection={projection} 
+                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
+                                interactive={true} 
+                                on:featureMouseOver={onFeatureMouseOver} 
+                                on:featureMouseOut={onFeatureMouseOut} 
+                                on:featureClick={onFeatureClick} />
+                        {:else}
+                            <Map 
+                                {activeViewID} {activeEraID} {activeStopID}
+                                url={map.url} 
+                                geometryType={map.geometryType? map.geometryType : 'polygons'} 
+                                id={map.id} 
+                                projection={projection} 
+                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
+                            />
+                        {/if}
+                    {:else if map.type == "tile"}
+                        <TileMap 
+                            urlPath={map.urlPath} 
+                            urlExtension={map.urlExtension} 
+                            projection={projection} 
                             visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                            interactive={true} 
-                            on:featureMouseOver={onFeatureMouseOver} 
-                            on:featureMouseOut={onFeatureMouseOut} 
-                            on:featureClick={onFeatureClick} />
-                    {:else}
-                        <Map 
+                        />
+                    {:else if map.type == "label"}
+                        <Labels 
                             {activeViewID} {activeEraID} {activeStopID}
-                            url={map.url} 
-                            geometryType={map.geometryType? map.geometryType : 'polygons'} 
+                            path={map.path} 
                             id={map.id} 
                             projection={projection} 
                             visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                         />
                     {/if}
-                {:else if map.type == "tile"}
-                    <TileMap 
-                        urlPath={map.urlPath} 
-                        urlExtension={map.urlExtension} 
-                        projection={projection} 
-                        visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                    />
-                {:else if map.type == "label"}
-                    <Labels 
-                        path={map.path} 
-                        id={map.id} 
-                        projection={projection} 
-                        visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                    />
-                {/if}
-            {/each}
+                {/each}
+            {/if}
          </g>
     </svg>
 </div>
@@ -221,10 +249,17 @@
 
 <style>
 
-    #map, #map-svg {
+    #map {
         position: absolute;
         width: 100%;
-        height: 100%
+        height: 100%;
+    }
+
+    #map-svg {
+        position: absolute;
+        width: 100%;
+        height: calc(60% - 40px);
+        bottom: 0;
     }
 
     
@@ -233,7 +268,7 @@
         z-index: 999;
 
         top: 40px;
-        height: 45%;
+        height: 40%;
         width: 100%;
         border-bottom: 1px solid lightgray;
         opacity: 0.9;
@@ -294,6 +329,10 @@
 
     @media screen and (min-width: 768px) {
 
+
+        #map-svg {
+            height: 100%;
+        }
         #story-narrative-container {
             top: 44px;
             right: 40px;

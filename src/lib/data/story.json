@@ -49,7 +49,13 @@
          "url": "/gis/recent_restoration_sites_oysters_2018_HEP.geojson"
         },
         "bip-lots":{
-            "id":"bip-lots",
+         "id":"bip-lots",
+         "type":"shapefile",
+         "url":"/gis/BIP_FinalLots.geojson",
+         "interactive":false
+        },
+        "era3-story-polygons":{
+            "id":"era3-story-polygons",
             "type":"shapefile",
             "url":"/gis/era_3_1855-1950s_story_polys_sorted.geojson",
             "interactive":true
@@ -69,9 +75,8 @@
             "nyc-landline",
             "nyc-historical-waterline",
             "seventeenseventysix-shoreline",
-            "bip-lots"
-         ],
-         "labels": [
+            "pluto",
+            "bip-lots",
             "fbip-labels"
          ],
          "story": [
@@ -91,32 +96,34 @@
          "stops": {
             "when-it-is-completed" : {
                "extent":{
-                  "nwLng": -73.965,
-                  "nwLat": 40.735,
-                  "seLng": -73.945,
-                  "seLat": 40.705
+                  "nwLng": -73.96480845,
+                  "nwLat": 40.72729899,
+                  "seLng": -73.95572544,
+                  "seLat": 40.71944572
                 },
                 "maps": [
                   "nyc-landline",
                   "historical-waterline",
                   "seventeenseventysix-shoreline",
                   "pluto",
-                  "bip-lots"
+                  "bip-lots",
+                  "fbip-labels"
                 ]
             },
             "50-kent-st" : {
                "extent":{
-                  "nwLng": -73.965,
-                  "nwLat": 40.725,
-                  "seLng": -73.945,
-                  "seLat": 40.705
+                  "nwLng": -73.96077866,
+                  "nwLat": 40.72400267,
+                  "seLng": -73.95847593,
+                  "seLat": 40.72240292
                },
                "maps": [
                   "nyc-landline",
                   "historical-waterline",
                   "seventeenseventysix-shoreline",
                   "pluto",
-                  "bip-lots"
+                  "bip-lots",
+                  "fbip-labels"
                 ]
             }
          }
@@ -131,10 +138,8 @@
            "seLat": 40.600
          },
          "maps": [
-           "nyc-landline",
            "nyc-historical-waterline",
            "indian-paths-kings-county",
-           "indian-paths-nyc",
            "oyster-historic-beds"
          ]
       },
@@ -156,10 +161,10 @@
          "id":"urban-industrial-era",
          "name":"Urban + Industrial Era",
          "extent":{
-           "nwLng": -73.965,
-           "nwLat": 40.735,
-           "seLng": -73.945,
-           "seLat": 40.705
+           "nwLng": -73.96621568,
+           "nwLat": 40.72851083,
+           "seLng": -73.94158920,
+           "seLat": 40.71100970
          },
          "maps": [
            "nyc-landline",
@@ -167,7 +172,11 @@
            "seventeenseventysix-shoreline",
            "pluto",
            "fbip-labels",
-           "bip-lots"
+           "era3-story-polygons"
+         ],
+         "story": [
+            {"type":"p", "text":"First envisioned as a suburb for growing Manhattan across the river, Williamsburgh quickly became a center for manufacture. In the 1850s, two industries that would transform north Brooklyn – sugar refining and petroleum distillation – were established on the Williamsburgh waterfront."},
+            {"type":"p", "text":"By 1900, the Williamsburg and Greenpoint waterfronts were fully given over to industrial and distribution operations. At the head of Manhattan Avenue was the Chelsea Manufacturing Co., maker of ropes and ships stores (and a successor to the early history of rope walks). South of there was the Gleason-Tiebot Glass Works (now Glasserie). Clay Street south to Java Street was mostly given over to lumber yards, bringing bulk wood products in via the waterfront for distribution throughout the city. These yards continued in operation through the late 20th century and much of the property is now developed as Greenpoint Landing. South of Greenpoint Avenue was the American Manufacturing Company (better known now as Greenpoint Terminal Market), another rope and ship’s stores manufacturing company. And south of there was the Continental Iron Works, still in operation in 1900. South of the inlet in Williamsburg, Standard Oil and the Williamsburg Gas Light Company continued to operate as described above. Cooperages (barrel factories – barrels were the preferred containers for bulk sugar and other products), distilleries, coal pockets (coal transfer stations) and sugar refineries occupied the waterfront south of North 4th Street. The American Sugar Refining Company (previously Havemeyers, later Domino Sugar) occupied the blocks from Grand Street to South 6th Street (the Williamsburg Bridge was under construction at this time); Mollenhauer’s sugar refinery was located between South 7thStreet and Division Avenue."}
          ]
       },
       "migration":{
