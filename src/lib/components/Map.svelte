@@ -97,25 +97,26 @@
 </script>
 
 <g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id}>
-    <pattern id="circles-urban-industrial-era" x=0 y=0 width=5 height=5 patternUnits="userSpaceOnUse">
-        <circle cx=1 cy=1 r=3 fill=#A060C1></circle>
+    <pattern id="circles-urban-industrial-era" x=0 y=0 width=2 height=2 patternUnits="userSpaceOnUse">
+        <circle cx=1 cy=1 r=0.6 fill=#A060C1></circle>
     </pattern>
-    <pattern id="circles-pre-1600s" x=0 y=0 width=50 height=50 patternUnits="userSpaceOnUse">
-        <circle cx=50 cy=50 r=20 fill=#599FF0></circle>
+    <pattern id="circles-pre-1600s" x=0 y=0 width=10 height=10 patternUnits="userSpaceOnUse">
+        <circle cx=5 cy=5 r=2 fill=#83BC6E></circle>
     </pattern>
-    <pattern id="circles-intro" x=0 y=0 width=5 height=5 patternUnits="userSpaceOnUse">
-        <circle cx=1 cy=1 r=3 fill=#83BC6E></circle>
+    <pattern id="circles-intro" x=0 y=0 width=1 height=1 patternUnits="userSpaceOnUse">
+        <circle cx=0.5 cy=0.5 r=0.4 fill=#83BC6E></circle>
     </pattern>
 
 {#each dataset as data}
     {#if geometryType == 'polygons'}
         {#if interactive}
-            <path d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
+            <path class="{`feature-${data.properties.id}`}" d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
         {:else}
-            <path d={path(data)}/>
+            <path class="{`feature-${data.properties.id}`}" d={path(data)}/>
         {/if}
     {:else}
         <circle
+            class="{`feature-${data.properties.id}`}"
             cx={projection(data)[0]}
             cy={projection(data)[1]}
             r=30
@@ -167,7 +168,7 @@
     #era3-story-polygons path {
         stroke: #A060C1;
         stroke-dasharray: 0.2 0.2;
-        stroke-width: 1;
+        stroke-width: 0.5;
         fill: url(#circles-urban-industrial-era);
         fill-opacity: 0.5;
         cursor: pointer;
@@ -185,6 +186,13 @@
     #oyster-historic-beds{
         stroke: #599FF0;
         stroke-width: 5;
+        fill: url(#circles-pre-1600s);
+        fill-opacity: 0.5;
+    }
+
+    #era-1-polys {
+        stroke: #83BC6E;
+        stroke-width: 2;
         fill: url(#circles-pre-1600s);
         fill-opacity: 0.5;
     }
@@ -215,7 +223,16 @@
     }
 
     #indian-paths-kings-county path{
+        stroke: brown;
+        stroke-width: 2;
+        stroke-dasharray: 4 4;
+        fill: none;
+    }
+
+    #era-1-lines-the-strand path{
         stroke: blue;
+        stroke-width: 3;
+        stroke-dasharray: 4 4;
         fill: none;
     }
 
@@ -225,10 +242,17 @@
     }
 
     /* We might be able to build scaling the stroke-width into the map zoom, but for now we will use styles */
-    /* .stop-when-it-is-completed and 50-kent-st */
+    /* .stop-when-it-is-completed and stop-50-kent-st */
+    /* .era-urban-industrial-era */
     #nyc-landline.stop-when-it-is-completed path, #historical-waterline.stop-when-it-is-completed path, #seventeenseventysix-shoreline.stop-when-it-is-completed path, #bip-lots.stop-when-it-is-completed path,
-    #nyc-landline.stop-50-kent-st path, #historical-waterline.stop-50-kent-st path, #seventeenseventysix-shoreline.stop-50-kent-st path, #bip-lots.stop-50-kent-st path {
+    #nyc-landline.stop-50-kent-st path, #historical-waterline.stop-50-kent-st path, #seventeenseventysix-shoreline.stop-50-kent-st path, #bip-lots.stop-50-kent-st path,
+    #nyc-landline.era-urban-industrial-era path, #historical-waterline.era-urban-industrial-era path, #seventeenseventysix-shoreline.era-urban-industrial-era path {
+
         stroke-width: 0.3;
+    }
+
+    #bip-lots.stop-50-kent-st path.feature-50-kent-st {
+        fill-opacity: 0.9;
     }
 
 

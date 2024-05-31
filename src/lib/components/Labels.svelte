@@ -56,9 +56,9 @@
     }
 
     text {
-        fill: #1d1d1d;
+        fill: #343434;
         fill-opacity: .8;
-        font-size: 8px;
+        font-size: 6px;
         font-weight: 500;
         text-anchor: middle;
     }
@@ -69,6 +69,11 @@
     #fbip-labels.stop-50-kent-st text
     {
         font-size: 2px;
+    }
+
+    #fbip-labels.era-pre-1600s text
+    {
+        font-size: 15px;
     }
 
 </style>

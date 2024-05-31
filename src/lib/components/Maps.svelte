@@ -55,6 +55,8 @@
 
     let isLoading = true;
 
+    const ZOOM_DURATION = 4000;
+
     onMount(() => {
         console.log(`Maps:onMount()`);
 
@@ -90,7 +92,7 @@
 
         const [[x0, y0], [x1, y1]] = boundsRectExtent; //path.bounds(d);
         d3.select(gMap).transition()
-            .duration(3000)
+            .duration(ZOOM_DURATION)
             .ease(d3.easeCubicOut)
             .call(
                 zoom.transform,
@@ -106,6 +108,7 @@
     function zoomed(event) {
         const {transform} = event;
         d3.select(gMap).attr("transform", transform);
+        // How to do this on component maps?
         // gMap.attr("stroke-width", 1 / transform.k);
     }
 
@@ -177,27 +180,37 @@
 </script>
 
 <div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}">
-    <div id="story-narrative-container">
-        <div id="story-narrative">
-            <h1 use:onScroll={onStop}>
-                {story.views[activeViewID].name}
-            </h1>
-            {#if story.views[activeViewID].story}
-                {#each story.views[activeViewID].story as storyElement}
-                    {#if storyElement.type == "h"}
-                        {#if storyElement.stop}
-                            <h2 use:onScroll={onStop} data-id={storyElement.stop}>{@html storyElement.text}</h2>
-                        {:else}
-                            <h2>{@html storyElement.text}</h2>
-                        {/if}
-                    {:else if storyElement.type == "p"}
-                        <p>{@html storyElement.text}</p>
-                    {/if}
-                {/each}
-            {/if}
+    {#if activeEraID }
+        <div id="story-context-container">
+            <div id="era-short-label">
+                {story.eras[activeEraID].shortLabel}
+            </div>
+            <div id="era-long-label">
+                {story.eras[activeEraID].longLabel}
+            </div>
         </div>
-    </div>
-    <svg bind:this={svgMap} id="map-svg">
+    {/if}
+    {#if story.views[activeViewID].story}
+        <div id="story-narrative-container">
+            <div id="story-narrative">
+                <h1 use:onScroll={onStop}>
+                    {story.views[activeViewID].name}
+                </h1>
+                    {#each story.views[activeViewID].story as storyElement}
+                        {#if storyElement.type == "h"}
+                            {#if storyElement.stop}
+                                <h2 use:onScroll={onStop} data-id={storyElement.stop}>{@html storyElement.text}</h2>
+                            {:else}
+                                <h2>{@html storyElement.text}</h2>
+                            {/if}
+                        {:else if storyElement.type == "p"}
+                            <p>{@html storyElement.text}</p>
+                        {/if}
+                    {/each}
+            </div>
+        </div>
+    {/if}
+    <svg bind:this={svgMap} id="map-svg" class:story={story.views[activeViewID].story != null}>
         <g bind:this={gMap}>   
             {#if !isLoading }      
                 {#each Object.values(story.maps) as map }
@@ -258,11 +271,14 @@
     #map-svg {
         position: absolute;
         width: 100%;
-        height: calc(60% - 40px);
+        height: 100%;
         bottom: 0;
     }
 
-    
+    #map-svg.story {
+        height: calc(60% - 40px);
+    }
+
     #story-narrative-container {
         position: absolute;
         z-index: 999;
@@ -278,6 +294,10 @@
         /* background:#7f7f7f; */
         overflow-x: hidden;
         overflow-y: auto;
+    }
+
+    #story-context-container {
+        display: none;
     }
 
     #story-narrative {
@@ -330,9 +350,10 @@
     @media screen and (min-width: 768px) {
 
 
-        #map-svg {
+        #map-svg, #map-svg.story {
             height: 100%;
         }
+
         #story-narrative-container {
             top: 44px;
             right: 40px;
@@ -342,6 +363,28 @@
             height: 60%;
             width: 30%;
             min-width: 250px;
+        }
+
+        #story-context-container {
+            display: block;
+            position: absolute;
+            z-index: 999;
+            top: 45px;
+            height: 50px;
+            left: 100px;
+        }
+
+        #story-context-container #era-short-label, #story-context-container #era-long-label {
+            display: inline-block;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+
+        #story-context-container #era-short-label {
+            background-color: lightgrey;
+            border-radius: 50px;
+            padding: 0 10px;
         }
 
     }
