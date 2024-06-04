@@ -1,0 +1,14 @@
+.footer {
+    height: 150px;
+    width: 100%;
+  }
+
+  .bricks {
+    background-image: url("../images/brick_pattern_2.svg");
+    background-size: 10px 10px;
+  }
+
+  .flowers {
+    background-image: url("../images/flowers_pattern.svg");
+    background-size: 129.6px 129.6px;
+  }
