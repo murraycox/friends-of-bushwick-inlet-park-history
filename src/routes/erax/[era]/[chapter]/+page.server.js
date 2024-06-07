@@ -7,9 +7,8 @@ import contentfulFetch from '$lib/contentful-fetch';
 
 export async function load({ params }) {
   const query = `
-
   {
-    chapterCollection(where: {slug:"${params.slug}"}, limit: 1) {
+    chapterCollection(where: {slug:"${params.era}/${params.chapter}"}, limit: 1) {
         items{
           id
           name
@@ -121,3 +120,14 @@ export async function load({ params }) {
   };
 
 };
+
+
+/** @type {import('./$types').EntryGenerator} */
+export function entries() {
+	return [
+		{ era: 'urban-industrial', chapter: 'sugar' },
+		{ era: 'urban-industrial', chapter: 'petroleum' }
+	];
+}
+
+export const prerender = true;
