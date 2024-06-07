@@ -4,3 +4,5 @@ package-lock.json
 .svelte-kit
 package-lock.json
 gis/pluto
+.env
+package-lock.json
