@@ -37,6 +37,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@contentful/rich-text-html-renderer": "^16.5.2",
+		"contentful": "^10.11.7",
 		"d3": "^7.9.0",
 		"d3-tile": "^1.0.0"
 	}
