@@ -14,14 +14,14 @@
 
     export function onChapterMouseOver(event){
         console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
-        // TODO Broadcast events to all of just some maps
+        // TODO Broadcast events to all or just some maps
         if (interactiveMap)
             interactiveMap.onChapterMouseOver(event);
     };
 
     export function onChapterMouseLeave(event){
         console.log("Maps:onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
-        // TODO Broadcast events to all of just some maps
+        // TODO Broadcast events to all or just some maps
         if (interactiveMap)
             interactiveMap.onChapterMouseLeave(event);
     };

@@ -9,6 +9,7 @@
 
     import story from '$lib/data/story.json';
 
+    let navEras;
     let navTimeline;
     let maps;
 
@@ -58,6 +59,7 @@
         else    
             activeEra = null;
 
+        navEras.navigate(event);
         maps.onNavigate(event);
         navTimeline.onNavigate(event);
         // pushState(`/#/era/${event.detail.id}`, {
@@ -86,6 +88,7 @@
 </script>
 <svelte:window on:popstate={popState}/>
 <NavEras 
+    bind:this={navEras}
     on:navigate={onNavigate}
 />
 <Maps 

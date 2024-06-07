@@ -173,8 +173,8 @@
            "nyc-historical-waterline"
          ]
       },
-      "urban-industrial-era":{
-         "id":"urban-industrial-era",
+      "urban-industrial":{
+         "id":"urban-industrial",
          "name":"Urban + Industrial Era",
          "extent":{
            "nwLng": -73.96621568,
@@ -304,13 +304,13 @@
             }
           }
        },
-       "urban-industrial-era":{
-          "id":"urban-industrial-era",
+       "urban-industrial":{
+          "id":"urban-industrial",
           "name":"Urban + Industrial Era",
           "shortLabel": "1850-1950",
           "longLabel": "Urban and Industrial Era",
           "link":null,
-          "view": "urban-industrial-era",
+          "view": "urban-industrial",
           "chapters":{
              "sugar":{
                 "id":"sugar",
