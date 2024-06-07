@@ -1,14 +1,118 @@
 .footer {
-    height: 150px;
+    height: 168px;
     width: 100%;
   }
+ /* I noticed the px dims can be used to change pattern 
+ but they need to stay proportional to the oorginal viewp port?*/ 
+
+/* add padding left to h1*/
+  h1 {
+    padding-left: 20px; 
+  }
+  h2 {
+    padding-left: 20px;
+    padding-top: 30px; 
+  }
+
 
   .bricks {
     background-image: url("../images/brick_pattern_2.svg");
-    background-size: 10px 10px;
+    background-size: 47px 50px;
   }
 
   .flowers {
     background-image: url("../images/flowers_pattern.svg");
-    background-size: 129.6px 129.6px;
+    background-size: 130px 130px;
   }
+
+  .water {
+    background-image: url("../images/water_pattern.svg");
+    background-size: 100px 100px;
+  }
+
+  .dots_purple {
+    background-image: url("../images/dots_purple.svg");
+    background-size: 90px 90px;
+  }
+
+  .dots_blue {
+    background-image: url("../images/dots_blue.svg");
+    background-size: 90px 90px;
+  }
+  .dots_green {
+    background-image: url("../images/dots_green.svg");
+    background-size: 90px 90px;
+  }
+  .dots_ochre {
+    background-image: url("../images/dots_ochre.svg");
+    background-size: 90px 90px;
+  }
+  .dots_orange {
+    background-image: url("../images/dots_orange.svg");
+    background-size: 90px 90px;
+  }
+
+  .wetlands {
+    background-image: url("../images/wetlands_pattern.svg");
+    background-size: 60px 46px;
+  }
+
+
+  .wetlands_2 {
+    background-image: url("../images/wetlands_2.svg");
+    background-size: 48px 32px;
+  }
+
+.lines {
+  background-image: url("../images/lines.svg");
+  background-size: 12px 15px;
+}
+
+.lines_2 {
+  background-image: url("../images/lines.svg");
+  background-size: 20px 20px;
+}
+
+.lines_3 {
+  background-image: url("../images/lines_3.svg");
+  background-size: 20px 20px;
+}
+
+.crosshatch {
+  background-image: url("../images/crosshatch.svg");
+  background-size: 20px 20px;
+}
+
+.crosshatch_2 {
+  background-image: url("../images/crosshatch_2.svg");
+  background-size: 25px 25px;
+}
+
+.crosshatch_3 {
+  background-image: url("../images/crosshatch_3.svg");
+  background-size: 30px 30px;
+}
+ .lines_green {
+  background-image: url("../images/lines_green.svg");
+  background-size: 11px 15px;
+ }
+.lines_green_2{
+  background-image: url("../images/lines_green.svg");
+  background-size: 20px 20px;
+}
+.lines_green_3{
+  background-image: url("../images/lines_green_3.svg");
+  background-size: 20px 20px;
+}
+.crosshatch_green {
+  background-image: url("../images/crosshatch_green.svg");
+  background-size: 20px 20px;
+}
+.crosshatch_green_2 {
+  background-image: url("../images/crosshatch_green_2.svg");
+  background-size: 25px 25px;
+}
+.crosshatch_green_3 {
+  background-image: url("../images/crosshatch_green_3.svg");
+  background-size: 30px 30px;
+}
