@@ -5,6 +5,8 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 
 import contentfulFetch from '$lib/contentful-fetch';
 
+import story from '$lib/data/story.json';
+
 export async function load({ params }) {
   const query = `
   {
@@ -51,6 +53,12 @@ export async function load({ params }) {
 
   const { data } = await response.json();
   const { items } = data.chapterCollection;
+
+  if (!items[0]){
+    throw error(404, {
+      message: "Content not found in the CMS",
+    })
+  };
 
   const chapterData = items[0];
 
@@ -124,10 +132,17 @@ export async function load({ params }) {
 
 /** @type {import('./$types').EntryGenerator} */
 export function entries() {
-	return [
-		{ era: 'urban-industrial', chapter: 'sugar' },
-		{ era: 'urban-industrial', chapter: 'petroleum' }
-	];
+
+  //Get all of the chapters from the story so their pages can be pre-rendered
+  const chapters = [];
+  Object.values(eras).forEach((era) => {
+    Object.values(era.chapters).forEach((chapter) => {
+      chapters.push({ era: era, chapter: chapter });
+    })
+  });
+
+	return chapters;
+  
 }
 
 export const prerender = true;

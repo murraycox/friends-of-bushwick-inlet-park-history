@@ -1,21 +1,23 @@
 <script>
-
-    import { page } from '$app/stores';
-
+	import { page } from '$app/stores';
     import NavEras from "$lib/components/NavEras.svelte";
     import NavTimeline from "$lib/components/NavTimeline.svelte";
-
+	
     import story from '$lib/data/story.json';
-    
-    const eraMatch = $page.url.pathname.match(/\/eras\/(\w+-\w+)\/*/);
-    const eraClass = eraMatch?eraMatch[0]:"era-unknown";
+	import styles from '$lib/styles.js';
+
+	export let data; //Get data from +page.server.js
 
 </script>
 
 <NavEras navigateWithinMap={false} />         
-<div id="story-container" class={eraClass}>
+<div 
+	id="story-container" class={`era-${$page.params.era}`} 
+	style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}"
+>
     <div id="story-narrative">
-        <slot></slot>
+		<h1>{data.chapter.name}</h1>
+		{@html data.chapter.content}
     </div>
     <div class="story-narrative-footer"></div>
 </div>
@@ -27,7 +29,7 @@
     font-family: 'Public Sans', sans-serif;
     }
 
-    :global(.story-narrative-footer) {
+    .story-narrative-footer {
         margin-top: 360px;
         height: 500px;
         width: 100%;
@@ -40,6 +42,14 @@
         mask-image: url("/images/brick_pattern_2.svg");
         mask-size: 10px 10px;
     }
+
+	.era-urban-industrial .story-narrative-footer {
+		background-color: var(--color-era-urban-industrial)
+    }	
+
+	.era-pre-1600s .story-narrative-footer {
+		background-color: var(--color-era-pre-1600s)
+    }	
 
     #story-narrative {
     font-size: 20px;
@@ -54,6 +64,14 @@
     font-weight: 600;
     margin-block-start: 35px;
     margin-block-end: 30px;
+    }
+
+	.era-pre-1600s #story-narrative :global(h1) {
+		color: var(--color-era-pre-1600s)
+    }
+
+	.era-urban-industrial #story-narrative :global(h1) {
+		color: var(--color-era-urban-industrial)
     }
 
     #story-narrative :global(h2) {
@@ -74,11 +92,11 @@
     color: #212121;
     }
 
-    :global(.text-padding-right){
+    .text-padding-right{
         padding-right: 10%;
     }
 
-    :global(.images-container-side-by-side) {
+    .images-container-side-by-side {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -92,14 +110,15 @@
     #story-narrative :global(.figure) {
     padding-bottom: 200px;
     }
-    /* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
-    :global(.figure-caption) {
+    
+	/* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
+    #story-narrative :global(.figure-caption) {
         text-align: left!important;
         color: black;
         font-size: .7em;
     }
 
-    :global(.figure-img) {
+    #story-narrative :global(.figure-img) {
         max-width: 100%;
         height: auto;
     }
