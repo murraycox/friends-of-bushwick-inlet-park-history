@@ -19,14 +19,14 @@
     function onClick(e){
         console.log(`NavErasButton:onClick()`);
         console.log(`NavErasButton:onClick(e.pointerType: ${e.pointerType})`);
-        if ((!labelText) || (e.pointerType != "touch") ||  ((e.pointerType == "touch") && hover)) {
+        if ((!labelText) || (e.pointerType == "mouse") ||  ((e.pointerType != "mouse") && hover)) {
             console.log(`NavErasButton:dispatch: navigate, viewID: ${viewID}, eraID: ${eraID}`);
             //Tell the Nav to change view. If an era is clicked, on navigate to that view
             dispatch('navigate', {
                 viewID: viewID ? viewID : eraID,
                 eraID: eraID
             });
-        } else if ((e.pointerType == "touch") && !hover) {
+        } else if ((e.pointerType != "mouse") && !hover) {
             hover = true;
         }
 
