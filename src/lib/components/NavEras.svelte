@@ -1,6 +1,7 @@
 <script>
 
     import { createEventDispatcher } from 'svelte';
+    import { goto } from '$app/navigation';
     
     import { page } from '$app/stores';
     import { base } from '$app/paths';
@@ -8,6 +9,7 @@
     import NavErasButton from "$lib/components/NavErasButton.svelte";
 
     export let navigateWithinMap = true;
+    export let activeEraID = null;
 
     //exported "method" called by parent
     export function navigate(event){
@@ -19,7 +21,6 @@
     };
 
     let activeViewID = "intro";
-    let activeEraID = null;
     let activeStopID = null;
 
     const dispatch = createEventDispatcher();
@@ -33,7 +34,9 @@
         //Tell the page to change view
         if (navigateWithinMap) {
             dispatch('navigate', event.detail);
-        }
+        } else {
+            goto("/");
+        };
     };
 
 </script>

@@ -10,10 +10,13 @@
 
 </script>
 
-<NavEras navigateWithinMap={false} />         
+<NavEras 
+    navigateWithinMap={false} 
+    activeEraID={$page.params.era}
+/>         
 <div 
 	id="story-container" class={`era-${$page.params.era}`} 
-	style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}"
+	style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
 >
     <div id="story-narrative">
 		<h1>{data.chapter.name}</h1>
@@ -21,7 +24,11 @@
     </div>
     <div class="story-narrative-footer"></div>
 </div>
-<NavTimeline eras={story.eras} navigateWithinMap={false}/>
+<NavTimeline 
+    eras={story.eras} 
+    navigateWithinMap={false}
+    activeEraID={$page.params.era}
+/>
 
 <style>
 
@@ -50,6 +57,14 @@
 	.era-pre-1600s .story-narrative-footer {
 		background-color: var(--color-era-pre-1600s)
     }	
+
+    .era-early-european-settlement .story-narrative-footer {
+        -webkit-mask-image: url("/images/wetlands_pattern.svg");
+        -webkit-mask-size: 60px 60px;
+        mask-image: url("/images/wetlands_pattern.svg");
+        mask-size: 60px 60px;
+        background-color: var(--color-era-early-european-settlement) 
+    }
 
     #story-narrative {
     font-size: 20px;

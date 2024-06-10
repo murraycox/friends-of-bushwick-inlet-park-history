@@ -2,6 +2,7 @@
 
 	import { onMount, createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
+    import { goto } from '$app/navigation';
 
 	import * as d3 from 'd3';
 
@@ -9,6 +10,7 @@
 
     export let eras;
     export let navigateWithinMap = true;
+    export let activeEraID = null;
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -54,7 +56,6 @@
     
     let currentWidth;
 
-    let activeEraID = null;
     let erasAndActiveChapters = [];
 
     let xTimeline = d3.scaleLinear()
@@ -132,10 +133,14 @@
 
     function onEraClick(id){
         console.log(`NavTimeline:onEraClick(${id})`);
-        dispatch('navigate', {
-            viewID: eras[id].view,
-            eraID: id
-		});
+        if (navigateWithinMap) {
+            dispatch('navigate', {
+                viewID: eras[id].view,
+                eraID: id
+            });
+        } else {
+            goto("/");
+        };
     };
     
     function redrawTimeline(){
