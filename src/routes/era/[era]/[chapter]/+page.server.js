@@ -55,9 +55,11 @@ export async function load({ params }) {
   const { items } = data.chapterCollection;
 
   if (!items[0]){
-    throw error(404, {
-      message: "Content not found in the CMS",
-    })
+    // throw error(404, {
+    //   message: "Content not found in the CMS",
+    // })
+    console.log(`WARNING: No content found in CMS, for era: ${params.era}; chapter: ${params.chapter}`)
+    return {chapter: {name: `${params.era}/${params.chapter}`, content: `No content found in CMS, for era: ${params.era}; chapter: ${params.chapter}`}};
   };
 
   const chapterData = items[0];
@@ -135,9 +137,9 @@ export function entries() {
 
   //Get all of the chapters from the story so their pages can be pre-rendered
   const chapters = [];
-  Object.values(eras).forEach((era) => {
+  Object.values(story.eras).forEach((era) => {
     Object.values(era.chapters).forEach((chapter) => {
-      chapters.push({ era: era, chapter: chapter });
+      chapters.push({ era: `${era.id}`, chapter: `${chapter.id}` });
     })
   });
 
