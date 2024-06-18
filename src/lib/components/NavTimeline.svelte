@@ -139,7 +139,7 @@
                 eraID: id
             });
         } else {
-            goto(base);
+            goto(base==''?'/':base);
         };
     };
     

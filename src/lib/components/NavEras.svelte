@@ -35,7 +35,7 @@
         if (navigateWithinMap) {
             dispatch('navigate', event.detail);
         } else {
-            goto(`${base}`);
+            goto(`${base==''?'/':base}`);
         };
     };
 
