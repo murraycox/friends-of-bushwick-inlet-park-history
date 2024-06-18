@@ -55,14 +55,18 @@
     }	
 
 	.era-pre-1600s .story-narrative-footer {
+        -webkit-mask-image: url("/images/water_pattern.svg");
+        -webkit-mask-size: 100px 100px;
+        mask-image: url("/images/water_pattern.svg");
+        mask-size: 100px 100px;
 		background-color: var(--color-era-pre-1600s)
     }	
 
     .era-early-european-settlement .story-narrative-footer {
         -webkit-mask-image: url("/images/wetlands_pattern.svg");
-        -webkit-mask-size: 60px 60px;
+        -webkit-mask-size: 60px 46px;
         mask-image: url("/images/wetlands_pattern.svg");
-        mask-size: 60px 60px;
+        mask-size: 60px 46px;
         background-color: var(--color-era-early-european-settlement) 
     }
 
