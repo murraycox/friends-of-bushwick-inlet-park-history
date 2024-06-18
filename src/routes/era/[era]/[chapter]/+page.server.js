@@ -111,7 +111,7 @@ export async function load({ params }) {
               // render the asset accordingly
               return (
                 `<figure class="figure">
-                  <img src="${asset.url}" class="figure-img" alt="${asset.description}">
+                  <img src="${asset.url}" class="figure-img" alt="${asset.title}">
                   <figcaption class="figure-caption">${asset.description}</figcaption>
                 </figure>`
               );
