@@ -9,13 +9,16 @@
     export let id;
     export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
     export let visible = false;
+    export let filterOnContext = false;
     export let activeViewID;
     export let activeEraID;
     export let activeStopID;
+    export let labelField = "label";
 
     let dataset = [];
 
     onMount(() => {
+        console.log(`Labels:onMount(id:${id})`);
         json(base + path).then((geoJsonData) => {
 
             dataset = geoJsonData.features;
@@ -27,14 +30,22 @@
 
 </script>
 
-<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id}>
+<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id} class:interactive={interactive}>
 {#each dataset as data}
-    {#if data.properties.era == activeEraID }
+    <!-- some geometries in the shapefile are none? -->
+    {#if (data.geometry && (!filterOnContext || data.properties.era == activeEraID))}
+        <text
+            class="text-background"
+            transform={`translate(${projection(data.geometry.coordinates)})`}
+            dy=".35em"
+        >
+            {data.properties[labelField]}
+        </text>
         <text
             transform={`translate(${projection(data.geometry.coordinates)})`}
             dy=".35em"
         >
-            {data.properties.label}
+            {data.properties[labelField]}
         </text>
     {/if}
 {/each}
@@ -55,10 +66,14 @@
         transition: visibility 0s 4s, opacity 4s linear;
     }
 
+    .map-svg-g.interactive text {
+        cursor: pointer;
+    }
+
     text {
         fill: #343434;
         fill-opacity: .8;
-        font-size: 6px;
+        font-size: 8px;
         font-weight: 500;
         text-anchor: middle;
     }
@@ -73,7 +88,23 @@
 
     #fbip-labels.era-pre-1600s text
     {
-        font-size: 15px;
+        font-size: 6px;
+    }
+
+    #era-1-labels text.text-background
+    {
+        fill: white; /* TODO convert this to a variable */
+        font-size: 24px;
+        font-weight: 800;
+
+    }
+
+    #era-1-labels text
+    {
+        fill: #5199C7; /* TODO convert this to a variable */
+        font-size: 22px;
+        font-weight: 800;
+
     }
 
 </style>

@@ -59,7 +59,7 @@ export async function load({ params }) {
     //   message: "Content not found in the CMS",
     // })
     console.log(`WARNING: No content found in CMS, for era: ${params.era}; chapter: ${params.chapter}`)
-    return {chapter: {name: `${params.era}/${params.chapter}`, content: `No content found in CMS, for era: ${params.era}; chapter: ${params.chapter}`}};
+    return {chapter: {era: {name: `${params.era}`}, name: `${params.era}/${params.chapter}`, content: `No content found in CMS, for era: ${params.era}; chapter: ${params.chapter}`}};
   };
 
   const chapterData = items[0];

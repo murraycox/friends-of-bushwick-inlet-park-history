@@ -71,6 +71,14 @@
          "id":"fbip-labels",
          "type":"label",
          "path":"/gis/fbip_labels.geojson",
+         "interactive":false,
+         "filterOnContext":true
+        },
+        "era-1-labels":{
+         "id":"era-1-labels",
+         "type":"label",
+         "labelField":"label_2",
+         "path":"/gis/era_1_labels.geojson",
          "interactive":true
         }
     },
@@ -156,7 +164,7 @@
            "pluto",
            "era-1-polys",
            "era-1-lines-the-strand",
-           "fbip-labels"
+           "era-1-labels"
          ]
       },
       "early-european-settlement":{

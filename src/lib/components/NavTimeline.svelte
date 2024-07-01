@@ -335,8 +335,13 @@
         border: 1px solid #53A3D5;
         border-radius: 10px;
         font-size: 0.60em;
+        font-weight: 700;
         padding: 1px;
         z-index: 9;
+    }
+
+    .timeline-title-container {
+        color: white;
     }
 
     /* Styles for .era-pre-colonial */
@@ -352,7 +357,7 @@
     }    
 
     /* Styles for era-urban-industrial-era */
-    #timeline circle.era-urban-industrial-era, .timeline-title-container.era-urban-industrial-era {
+    #timeline circle.era-urban-industrial, .timeline-title-container.era-urban-industrial {
         fill: #9762AF;
         background-color: #9762AF; /* for div */
     }

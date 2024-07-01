@@ -19,8 +19,13 @@
 	style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
 >
     <div id="story-narrative">
-		<h1>{data.chapter.name}</h1>
-		{@html data.chapter.content}
+        <div id="story-context-container">
+            <div id="era-short-label">
+                {data.chapter.era.name}
+            </div>
+            <h1>{data.chapter.name}</h1>
+        </div>
+        {@html data.chapter.content}
     </div>
     <div class="story-narrative-footer"></div>
 </div>
@@ -81,16 +86,45 @@
     #story-narrative :global(h1) {
     font-size: 2em;
     font-weight: 600;
-    margin-block-start: 35px;
-    margin-block-end: 30px;
+    }
+
+    #story-context-container {
+        margin-top: 35px;
+        margin-bottom: 30px;
+    }
+
+    #story-context-container h1 {
+        display: inline-block;
+    }
+
+    #story-context-container #era-short-label {
+        display: inline-block;
+        font-size: 1.1em;
+        font-weight: 600;
+    }
+
+    #story-context-container #era-short-label {
+        background-color: lightgrey;
+        color: white;
+        border-radius: 50px;
+        padding: 0 10px;
+        margin-right: 10px;
     }
 
 	.era-pre-1600s #story-narrative :global(h1) {
 		color: var(--color-era-pre-1600s)
     }
 
+    .era-pre-1600s #era-short-label {
+        background-color: var(--color-era-pre-1600s) !important;
+    }
+
 	.era-urban-industrial #story-narrative :global(h1) {
 		color: var(--color-era-urban-industrial)
+    }
+
+    .era-urban-industrial #era-short-label {
+        background-color: var(--color-era-urban-industrial) !important;
     }
 
     #story-narrative :global(h2) {

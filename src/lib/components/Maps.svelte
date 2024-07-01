@@ -10,6 +10,8 @@
     import Labels from "$lib/components/Labels.svelte"
     import { onScroll } from "$lib/on-scroll";
 
+    import styles from '$lib/styles.js';
+
     export let story = {};
 
     export function onChapterMouseOver(event){
@@ -179,7 +181,9 @@
 
 </script>
 
-<div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}">
+<div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}"
+    style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
+>
     {#if activeEraID }
         <div id="story-context-container">
             <div id="era-short-label">
@@ -251,6 +255,9 @@
                             id={map.id} 
                             projection={projection} 
                             visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
+                            labelField={map.labelField}
+                            filterOnContext={map.filterOnContext} 
+                            interactive={map.interactive}  
                         />
                     {/if}
                 {/each}
@@ -323,19 +330,31 @@
     }
 
     /* Styles for .era-pre-colonial */
-    .era-pre-1600s #story-narrative h1, .era-pre-1600s #story-narrative h2 {
-        color: #5199C7;
+    .era-pre-1600s #story-narrative h1, .era-pre-1600s #story-narrative h2, .era-pre-1600s #era-long-label {
+        color: var(--color-era-pre-1600s) !important;
+    }
+
+    .era-pre-1600s #era-short-label {
+        background-color: var(--color-era-pre-1600s) !important;
     }
 
     /* Styles for .era-early-european-settlement */
-    .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2 {
-        color: #70AC00;
+    .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2, .era-early-european-settlement #era-long-label {
+        color: var(--color-era-early-european-settlement) !important;
     }    
 
+    .era-early-european-settlement #era-short-label {
+        background-color: var(--color-era-early-european-settlement) !important;
+    }
+
     /* Styles for .era-urban-industrial-era */
-    .era-urban-industrial-era #story-narrative h1, .era-urban-industrial-era #story-narrative h2 {
-        color: #9762AF;
+    .era-urban-industrial #story-narrative h1, .era-urban-industrial #story-narrative h2, .era-urban-industrial #era-long-label {
+        color: var(--color-era-urban-industrial);
     } 
+
+    .era-urban-industrial #era-short-label {
+        background-color: var(--color-era-urban-industrial) !important;
+    }
     
     /* Styles for .era-migration */
     .era-era-migration #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
@@ -369,9 +388,9 @@
             display: block;
             position: absolute;
             z-index: 999;
-            top: 45px;
+            top: 50px;
             height: 50px;
-            left: 100px;
+            left: 110px;
         }
 
         #story-context-container #era-short-label, #story-context-container #era-long-label {
@@ -383,8 +402,10 @@
 
         #story-context-container #era-short-label {
             background-color: lightgrey;
+            color: white;
             border-radius: 50px;
             padding: 0 10px;
+            margin-right: 10px;
         }
 
     }
