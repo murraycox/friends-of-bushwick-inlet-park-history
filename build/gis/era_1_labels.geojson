@@ -3,14 +3,14 @@
 "name": "era_1_labels",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "id": 23, "label_2": "Geography", "era": "01", "chapter": "01", "label_1": "Bushwick Inlet Creek", "map": "0101", "chapter_na": "Geography" }, "geometry": { "type": "Point", "coordinates": [ -73.957950830092528, 40.72503587996809 ] } },
+{ "type": "Feature", "properties": { "id": 23, "label_2": "Geography", "era": "01", "chapter": "geography", "label_1": "Bushwick Inlet Creek", "map": "0101", "chapter_na": "Geography" }, "geometry": { "type": "Point", "coordinates": [ -73.957950830092528, 40.72503587996809 ] } },
 { "type": "Feature", "properties": { "id": 24, "label_2": "Waterways", "era": "01", "chapter": "02", "label_1": "Salt Marshes", "map": "0102", "chapter_na": "Waterways" }, "geometry": null },
 { "type": "Feature", "properties": { "id": 25, "label_2": "Indigenous Populations", "era": "01", "chapter": "04", "label_1": "Lenape Trails", "map": "0103", "chapter_na": "Indigenous Populations" }, "geometry": { "type": "Point", "coordinates": [ -73.967455491820886, 40.68915853233068 ] } },
 { "type": "Feature", "properties": { "id": 26, "label_2": "Topography", "era": "01", "chapter": "03", "label_1": null, "map": "0104", "chapter_na": "Topography" }, "geometry": { "type": "Point", "coordinates": [ -73.961051651987972, 40.718942065030696 ] } },
 { "type": "Feature", "properties": { "id": 27, "label_2": null, "era": "01", "chapter": "03", "label_1": "Keikout", "map": "0104", "chapter_na": "The Strand" }, "geometry": { "type": "Point", "coordinates": [ -73.967045830153424, 40.713075229516697 ] } },
-{ "type": "Feature", "properties": { "id": 28, "label_2": null, "era": "01", "chapter": "03", "label_1": "Cherry Point", "map": "0104", "chapter_na": "The Strand" }, "geometry": { "type": "Point", "coordinates": [ -73.960186879846248, 40.731746989749197 ] } },
+{ "type": "Feature", "properties": { "id": 28, "label_2": null, "era": "01", "chapter": "the-strand", "label_1": "Cherry Point", "map": "0104", "chapter_na": "The Strand" }, "geometry": { "type": "Point", "coordinates": [ -73.960186879846248, 40.731746989749197 ] } },
 { "type": "Feature", "properties": { "id": 29, "label_2": "Historic Oyster Beds", "era": "01", "chapter": "background", "label_1": null, "map": null, "chapter_na": "Historic Oyster Beds" }, "geometry": { "type": "Point", "coordinates": [ -74.046395488310978, 40.698506892368535 ] } },
 { "type": "Feature", "properties": { "id": 75, "label_2": null, "era": "01", "chapter": "01", "label_1": "Salt Mashes", "map": "0101", "chapter_na": "Waterways" }, "geometry": { "type": "Point", "coordinates": [ -73.943696718106523, 40.733346306417424 ] } },
-{ "type": "Feature", "properties": { "id": 204, "label_2": "Waterways", "era": "01", "chapter": "04", "label_1": "Saltmarshes", "map": "0204", "chapter_na": "Waterways" }, "geometry": { "type": "Point", "coordinates": [ -73.937951254347126, 40.737986392379703 ] } }
+{ "type": "Feature", "properties": { "id": 204, "label_2": "Waterways", "era": "01", "chapter": "waterways", "label_1": "Saltmarshes", "map": "0204", "chapter_na": "Waterways" }, "geometry": { "type": "Point", "coordinates": [ -73.937951254347126, 40.737986392379703 ] } }
 ]
 }
