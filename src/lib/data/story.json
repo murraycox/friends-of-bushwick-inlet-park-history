@@ -4,17 +4,23 @@
        "nyc-region-land":{
           "id":"nyc-landline",
           "type":"shapefile",
-          "url":"/gis/NYC_region_land_4326.geojson"
+          "url":"/gis/NYC_region_land_4326_topo.json",
+          "topoJson":true,
+          "topoJsonObjectsName":"nyc_region_land"
        },
        "nyc-historical-waterline":{
             "id":"nyc-historical-waterline",
             "type":"shapefile",
-            "url":"/gis/historical_water_polygons_final_4326.geojson"
+            "url":"/gis/historical_water_polygons_final_4326_topo.json",
+            "topoJson":true,
+            "topoJsonObjectsName":"historical_water"      
         },       
         "seventeenseventysix-shoreline":{
             "id":"seventeenseventysix-shoreline",
             "type":"shapefile",
-            "url":"/gis/1776_shoreline_polylines_4326.geojson"
+            "url":"/gis/1776_shoreline_polylines_4326_topo.json",
+            "topoJson":true,
+            "topoJsonObjectsName":"1776_shoreline"            
         },       
         "pluto":{
             "id":"pluto",
@@ -47,7 +53,10 @@
          "id": "era-1-polys",
          "type": "shapefile",
          "geometryType": "polygons",
-         "url": "/gis/era_1_polys_4326.geojson"
+         "url": "/gis/era_1_polys_4326_topo.json",
+         "topoJson":true,
+         "topoJsonObjectsName":"era_1_polys",
+         "interactive": true
         },
         "era-1-lines-the-strand":{
          "id": "era-1-lines-the-strand",

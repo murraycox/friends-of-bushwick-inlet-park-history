@@ -17,15 +17,20 @@
     export function onChapterMouseOver(event){
         console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
         // TODO Broadcast events to all or just some maps
-        if (interactiveMap)
-            interactiveMap.onChapterMouseOver(event);
+        refs.forEach(ref => {
+            if (ref.onChapterMouseOver)
+                ref.onChapterMouseOver(event);
+        });
+
     };
 
     export function onChapterMouseLeave(event){
         console.log("Maps:onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
         // TODO Broadcast events to all or just some maps
-        if (interactiveMap)
-            interactiveMap.onChapterMouseLeave(event);
+        refs.forEach(ref => {
+            if (ref.onChapterMouseLeave)
+                ref.onChapterMouseLeave(event);
+        });
     };
 
     export function onNavigate(event){
@@ -40,6 +45,7 @@
         };
     };
 
+    let refs = [];
     let interactiveMap;
     let svgMap;
     let gMap;
@@ -110,8 +116,9 @@
     function zoomed(event) {
         const {transform} = event;
         d3.select(gMap).attr("transform", transform);
-        // How to do this on component maps?
-        // gMap.attr("stroke-width", 1 / transform.k);
+        // TODO have some different sizes for different types of labels?
+        // TODO, should we pass this to the Labels layer, which might be a better place for context?
+        d3.select(gMap).selectAll("text").attr("font-size", 10 / transform.k);
     }
 
     function getGeoJsonRect(extent: {nwLng, nwLat, seLng, seLat}): any{
@@ -217,24 +224,30 @@
     <svg bind:this={svgMap} id="map-svg" class:story={story.views[activeViewID].story != null}>
         <g bind:this={gMap}>   
             {#if !isLoading }      
-                {#each Object.values(story.maps) as map }
+                {#each Object.values(story.maps) as map, i }
                     {#if map.type == "shapefile"}
                         {#if map.interactive}
                             <Map 
-                                bind:this={interactiveMap} 
+                                bind:this={refs[i]}
                                 {activeViewID} {activeEraID} {activeStopID}
                                 url={map.url} 
+                                topoJson={map.topoJson}
+                                topoJsonObjectsName={map.topoJsonObjectsName}
                                 geometryType={map.geometryType? map.geometryType : 'polygons'} 
                                 id={map.id} projection={projection} 
                                 visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                                 interactive={true} 
                                 on:featureMouseOver={onFeatureMouseOver} 
                                 on:featureMouseOut={onFeatureMouseOut} 
-                                on:featureClick={onFeatureClick} />
+                                on:featureClick={onFeatureClick} 
+                            />
                         {:else}
                             <Map 
+                                bind:this={refs[i]}
                                 {activeViewID} {activeEraID} {activeStopID}
                                 url={map.url} 
+                                topoJson={map.topoJson}
+                                topoJsonObjectsName={map.topoJsonObjectsName}
                                 geometryType={map.geometryType? map.geometryType : 'polygons'} 
                                 id={map.id} 
                                 projection={projection} 
@@ -243,22 +256,41 @@
                         {/if}
                     {:else if map.type == "tile"}
                         <TileMap 
+                            bind:this={refs[i]}
                             urlPath={map.urlPath} 
                             urlExtension={map.urlExtension} 
                             projection={projection} 
                             visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
                         />
                     {:else if map.type == "label"}
-                        <Labels 
-                            {activeViewID} {activeEraID} {activeStopID}
-                            path={map.path} 
-                            id={map.id} 
-                            projection={projection} 
-                            visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                            labelField={map.labelField}
-                            filterOnContext={map.filterOnContext} 
-                            interactive={map.interactive}  
-                        />
+                        {#if map.interactive}
+                            <Labels 
+                                bind:this={refs[i]}
+                                {activeViewID} {activeEraID} {activeStopID}
+                                path={map.path} 
+                                id={map.id} 
+                                projection={projection} 
+                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
+                                labelField={map.labelField}
+                                filterOnContext={map.filterOnContext} 
+                                interactive={map.interactive}  
+                                on:featureMouseOver={onFeatureMouseOver} 
+                                on:featureMouseOut={onFeatureMouseOut} 
+                                on:featureClick={onFeatureClick} 
+                            />
+                        {:else}
+                            <Labels 
+                                bind:this={refs[i]}
+                                {activeViewID} {activeEraID} {activeStopID}
+                                path={map.path} 
+                                id={map.id} 
+                                projection={projection} 
+                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
+                                labelField={map.labelField}
+                                filterOnContext={map.filterOnContext} 
+                                interactive={map.interactive}  
+                            />
+                        {/if}
                     {/if}
                 {/each}
             {/if}

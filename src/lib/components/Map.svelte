@@ -2,9 +2,13 @@
 
     import { onMount, createEventDispatcher } from 'svelte';
     import { json, geoAlbers, geoPath } from  "d3";
+    import * as topojson from "topojson-client";
+
     import { base } from '$app/paths';
 
     export let url = "";
+    export let topoJson = false;
+    export let topoJsonObjectsName = "";
     export let projection; //get the overall projection from the Maps component?
     export let id;
     export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
@@ -33,7 +37,15 @@
     onMount(() => {
         json(base + url).then((geoJsonData) => {
 
-            dataset = geoJsonData.features;
+            dataset = !topoJson ? 
+                geoJsonData.features
+				:
+				topojson.feature(
+					geoJsonData,
+					geoJsonData.objects[topoJsonObjectsName]
+				).features;
+
+
             path = geoPath()
                 .projection(projection);
 
@@ -44,13 +56,13 @@
     function onFeatureMouseOver(feature) {
         
         console.log("Map:onFeatureMouseOver(feature:" + JSON.stringify(feature) + ")");
-        if (feature.properties && feature.properties.id)
-            console.log("Map:onFeatureMouseOver(section:" + JSON.stringify(feature.properties.id) + ")");
+        if (feature.properties && feature.properties.chapter)
+            console.log("Map:onFeatureMouseOver(section:" + JSON.stringify(feature.properties.chapter) + ")");
 
         // Dispatch the id of the map and the feature id to the parent component
         dispatch('featureMouseOver', {
 			mapID: id,
-            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
+            featureID: (feature.properties && feature.properties.chapter)? feature.properties.chapter : '?'
 		});
         // d3.selectAll("path")
         //     .classed("hover", false);
@@ -73,13 +85,13 @@
     function onFeatureMouseOut(feature){
  
         console.log("Map:onFeatureMouseOut(feature:" + JSON.stringify(feature) + ")");
-        if (feature.properties && feature.properties.id)
-            console.log("Map:onFeatureMouseOut(id:" + JSON.stringify(feature.properties.id) + ")");
+        if (feature.properties && feature.properties.chapter)
+            console.log("Map:onFeatureMouseOut(id:" + JSON.stringify(feature.properties.chapter) + ")");
 
         // Dispatch the id of the map and the feature id to the parent component
         dispatch('featureMouseOut', {
 			mapID: id,
-            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
+            featureID: (feature.properties && feature.properties.chapter)? feature.properties.chapter : '?'
 		});
 
     }
@@ -89,14 +101,13 @@
         // Dispatch the id of the map and the feature id to the parent component
         dispatch('featureClick', {
 			mapID: id,
-            featureID: (feature.properties && feature.properties.id)? feature.properties.id : '?'
+            featureID: (feature.properties && feature.properties.chapter)? feature.properties.chapter : '?'
 		});
     }
 
 
 </script>
-
-<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} id={id}>
+<g class="map-svg-g {`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}" class:visible={visible} class:hidden={!visible} class:interactive={interactive} id={id}>
     <pattern id="circles-urban-industrial-era" x=0 y=0 width=2 height=2 patternUnits="userSpaceOnUse">
         <circle cx=1 cy=1 r=0.6 fill=#A060C1></circle>
     </pattern>
@@ -110,7 +121,9 @@
 {#each dataset as data}
     {#if geometryType == 'polygons'}
         {#if interactive}
-            <path class="{`feature-${data.properties.id}`}" d={path(data)} class:hover={data.properties && data.properties.id && highlightedChapterID==data.properties.id} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
+            {data.properties.chapter}
+            {highlightedChapterID}
+            <path class="{`feature-${data.properties.id}`}" d={path(data)} class:hover={interactive && data.properties && data.properties.chapter && (highlightedChapterID==data.properties.chapter)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
         {:else}
             <path class="{`feature-${data.properties.id}`}" d={path(data)}/>
         {/if}
@@ -190,11 +203,16 @@
         fill-opacity: 0.5;
     }
 
-    #era-1-polys {
+    #era-1-polys path {
         stroke: #83BC6E;
         stroke-width: 2;
         fill: url(#circles-pre-1600s);
         fill-opacity: 0.5;
+        cursor: pointer;
+    }
+
+    #era-1-polys path:hover, #era-1-polys path.hover {
+        stroke: blue;
     }
 
     #oyster-restoration-sites {
