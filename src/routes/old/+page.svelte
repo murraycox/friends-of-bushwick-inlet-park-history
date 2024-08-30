@@ -5,10 +5,9 @@
 
     import NavEras from "$lib/components/NavEras.svelte";
     import NavTimeline from "$lib/components/NavTimeline.svelte";
-    import MapsMapbox from "$lib/components/MapsMapbox.svelte"
+    import Maps from "$lib/components/Maps.svelte"
 
-	export let data; //set up in the +page.server.js
-    const story = data.story
+    import story from '$lib/data/story.json';
 
     let navEras;
     let navTimeline;
@@ -92,7 +91,7 @@
     bind:this={navEras}
     on:navigate={onNavigate}
 />
-<MapsMapbox 
+<Maps 
     bind:this={maps} 
     {story} 
     on:featureMouseOver={onMapFeatureMouseOver} 

@@ -1,10 +1,15 @@
 {
+    "baseMap": {
+      "mapbox": {
+         "style": "mapbox://styles/fbip/cm03wuvt700av01qve4td1x0q"
+      }    
+    },
     "intialView": "intro",
     "maps":{
        "nyc-region-land":{
           "id":"nyc-landline",
           "type":"shapefile",
-          "url":"/gis/NYC_region_land_4326_topo.json",
+          "url":"/gis/NYC_region_land_cropped_4326_topo.json",
           "topoJson":true,
           "topoJsonObjectsName":"nyc_region_land"
        },
@@ -109,6 +114,9 @@
             "bip-lots",
             "fbip-labels"
          ],
+         "mapbox": {
+            "style": "clyrus3id001f01p973n94p3t"
+         },
          "story": [
             {"type":"p", "text":"Bushwick Inlet Park is a 28-acre piece of land that sits along the East River at the juncture of Greenpoint and Williamsburg. The park was created in 2005, a giveback from the City of New York to the residents of North Brooklyn as part of a massive waterfront rezoning that so far has added more than 50,000 new residents to these neighborhoods[WD1] . The design of the park is guided by a master plan design prepared by Donna Walcavage of Stantec and endorsed through a community process in 2007."},
             {"type":"h", "stop": "when-it-is-completed", "text":"When it is completed"},
@@ -168,6 +176,7 @@
            "seLat": 40.68369957
          },
          "maps": [
+           "nyc-landline",
            "nyc-historical-waterline",
            "indian-paths-kings-county",
            "pluto",
@@ -188,7 +197,10 @@
          "maps": [
            "nyc-landline",
            "nyc-historical-waterline"
-         ]
+         ],
+         "mapbox": {
+            "style": "clyhpvk0l01mp01qohk3w15tr"
+         }
       },
       "urban-industrial":{
          "id":"urban-industrial",
@@ -207,6 +219,9 @@
            "fbip-labels",
            "era3-story-polygons"
          ],
+         "mapbox": {
+            "style": "clzueqw2v00ry01qg5dj71ddj"
+         },
          "story": [
             {"type":"h", "text":"Introduction"},
             {"type":"p", "text":"First envisioned as a suburb for growing Manhattan across the river, Williamsburgh quickly became a center for manufacture. In the 1850s, two industries that would transform north Brooklyn – sugar refining and petroleum distillation – were established on the Williamsburgh waterfront."},

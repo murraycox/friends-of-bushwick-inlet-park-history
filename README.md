@@ -37,3 +37,14 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+Testing Mapbox API
+
+curl "https://api.mapbox.com/styles/v1/fbip?access_token=[MAPBOX_TOKEN_WITH_STYLE_AND_TILESET_ACCESS]"
+
+curl "https://api.mapbox.com/tilesets/v1/fbip?access_token=[MAPBOX_TOKEN_WITH_STYLE_AND_TILESET_ACCESS]"
+
+curl "https://api.mapbox.com/tilesets/v1/fbip?access_token=[MAPBOX_TOKEN_WITH_STYLE_AND_TILESET_ACCESS]"
+
+curl "https://api.mapbox.com/tilesets/v1/sources/fbip/era_3_polys?access_token=[MAPBOX_TOKEN_WITH_STYLE_AND_TILESET_ACCESS]"
+
