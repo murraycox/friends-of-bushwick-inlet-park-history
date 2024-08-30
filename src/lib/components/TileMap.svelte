@@ -52,13 +52,13 @@
     .map-svg-g image {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s 4s, opacity 4s linear;
+        /* transition: visibility 0s 4s, opacity 4s linear; */
     }
 
     .map-svg-g.visible image{
         visibility: visible;
         opacity: 0.2;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
 </style>

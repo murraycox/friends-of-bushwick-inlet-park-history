@@ -137,13 +137,13 @@
     .map-svg-g.visible text{
         visibility: visible;
         opacity: 1;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     .map-svg-g.hidden text {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s 4s, opacity 4s linear;
+        /* transition: visibility 0s 4s, opacity 4s linear; */
     }
 
     .map-svg-g.interactive text {

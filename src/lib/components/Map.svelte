@@ -145,13 +145,13 @@
     .map-svg-g.visible path{
         visibility: visible;
         opacity: 1;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     .map-svg-g.hidden path {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s 4s, opacity 4s linear;
+        /* transition: visibility 0s 4s, opacity 4s linear; */
     }
     
     #nyc-landline path{
@@ -175,7 +175,7 @@
 
     #bip-lots.map-svg-g.visible path {
         opacity: 0.75;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     #era3-story-polygons path {
@@ -189,7 +189,7 @@
 
     #era3-story-polygons.map-svg-g.visible path {
         opacity: 0.75;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     #era3-story-polygons path:hover, #era3-story-polygons path.hover{
@@ -228,7 +228,7 @@
 
     #seventeenseventysix-shoreline.map-svg-g.visible path {
         opacity: 0.2;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     #nyc-historical-waterline{
@@ -237,7 +237,7 @@
 
     #nyc-historical-waterline.map-svg-g.visible path {
         opacity: 0.17;
-        transition: opacity 4s linear;
+        /* transition: opacity 4s linear; */
     }
 
     #indian-paths-kings-county path{

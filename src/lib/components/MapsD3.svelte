@@ -63,7 +63,7 @@
 
     let isLoading = true;
 
-    const ZOOM_DURATION = 4500;
+    const ZOOM_DURATION = 2500;
 
     onMount(() => {
         console.log(`Maps:onMount()`);
@@ -101,7 +101,7 @@
         const [[x0, y0], [x1, y1]] = boundsRectExtent; //path.bounds(d);
         d3.select(gMap).transition()
             .duration(ZOOM_DURATION)
-            .ease(d3.easeCubicOut)
+            // .ease(d3.easeCircleInOut)
             .call(
                 zoom.transform,
                 d3.zoomIdentity
@@ -197,7 +197,7 @@
                 {story.eras[activeEraID].shortLabel}
             </div>
             <div id="era-long-label">
-                {story.eras[activeEraID].longLabel}
+                {story.eras[activeEraID].longLabel} (New Map!!!)
             </div>
         </div>
     {/if}
