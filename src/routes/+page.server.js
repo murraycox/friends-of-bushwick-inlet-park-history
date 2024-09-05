@@ -15,7 +15,7 @@ export function load({ params }) {
         .send()
         .then(
             response => {
-                console.log(response.body);
+                // console.log(response.body);
                 tilesets = response.body;
 
                 const stylesService = Style({ accessToken: MAPBOX_STYLES_AND_TILESETS_TOKEN});
