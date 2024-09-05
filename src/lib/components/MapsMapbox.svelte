@@ -22,9 +22,6 @@
     lat = 40.72;
     zoom = 12;
 
-    // import Map from "$lib/components/Map.svelte";
-    // import TileMap from "$lib/components/TileMap.svelte";
-    // import Labels from "$lib/components/Labels.svelte"
     import { onScroll } from "$lib/on-scroll";
 
     import styles from '$lib/styles.js';
@@ -206,25 +203,10 @@
 
     const ZOOM_DURATION = 4500;
 
-    // onMount(() => {
-    //     console.log(`Maps:onMount()`);
-
-    //     mapWidth = parseInt(d3.select(svgMap).style('width'), 10);
-    //     mapHeight = parseInt(d3.select(svgMap).style('height'), 10);
-    //     console.log(`Map width: ${mapWidth}; height: ${mapHeight}`);
-
-    //     projection = geoMercator()
-    //         .rotate([74, 0]) //Rotate the projection
-    //         //TODO get the correct height and width, and respond to resizing
-    //         .fitSize([mapWidth, mapHeight], getGeoJsonRect(story.views[story.intialView].extent));
-
-    //     isLoading = false;
-
-    // });
-
     onMount(() => {
         const initialState = { lng: lng, lat: lat, zoom: zoom };
 
+        console.log(story);
         /* Start with the intro view style */
         map = new mapboxgl.Map({
             container: mapContainer,
@@ -248,64 +230,11 @@
     function moveMap(extent){
         console.log(`Maps:moveMap(extent:${JSON.stringify(extent)}`);
 
-        // mapWidth = parseInt(d3.select("#map-svg").style('width'), 10);
-        // mapHeight = parseInt(d3.select("#map-svg").style('height'), 10);
-        // console.log(`Map width: ${mapWidth}; height: ${mapHeight}`);
-
-
-
-        // const rectGeoJsonExtent = getGeoJsonRect(extent);
-        // var path = d3.geoPath()
-        //     .projection(projection);
-        // const boundsRectExtent = path.bounds(rectGeoJsonExtent);
-
-        // const [[x0, y0], [x1, y1]] = rectGeoJsonExtent; //path.bounds(d);
-        // d3.select(gMap).transition()
-        //     .duration(ZOOM_DURATION)
-        //     .ease(d3.easeCubicOut)
-        //     .call(
-        //         zoom.transform,
-        //         d3.zoomIdentity
-        //             .translate(mapWidth / 2, mapHeight / 2) // I think this is here so that the transform implements the translate to the middle of the screen, not the top/left?
-        //             .scale(0.9 / Math.max((x1 - x0) / mapWidth, (y1 - y0) / mapHeight))
-        //             .translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
-        //     );
-
         map.fitBounds([
             [extent.nwLng, extent.nwLat], // [lng, lat] - southwestern corner of the bounds
             [extent.seLng, extent.seLat] // [lng, lat] - northeastern corner of the bounds
         ]);
 
-    };
-
-
-
-
-    function getGeoJsonRect(extent: {nwLng, nwLat, seLng, seLat}): any{
-        
-        //converts an extent object to a geojson representation of a rectangle
-        // an extent object is something like:
-        // {
-        //     nwLng: -74.33736285,
-        //     nwLat: 40.95368295,
-        //     seLng: -73.62359621,
-        //     seLat: 40.47071658
-        //  }
-        
-        const geoJsonRect = {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "coordinates":[[[extent.nwLng,extent.nwLat],[extent.seLng,extent.nwLat],[extent.seLng,extent.seLat],[extent.nwLng,extent.seLat],[extent.nwLng,extent.nwLat]]],
-                    "type": "Polygon"
-                }
-                }
-            ]
-        };
-        return geoJsonRect;
     };
 
     // Need to use Mercator projection when using tiles, or at least I couldn't get the tiles to work with geoAlbers and the examples in the documentaiton
@@ -382,83 +311,6 @@
         </div>
     {/if}
     <div class="map" bind:this="{mapContainer}" />
-    <!-- <svg bind:this={svgMap} id="map-svg" class:story={story.views[activeViewID].story != null}>
-        <g bind:this={gMap}>   
-            {#if !isLoading }      
-                {#each Object.values(story.maps) as map, i }
-                    {#if (activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id)) }
-                    {#if map.type == "shapefile"}
-                        {#if map.interactive}
-                            <Map 
-                                bind:this={refs[i]}
-                                {activeViewID} {activeEraID} {activeStopID}
-                                url={map.url} 
-                                topoJson={map.topoJson}
-                                topoJsonObjectsName={map.topoJsonObjectsName}
-                                geometryType={map.geometryType? map.geometryType : 'polygons'} 
-                                id={map.id} projection={projection} 
-                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                                interactive={true} 
-                                on:featureMouseOver={onFeatureMouseOver} 
-                                on:featureMouseOut={onFeatureMouseOut} 
-                                on:featureClick={onFeatureClick} 
-                            />
-                        {:else}
-                            <Map 
-                                bind:this={refs[i]}
-                                {activeViewID} {activeEraID} {activeStopID}
-                                url={map.url} 
-                                topoJson={map.topoJson}
-                                topoJsonObjectsName={map.topoJsonObjectsName}
-                                geometryType={map.geometryType? map.geometryType : 'polygons'} 
-                                id={map.id} 
-                                projection={projection} 
-                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                            />
-                        {/if}
-                    {:else if map.type == "tile"}
-                        <TileMap 
-                            bind:this={refs[i]}
-                            urlPath={map.urlPath} 
-                            urlExtension={map.urlExtension} 
-                            projection={projection} 
-                            visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                        />
-                    {:else if map.type == "label"}
-                        {#if map.interactive}
-                            <Labels 
-                                bind:this={refs[i]}
-                                {activeViewID} {activeEraID} {activeStopID}
-                                path={map.path} 
-                                id={map.id} 
-                                projection={projection} 
-                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                                labelField={map.labelField}
-                                filterOnContext={map.filterOnContext} 
-                                interactive={map.interactive}  
-                                on:featureMouseOver={onFeatureMouseOver} 
-                                on:featureMouseOut={onFeatureMouseOut} 
-                                on:featureClick={onFeatureClick} 
-                            />
-                        {:else}
-                            <Labels 
-                                bind:this={refs[i]}
-                                {activeViewID} {activeEraID} {activeStopID}
-                                path={map.path} 
-                                id={map.id} 
-                                projection={projection} 
-                                visible={(activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))} 
-                                labelField={map.labelField}
-                                filterOnContext={map.filterOnContext} 
-                                interactive={map.interactive}  
-                            />
-                        {/if}
-                    {/if}
-                    {/if}
-                {/each}
-            {/if}
-         </g>
-    </svg> -->
 </div>
 
 
@@ -468,17 +320,6 @@
         position: absolute;
         width: 100%;
         height: 100%;
-    }
-
-    #map-svg {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-    }
-
-    #map-svg.story {
-        height: calc(60% - 40px);
     }
 
     #story-narrative-container {
