@@ -94,7 +94,7 @@
 
 
 
-        if (!map.getSource('era-3-labels')) {
+        if (false) { //!map.getSource('era-3-labels')) {
             // map.addSource('era-3-polys', {    
             //     "type": "vector",
             //     "url": "mapbox://fbip.clzuehiws3ed61moip7d0fgxl-10qk7" //era_3_polys

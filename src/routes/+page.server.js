@@ -7,11 +7,11 @@ import Tilesets from '@mapbox/mapbox-sdk/services/tilesets';
 
 import story from '$lib/data/story.json';
 
-export function load({ params }) {
+export async function load({ params }) {
 
     const tilesetsService = Tilesets({ accessToken: MAPBOX_STYLES_AND_TILESETS_TOKEN});
     let tilesets;
-    tilesetsService.listTilesets()
+    await tilesetsService.listTilesets()
         .send()
         .then(
             response => {
@@ -20,17 +20,14 @@ export function load({ params }) {
 
                 const stylesService = Style({ accessToken: MAPBOX_STYLES_AND_TILESETS_TOKEN});
     
-                // List tilesets.
-                // stylesService.listStyles()
-                //     .send()
-                //     .then(response => {console.log(response.body)}, error => {});
-                Object.values(story.views).forEach(view => {
+                Object.values(story.views).forEach(async view => {
                     if (view.mapbox) {
-                        stylesService.getStyle({styleId: view.mapbox.style})
+                        console.log(`For FBIP view: ${view.id}, looking up Mapbox layers for Mapbox style: ${view.mapbox.style}...`)
+                        await stylesService.getStyle({styleId: view.mapbox.style})
                             .send()
                             .then(
                                 response => {
-                                    console.log(response.body);
+                                    // console.log(response.body);
                                     const layers = response.body.layers;
                                     layers.forEach(layer => {
                                         if (layer.source === 'composite'){
@@ -38,7 +35,7 @@ export function load({ params }) {
                                             for (const tileset of tilesets) { //use this version of for so we can break
                                                 if (tileset.name == layer['source-layer']){
                                                     layer.sourceId = tileset.id;
-                                                    console.log(`Found layer: name: ${layer['source-layer']}, id: ${tileset.id}`)
+                                                    console.log(`For FBIP view: ${view.id}, Mapbox style: ${view.mapbox.style},  found a tileset for layer: name: ${layer['source-layer']}, id: ${tileset.id}`)
                                                     break;
                                                 };
                                             };
@@ -46,7 +43,7 @@ export function load({ params }) {
                                     });
                                     view.mapbox.layers = layers;
                                 }, 
-                                error => {}
+                                error => {console.log(`Error: ${error}`)}
                             );
                     }
                 });
