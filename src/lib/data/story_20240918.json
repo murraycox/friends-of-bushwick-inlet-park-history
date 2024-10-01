@@ -115,7 +115,7 @@
             "fbip-labels"
          ],
          "mapbox": {
-            "style": "cm0cny38k004s01qrec87exar"
+            "style": "clyrus3id001f01p973n94p3t"
          },
          "story": [
             {"type":"p", "text":"Bushwick Inlet Park is a 28-acre piece of land that sits along the East River at the juncture of Greenpoint and Williamsburg. The park was created in 2005, a giveback from the City of New York to the residents of North Brooklyn as part of a massive waterfront rezoning that so far has added more than 50,000 new residents to these neighborhoods[WD1] . The design of the park is guided by a master plan design prepared by Donna Walcavage of Stantec and endorsed through a community process in 2007."},
@@ -183,10 +183,7 @@
            "era-1-polys",
            "era-1-lines-the-strand",
            "era-1-labels"
-         ],
-         "mapbox": {
-            "style": "cm0zxu12h00nv01p49jjk6e94"
-         }
+         ]
       },
       "early-european-settlement":{
          "id":"early-european-settlement",
@@ -231,13 +228,13 @@
             {"type":"p", "text":"By 1900, the Williamsburg and Greenpoint waterfronts were fully given over to industrial and distribution operations. At the head of Manhattan Avenue was the Chelsea Manufacturing Co., maker of ropes and ships stores (and a successor to the early history of rope walks). South of there was the Gleason-Tiebot Glass Works (now Glasserie). Clay Street south to Java Street was mostly given over to lumber yards, bringing bulk wood products in via the waterfront for distribution throughout the city. These yards continued in operation through the late 20th century and much of the property is now developed as Greenpoint Landing. South of Greenpoint Avenue was the American Manufacturing Company (better known now as Greenpoint Terminal Market), another rope and ship’s stores manufacturing company. And south of there was the Continental Iron Works, still in operation in 1900. South of the inlet in Williamsburg, Standard Oil and the Williamsburg Gas Light Company continued to operate as described above. Cooperages (barrel factories – barrels were the preferred containers for bulk sugar and other products), distilleries, coal pockets (coal transfer stations) and sugar refineries occupied the waterfront south of North 4th Street. The American Sugar Refining Company (previously Havemeyers, later Domino Sugar) occupied the blocks from Grand Street to South 6th Street (the Williamsburg Bridge was under construction at this time); Mollenhauer’s sugar refinery was located between South 7thStreet and Division Avenue."}
          ]
       },
-      "deindustrialization":{
-         "id":"deindustrialization",
-         "name":"Deindustrialization"
+      "migration":{
+         "id":"migration",
+         "name":"Migration"
       },
-      "the-future":{
-         "id":"the-future",
-         "name":"The Future"
+      "Activism + Deindustrialization":{
+         "id":"activism-deindustrialization",
+         "name":"Activism + Deindustrialization"
       }
     },
     "eras":{
@@ -249,20 +246,20 @@
           "link":null,
           "view": "pre-1600s",
           "chapters":{             
-            "the-creek":{
-               "id":"the-creek",
-               "name":"The Creek",
-               "link":"/era/pre-1600s/the-creek"
+            "geography":{
+               "id":"geography",
+               "name":"Geography",
+               "link":"/era/pre-1600s/geography"
             },
-            "salt-marshes":{
-               "id":"salt-marshes",
-               "name":"Salt Marshes",
-               "link":"/era/pre-1600s/salt-marshes"
+            "waterways":{
+               "id":"waterways",
+               "name":"Waterways",
+               "link":"/era/pre-1600s/waterways"
             },
-            "the-waterfront":{
-               "id":"the-waterfront",
-               "name":"The Waterfront",
-               "link":"/era/pre-1600s/the-waterfront"
+            "the-strand":{
+               "id":"the-strand",
+               "name":"The Strand",
+               "link":"/era/pre-1600s/the-strand"
             },
             "indigenous-population":{
                "id":"indigenous-population",
@@ -282,20 +279,40 @@
                "name":"Bushwick Patent",
                "link":"/era/early-european-settlement/bushwick-patent"
             },
+            "original-settlers":{
+               "id":"original-settlers",
+               "name":"Original Settlers",
+               "link":"/era/early-european-settlement/original-settlers"
+            },
             "bushwick-village":{
                "id":"bushwick-village",
                "name":"Bushwick Village",
                "link":"/era/early-european-settlement/bushwick-village"
             },
-            "the-founding-of-williamsburgh":{
-               "id":"the-founding-of-williamsburgh",
-               "name":"The Founding of Williamsburgh",
-               "link":"/era/early-european-settlement/the-founding-of-williamsburgh"
+            "early-farms":{
+               "id":"early-farms",
+               "name":"Early Farms",
+               "link":"/era/early-european-settlement/early-farms"
+            },
+            "founding-of-williamsburgh":{
+               "id":"founding-of-williamsburgh",
+               "name":"Founding of Williamsburgh",
+               "link":"/era/early-european-settlement/founding-of-williamsburgh"
+            },
+            "williamsburgh-grows":{
+               "id":"williamsburgh-grows",
+               "name":"Williamsburgh Grows",
+               "link":"/era/early-european-settlement/williamsburgh-grows"
             },
             "greenpoint-urbanizes":{
                "id":"greenpoint-urbanizes",
                "name":"Greenpoint Urbanizes",
                "link":"/era/early-european-settlement/greenpoint-urbanizes"
+            },
+            "back-at-the-creek":{
+               "id":"back-at-the-creek",
+               "name":"Back at the-Creek",
+               "link":"/era/early-european-settlement/back-at-the-creek"
             },
             "changing-the-creek":{
                "id":"changing-the-creek",
@@ -306,6 +323,11 @@
                "id":"early-industrialization",
                "name":"Early Industrialization",
                "link":"/era/early-european-settlement/early-industrialization"
+            },
+            "continental-ironworks":{
+               "id":"continental-ironworks",
+               "name":"Continental Ironworks",
+               "link":"/era/early-european-settlement/continental-ironworks"
             },
             "williamsburgh-becomes-a-city":{
                "id":"williamsburgh-becomes-a-city",
@@ -322,57 +344,58 @@
           "link":null,
           "view": "urban-industrial",
           "chapters":{
-             "williamsburg-industrialize":{
-                "id":"williamsburg-industrialize",
-                "name":"Williamsburg Industrialize",
-                "link":"/era/urban-industrial/williamsburg-industrializes"
+             "sugar":{
+                "id":"sugar",
+                "name":"Sugar",
+                "link":"/era/urban-industrial/sugar"
+             },
+             "petroleum":{
+                "id":"petroleum",
+                "name":"Petroleum",
+                "link":"/era/urban-industrial/petroleum"
+             },
+             "coal-tar-gasification":{
+                "id":"coal-tar-gasification",
+                "name":"Coal-tar Gasification",
+                "link":"/era/urban-industrial/coal-tar-gasification"
+             },
+             "shipbuilding-and-ironworks":{
+                "id":"shipbuilding-and-ironworks",
+                "name":"Shipbuilding and Ironworks",
+                "link":"/era/urban-industrial/shipbuilding-and-ironworks"
+             },
+             "the-creek-disappears":{
+                "id":"the-creek-disappears",
+                "name":"The Creek Disappears",
+                "link":"/era/urban-industrial/the-creek-disappears"
+             },
+             "eastern-district-terminal":{
+                "id":"eastern-district-terminal",
+                "name":"Eastern District Terminal",
+                "link":"/era/urban-industrial/eastern-district-terminal"
              },
              "demographics":{
-               "id":"demographics",
-               "name":"Demographics",
-               "link":"/era/urban-industrial/demographics"
-            },
-            "the-creek-disappears":{
-               "id":"the-creek-disappears",
-               "name":"The Creek Disappears",
-               "link":"/era/urban-industrial/the-creek-disappears"
-            },
-            "eastern-district-terminal":{
-               "id":"eastern-district-terminal",
-               "name":"Eastern District Terminal",
-               "link":"/era/urban-industrial/eastern-district-terminal"
-            },
-            "williamsburg-bridge":{
-               "id":"williamsburg-bridge",
-               "name":"Williamsburg Bridge",
-               "link":"/era/urban-industrial/williamsburg-bridge"
-            }
+                "id":"demographics",
+                "name":"Demographics",
+                "link":"/era/urban-industrial/demographics"
+             }
           }
        },
-       "deindustrialization":{
-          "id":"deindustrialization",
-          "name":"Deindustrialization",
+       "migration":{
+          "id":"migration",
+          "name":"Migration",
           "link":null,
-          "view": "deindustrialization",
+          "view": "migration",
           "chapters":{
-            "williamsburg-deindustrializes":{
-               "id":"williamsburg-deindustrializes",
-               "name":"Williamsburg Deindustrializes",
-               "link":"/era/deindustrialization/williamsburg-deindustrializes"
-            },
-            "community-plans-and-other-plans":{
-               "id":"community-plans-and-other-plans",
-               "name":"Community Plans and Other Plans",
-               "link":"/era/deindustrialization/community-plans-and-other-plans"
-            }
           }
        },
-       "the-future":{
-          "id":"the-future",
-          "name":"The Future",
+       "Activism + Deindustrialization":{
+          "id":"activism-deindustrialization",
+          "name":"Activism + Deindustrialization",
           "link":null,
-          "view": "the-future",
+          "view": "activism-deindustrialization",
           "chapters":{
+             
           }
        }
     }

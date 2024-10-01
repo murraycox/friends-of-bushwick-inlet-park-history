@@ -10,6 +10,9 @@
 
     import 'mapbox-gl/dist/mapbox-gl.css';
 
+    import water2_larger_svg from '$lib/images/mapbox/water2_larger.svg';
+    import wetlands_small_svg from '$lib/images/mapbox/wetlands_small.svg';
+
     const MAPBOX_PUBLIC_TOKEN = "pk.eyJ1IjoiZmJpcCIsImEiOiJjbHloaXg2NGYwNHJvMmtvc2w0dzFlNXEwIn0.OCmKB39yza8-rECY_XBQNw"
 
     let map;
@@ -67,32 +70,35 @@
         if (story.views[activeViewID].mapbox && story.views[activeViewID].mapbox.layers) {
             story.views[activeViewID].mapbox.layers.forEach(layer => {
                 if (layer.sourceId){ 
-                    if (map.getSource(layer['source-layer'])){
-                        map.setLayoutProperty(layer.id, 'visibility', 'visible');
-                    } else {
-                        const newSource = {    
-                            "type": "vector",
-                            "url": `mapbox://${layer.sourceId}` //era_3_polys"
+                    if (layer.visibility != 'none'){
+                        if (!map.getSource(layer['source-layer'])){
+                            const newSource = {    
+                                "type": "vector",
+                                "url": `mapbox://${layer.sourceId}` //era_3_polys"
+                            };
+                            map.addSource(layer['source-layer'], newSource);
+                            console.log(`Adding source:${JSON.stringify(newSource)}`); 
+                        }
+                        if (!map.getLayer(`${activeViewID}-${layer.id}`)) {
+                            const newLayer = {
+                                "id": `${activeViewID}-${layer.id}`,
+                                'source': layer['source-layer'],
+                                'source-layer': layer['source-layer'],
+                                "type": layer.type,
+                                "paint": layer.paint
+                            };
+                            if (layer.layout)
+                                newLayer.layout = layer.layout;
+                            console.log(newLayer);
+                            map.addLayer(newLayer);
+                            addedLayers.push(`${activeViewID}-${layer.id}`);
                         };
-                        map.addSource(layer['source-layer'], newSource);
-                        console.log(newSource);
-                        const newLayer = {
-                            "id": layer.id,
-                            'source': layer['source-layer'],
-                            'source-layer': layer['source-layer'],
-                            "type": layer.type,
-                            "paint": layer.paint
-                        };
-                        console.log(newLayer);
-                        map.addLayer(newLayer);
-                        addedLayers.push(layer.id);
+                        map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', layer.visibility); //should be 'visible', but may be hidden in the MapBox style?
                     };
                 };
                 
             });
         }
-
-
 
         if (false) { //!map.getSource('era-3-labels')) {
             // map.addSource('era-3-polys', {    
@@ -164,15 +170,9 @@
                 }
             });
             map.setLayoutProperty('era-3-labels', 'visibility', 'none');
-
-
-
             
         };
 
-        if (activeViewID == 'urban-industrial'){
-            map.setLayoutProperty('era-3-labels', 'visibility', 'visible');
-        }
 
         // Move the map
         if (story.views[activeViewID].extent){
@@ -214,6 +214,27 @@
             style: story.baseMap.mapbox.style, //'mapbox://styles/fbip/cm03wuvt700av01qve4td1x0q', //story.views.intro.mapbox.style, // `mapbox://styles/fbip/clyhpvk0l01mp01qohk3w15tr`,
             center: [initialState.lng, initialState.lat],
             zoom: initialState.zoom
+        });
+
+        map.on('load', function () {
+
+            //water2_larger
+            //wetlands_small
+            let water2_larger_img = new Image(30,30);
+            water2_larger_img.onload = ()=>map.addImage('water2_larger', water2_larger_img);
+            water2_larger_img.src = water2_larger_svg;
+
+            let wetlands_small_img = new Image(30,30);
+            wetlands_small_img.onload = ()=>map.addImage('wetlands_small', wetlands_small_img);
+            wetlands_small_img.src = wetlands_small_svg;
+
+            onNavigate({
+                detail: {
+                    viewID: "intro",
+                    eraID: null
+                }
+            });
+
         });
 
     });
@@ -280,16 +301,25 @@
 <div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}"
     style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
 >
-    {#if activeEraID }
+    <div id="header">
         <div id="story-context-container">
-            <div id="era-short-label">
-                {story.eras[activeEraID].shortLabel}
-            </div>
-            <div id="era-long-label">
-                {story.eras[activeEraID].longLabel}
-            </div>
+            {#if activeEraID }
+                <!-- <div id="era-short-label">
+                    {story.eras[activeEraID].shortLabel}
+                </div> -->
+                <div id="era-long-label">
+                    {story.eras[activeEraID].longLabel}
+                </div>
+            {:else}
+                <div id="era-long-label">
+                    Introduction
+                </div>
+            {/if}
         </div>
-    {/if}
+        <div id="header-logo">
+            <img src="images/fbip_logo_wh.png" alt="Friends of Bushwick Inlet Park Logo" />
+        </div>
+    </div>
     {#if story.views[activeViewID].story}
         <div id="story-narrative-container">
             <div id="story-narrative">
@@ -312,14 +342,28 @@
     {/if}
     <div class="map" bind:this="{mapContainer}" />
 </div>
-
-
 <style>
 
     #map, .map {
         position: absolute;
         width: 100%;
         height: 100%;
+    }
+
+    #header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        height: 75px;
+        background-color: #ffffff66;
+        z-index: 88;
+    }
+
+    #header-logo {
+        text-align: right;
+        margin: 10px 40px;
     }
 
     #story-narrative-container {
@@ -339,9 +383,6 @@
         overflow-y: auto;
     }
 
-    #story-context-container {
-        display: none;
-    }
 
     #story-narrative {
         padding: 5px 10px;
@@ -370,27 +411,27 @@
         color: var(--color-era-pre-1600s) !important;
     }
 
-    .era-pre-1600s #era-short-label {
+    /* .era-pre-1600s #era-short-label {
         background-color: var(--color-era-pre-1600s) !important;
-    }
+    } */
 
     /* Styles for .era-early-european-settlement */
     .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2, .era-early-european-settlement #era-long-label {
         color: var(--color-era-early-european-settlement) !important;
     }    
 
-    .era-early-european-settlement #era-short-label {
+    /* .era-early-european-settlement #era-short-label {
         background-color: var(--color-era-early-european-settlement) !important;
-    }
+    } */
 
     /* Styles for .era-urban-industrial-era */
     .era-urban-industrial #story-narrative h1, .era-urban-industrial #story-narrative h2, .era-urban-industrial #era-long-label {
-        color: var(--color-era-urban-industrial);
+        color: var(--color-era-urban-industrial) !important;
     } 
 
-    .era-urban-industrial #era-short-label {
+    /* .era-urban-industrial #era-short-label {
         background-color: var(--color-era-urban-industrial) !important;
-    }
+    } */
     
     /* Styles for .era-migration */
     .era-era-migration #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
@@ -410,7 +451,7 @@
         }
 
         #story-narrative-container {
-            top: 44px;
+            top: 100px;
             right: 40px;
             background-color:rgba(255,255,255,0.8);
             border: 1px solid lightgray;
@@ -424,24 +465,16 @@
             display: block;
             position: absolute;
             z-index: 999;
-            top: 50px;
+            top: 15px;
             height: 50px;
             left: 110px;
         }
 
         #story-context-container #era-short-label, #story-context-container #era-long-label {
-            display: inline-block;
-            font-size: 1.1em;
-            font-weight: 600;
-        }
-
-
-        #story-context-container #era-short-label {
-            background-color: lightgrey;
-            color: white;
-            border-radius: 50px;
-            padding: 0 10px;
-            margin-right: 10px;
+            /* display: inline-block; */
+            font-size: 2em;
+            font-weight: 700;
+            color: darkgray;
         }
 
     }

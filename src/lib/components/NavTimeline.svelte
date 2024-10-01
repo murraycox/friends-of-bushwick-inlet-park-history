@@ -46,8 +46,8 @@
 
     const TIMELINE_ANCHOR_LENGTH = 20;
 
-    const TIMELINE_CHAPTER_RADIUS = 4;
-    const TIMELINE_ERA_RADIUS = 6;
+    const TIMELINE_CHAPTER_RADIUS = 5;
+    const TIMELINE_ERA_RADIUS = 7;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
     const TIMELINE_TITLE_WIDTH = 80;
@@ -363,13 +363,13 @@
     }
     
     /* Styles for .era-migration */
-    #timeline circle.era-migration, .timeline-title-container.era-migration  {
+    #timeline circle.era-deindustrialization, .timeline-title-container.era-deindustrialization  {
         fill: #D0B000;
         background-color: #D0B000; /* for div */
     } 
 
     /* Styles for .era-activism-deindustrialization */
-    #timeline circle.era-activism-deindustrialization, .timeline-title-container.era-activism-deindustrialization {
+    #timeline circle.era-the-future, .timeline-title-container.era-the-future {
         fill: #E36900;
         background-color: #E36900; /* for div */
     }

@@ -113,29 +113,29 @@
     }
     
     /* Styles for .era-migration */
-    .era-migration .story-navigation-button {
+    .era-deindustrialization .story-navigation-button {
         background-image: url($lib/images/icons/era4_icon_D0B000.svg);
         border-color: #D0B000;
     }
     
-    .era-migration:hover .story-navigation-button {
+    .era-deindustrialization:hover .story-navigation-button {
         background-image: url($lib/images/icons/era4_icon_D0B000_inverted.svg);
     }
 
-    .story-navigation-button-and-label.era-migration, .story-navigation-button-and-label.era-migration:hover .story-navigation-button {
+    .story-navigation-button-and-label.era-deindustrialization, .story-navigation-button-and-label.era-deindustrialization:hover .story-navigation-button {
         background-color: #D0B000;
     }
 
     /* Styles for .era-activism-deindustrialization */
-    .era-activism-deindustrialization .story-navigation-button {
+    .era-the-future .story-navigation-button {
         background-image: url($lib/images/icons/era5_icon_E36900.svg);
         border-color: #E36900;
     }
-    .era-activism-deindustrialization.active .story-navigation-button, .era-activism-deindustrialization:hover .story-navigation-button {
+    .era-the-future.active .story-navigation-button, .era-the-future:hover .story-navigation-button {
         background-image: url($lib/images/icons/era5_icon_E36900_inverted.svg);
     }
 
-    .story-navigation-button-and-label.era-activism-deindustrialization, .era-activism-deindustrialization.active .story-navigation-button, .era-activism-deindustrialization:hover .story-navigation-button {
+    .story-navigation-button-and-label.era-the-future, .era-the-future.active .story-navigation-button, .era-the-future:hover .story-navigation-button {
         background-color: #E36900;
     }
 

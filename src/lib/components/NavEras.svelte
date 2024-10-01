@@ -66,12 +66,12 @@
         on:navigate={onNavigate}
     />
     <NavErasButton
-        eraID="migration"
+        eraID="deindustrialization"
         labelText="1950-2005"
         on:navigate={onNavigate}
     />
     <NavErasButton
-        eraID="activism-deindustrialization"
+        eraID="the-future"
         labelText="2005-Future"
         on:navigate={onNavigate}
     />
