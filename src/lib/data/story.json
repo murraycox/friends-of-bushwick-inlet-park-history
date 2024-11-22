@@ -186,7 +186,11 @@
          ],
          "mapbox": {
             "style": "cm0zxu12h00nv01p49jjk6e94"
-         }
+         },
+         "story": [
+            {"type":"h", "text":"400 years ago"},
+            {"type":"p", "text":"Much of what would someday be Bushwick Inlet Park was underwater. The high-water line south of the inlet was located just west of Kent Avenue, while north of the inlet the high-water line was east of West Street. The mouth of the inlet extended from North 12th Street to Meserole Avenue, and the inlet itself extended inland along the line of North 15th Street to Nassau Avenue and Banker Street (Banker’s Anchor)."}
+         ]
       },
       "early-european-settlement":{
          "id":"early-european-settlement",
@@ -203,7 +207,10 @@
          ],
          "mapbox": {
             "style": "clyhpvk0l01mp01qohk3w15tr"
-         }
+         },
+         "story": [
+            {"type":"p", "text":"In 1855, the town of Bushwick (which at that time included all of Greenpoint) and the (newly minted) City of Williamsburgh became part of the City of Brooklyn. For the 235 years prior to the merger, what we now call North Brooklyn existed as a physically and politically separate place, growing from settlements of a few dozen families to (in the case of Williamsburgh) a city of over 50,000 people. Most of that growth happened in the 30 or so years from 1825 to 1855 – for the two centuries prior to that Williamsburg, Greenpoint and Bushwick were thinly populated agricultural communities heavily reliant on enslaved labor serving the city of New York across the East River."}
+         ]
       },
       "urban-industrial":{
          "id":"urban-industrial",
@@ -274,6 +281,8 @@
        "early-european-settlement":{
           "id":"early-european-settlement",
           "name":"Early European Settlement",
+          "shortLabel": "1620-1855",
+          "longLabel": "Early European Settlement",
           "link":null,
           "view": "early-european-settlement",
           "chapters":{
