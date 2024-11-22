@@ -26,6 +26,15 @@
             <h1>{data.chapter.name}</h1>
         </div>
         {@html data.chapter.content}
+        <div id="story-footer-navigation">
+            <div id="story-footer-navigation-back">
+                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">Previous chapter or back to era map</div>
+            </div>
+            <div id="story-footer-navigation-next">
+                <div id="story-footer-navigation-next-label">GO TO THE NEXT CHAPTER</div>
+                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter name</div>
+            </div>
+        </div>
     </div>
     <div class="story-narrative-footer"></div>
 </div>
@@ -37,12 +46,41 @@
 
 <style>
 
+    #story-footer-navigation {
+        margin-top: 360px;
+        font-size: .7em;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    #story-footer-navigation-next {
+        /* push this div to the right in the parent flexbox */
+        justify-content: flex-end;
+        margin-left: auto;
+        /* this is also a flexbox */
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    #story-footer-navigation-next-label {
+        margin-right: 10px;
+    }
+
+    .story-footer-navigation-button {
+        background-color: grey;
+        color: white;
+        border-radius: 99px; /* large border to make ends round */
+        padding: 5px 15px;
+    }
+
     #story-narrative-content, #story-controller, #story-narrative {
     font-family: 'Public Sans', sans-serif;
     }
 
     .story-narrative-footer {
-        margin-top: 360px;
+        margin-top: 80px;
         height: 500px;
         width: 100%;
         /* background-image: url("../images/brick_pattern_2.svg"); */
@@ -94,37 +132,36 @@
     }
 
     #story-context-container h1 {
-        display: inline-block;
+        line-height: 1;
     }
 
     #story-context-container #era-short-label {
-        display: inline-block;
-        font-size: 1.1em;
-        font-weight: 600;
+        line-height: 1;
+        font-size: 0.8em;
     }
 
-    #story-context-container #era-short-label {
-        background-color: lightgrey;
-        color: white;
-        border-radius: 50px;
-        padding: 0 10px;
-        margin-right: 10px;
+	.era-pre-1600s #story-narrative #story-context-container, .era-pre-1600s #story-narrative :global(h1) {
+		color: var(--color-era-pre-1600s);
     }
 
-	.era-pre-1600s #story-narrative :global(h1) {
-		color: var(--color-era-pre-1600s)
+    .era-pre-1600s .story-footer-navigation-button {
+        background-color: var(--color-era-pre-1600s);
     }
 
-    .era-pre-1600s #era-short-label {
-        background-color: var(--color-era-pre-1600s) !important;
+	.era-early-european-settlement #story-narrative #story-context-container, .era-early-european-settlement #story-narrative :global(h1) {
+		color: var(--color-era-early-european-settlement);
     }
 
-	.era-urban-industrial #story-narrative :global(h1) {
-		color: var(--color-era-urban-industrial)
+    .era-early-european-settlement .story-footer-navigation-button {
+        background-color: var(--color-era-early-european-settlement);
     }
 
-    .era-urban-industrial #era-short-label {
-        background-color: var(--color-era-urban-industrial) !important;
+	.era-urban-industrial #story-narrative #story-context-container, .era-urban-industrial #story-narrative :global(h1) {
+		color: var(--color-era-urban-industrial);
+    }
+
+    .era-urban-industrial .story-footer-navigation-button {
+        background-color: var(--color-era-urban-industrial);
     }
 
     #story-narrative :global(h2) {
