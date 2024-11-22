@@ -32,12 +32,43 @@
     export let story = {};
 
     export function onChapterMouseOver(event){
-        console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
-        // TODO Broadcast events to all or just some maps
-        refs.forEach(ref => {
-            if (ref.onChapterMouseOver)
-                ref.onChapterMouseOver(event);
-        });
+        console.log("MapsMapbox:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
+        //change style of features associated with the chapter, if it's on the screen
+        // map.setFeatureState(
+        //     {
+        //         source: 'era_1_labels',
+        //         sourceLayer: 'era_1_labels',
+        //         id: 5,
+        //     },
+        //     {hover: true}
+        // );
+
+        // map.setFilter(
+        //     'pre-1600s-era-1-labels', 
+        //     ['==', 'chapter', event.detail.id]
+        // ); //e.g. 'the-creek'
+
+        map.setFilter(
+            'pre-1600s-era-1-labels', 
+            [
+                "all",
+                [
+                    "match",
+                    ["get", "when-visib"],
+                    ["hover"],
+                    true,
+                    false
+                ],
+                [
+                    "match",
+                    ["get", "chapter"],
+                    [event.detail.id],
+                    true,
+                    false
+                ]
+            ]
+        );
+
 
     };
 
@@ -68,36 +99,40 @@
             map.setLayoutProperty(addedLayer, 'visibility', 'none');
         });
         if (story.views[activeViewID].mapbox && story.views[activeViewID].mapbox.layers) {
+            let debugMapboxLayersForActiveView = "";
             story.views[activeViewID].mapbox.layers.forEach(layer => {
                 if (layer.sourceId){ 
                     if (layer.visibility != 'none'){
-                        if (!map.getSource(layer['source-layer'])){
-                            const newSource = {    
-                                "type": "vector",
-                                "url": `mapbox://${layer.sourceId}` //era_3_polys"
+                        if (!layer.layout || (layer.layout && layer.layout.visibility != 'none')){
+                            debugMapboxLayersForActiveView += layer['source-layer'] + '\n'
+                            if (!map.getSource(layer['source-layer'])){
+                                const newSource = {    
+                                    "type": "vector",
+                                    "url": `mapbox://${layer.sourceId}` //era_3_polys"
+                                };
+                                map.addSource(layer['source-layer'], newSource);
+                                console.log(`Adding source:${JSON.stringify(newSource)}`); 
+                            }
+                            if (!map.getLayer(`${activeViewID}-${layer.id}`)) {
+                                const newLayer = {
+                                    "id": `${activeViewID}-${layer.id}`,
+                                    'source': layer['source-layer'],
+                                    'source-layer': layer['source-layer'],
+                                    "type": layer.type,
+                                    "paint": layer.paint
+                                };
+                                if (layer.layout)
+                                    newLayer.layout = layer.layout;
+                                console.log(newLayer);
+                                map.addLayer(newLayer);
+                                addedLayers.push(`${activeViewID}-${layer.id}`);
                             };
-                            map.addSource(layer['source-layer'], newSource);
-                            console.log(`Adding source:${JSON.stringify(newSource)}`); 
-                        }
-                        if (!map.getLayer(`${activeViewID}-${layer.id}`)) {
-                            const newLayer = {
-                                "id": `${activeViewID}-${layer.id}`,
-                                'source': layer['source-layer'],
-                                'source-layer': layer['source-layer'],
-                                "type": layer.type,
-                                "paint": layer.paint
-                            };
-                            if (layer.layout)
-                                newLayer.layout = layer.layout;
-                            console.log(newLayer);
-                            map.addLayer(newLayer);
-                            addedLayers.push(`${activeViewID}-${layer.id}`);
+                            map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', layer.visibility); //should be 'visible', but may be hidden in the MapBox style?
                         };
-                        map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', layer.visibility); //should be 'visible', but may be hidden in the MapBox style?
                     };
-                };
-                
+                };                
             });
+            console.log(`Mapbox Layers for View ${activeViewID}:\n${debugMapboxLayersForActiveView}`)
         }
 
         if (false) { //!map.getSource('era-3-labels')) {
@@ -483,6 +518,10 @@
 
         #story-narrative-container {
             right: 80px;
+        }
+
+        #story-context-container {
+            left: 150px;
         }
 
     }
