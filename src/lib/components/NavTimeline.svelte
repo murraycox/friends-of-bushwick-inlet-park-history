@@ -46,7 +46,7 @@
 
     const TIMELINE_ANCHOR_LENGTH = 20;
 
-    const TIMELINE_CHAPTER_RADIUS = 5;
+    const TIMELINE_CHAPTER_RADIUS = 6;
     const TIMELINE_ERA_RADIUS = 7;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
