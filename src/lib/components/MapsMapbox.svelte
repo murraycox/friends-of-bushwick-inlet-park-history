@@ -48,37 +48,35 @@
         //     ['==', 'chapter', event.detail.id]
         // ); //e.g. 'the-creek'
 
-        map.setFilter(
-            'pre-1600s-era-1-labels', 
-            [
-                "all",
-                [
-                    "match",
-                    ["get", "when-visib"],
-                    ["hover"],
-                    true,
-                    false
-                ],
-                [
-                    "match",
-                    ["get", "chapter"],
-                    [event.detail.id],
-                    true,
-                    false
-                ]
-            ]
-        );
 
-
+        story.views[activeViewID].mapbox.layers.forEach(layer => {
+            if (layer.id.substring(0, 2) == "h-") {
+                console.log(`Sending hover vibes to layer ${layer.id}`);
+                map.setFilter(
+                    `${activeViewID}-${layer.id}`, 
+                    [
+                        "match",
+                        ["get", "chapter"],
+                        [event.detail.id],
+                        true,
+                        false
+                    ]
+                );
+                map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'visible'); //should be 'visible', but may be hidden in the MapBox style?
+            };
+        });
     };
 
     export function onChapterMouseLeave(event){
         console.log("Maps:onChapterMouseLeave(event:" + JSON.stringify(event.detail) + ")");
-        // TODO Broadcast events to all or just some maps
-        refs.forEach(ref => {
-            if (ref.onChapterMouseLeave)
-                ref.onChapterMouseLeave(event);
+
+        story.views[activeViewID].mapbox.layers.forEach(layer => {
+            if (layer.id.substring(0, 2) == "h-") {
+                console.log(`Removing hover vibes from layer ${layer.id}`);
+                map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'none'); //should be 'visible', but may be hidden in the MapBox style?
+            };
         });
+        
     };
 
     export function onNavigate(event){
@@ -103,8 +101,8 @@
             story.views[activeViewID].mapbox.layers.forEach(layer => {
                 if (layer.sourceId){ 
                     if (layer.visibility != 'none'){
-                        if (!layer.layout || (layer.layout && layer.layout.visibility != 'none')){
-                            debugMapboxLayersForActiveView += layer['source-layer'] + '\n'
+                        if (layer.id.substring(0,2) == 'h-' || !layer.layout || (layer.layout && layer.layout.visibility != 'none')){
+                            debugMapboxLayersForActiveView += layer['source-layer'] + '\n';
                             if (!map.getSource(layer['source-layer'])){
                                 const newSource = {    
                                     "type": "vector",
@@ -127,87 +125,15 @@
                                 map.addLayer(newLayer);
                                 addedLayers.push(`${activeViewID}-${layer.id}`);
                             };
-                            map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', layer.visibility); //should be 'visible', but may be hidden in the MapBox style?
+                            if (layer.id.substring(0,2) != 'h-'){
+                                map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', layer.visibility); //should be 'visible', but may be hidden in the MapBox style?
+                            };
                         };
                     };
                 };                
             });
             console.log(`Mapbox Layers for View ${activeViewID}:\n${debugMapboxLayersForActiveView}`)
         }
-
-        if (false) { //!map.getSource('era-3-labels')) {
-            // map.addSource('era-3-polys', {    
-            //     "type": "vector",
-            //     "url": "mapbox://fbip.clzuehiws3ed61moip7d0fgxl-10qk7" //era_3_polys
-            // });
-            // map.addLayer({
-            //     "id": "era-3-polys",
-            //     'source': 'era-3-polys',
-            //     'source-layer': 'era_3_polys',
-            //     "type": "fill",
-            //     "paint": {
-            //     "fill-emissive-strength": 1,
-            //     "fill-color": "rgba(255, 255, 255, 0)",
-            //     "fill-outline-color": "#b658fe",
-            //     "fill-pattern": [
-            //         "match",
-            //         [
-            //         "get",
-            //         "chapter"
-            //         ],
-            //         [
-            //         "01",
-            //         "03"
-            //         ],
-            //         "lines_purple_45",
-            //         [
-            //         "step",
-            //         [
-            //             "id"
-            //         ],
-            //         "lines_purple_hatch",
-            //         1,
-            //         "lines_purple_hatch"
-            //         ]
-            //     ]
-            //     }
-            // });
-
-
-
-            map.addSource('era-3-labels', {    
-                "type": "vector",
-                "url": "mapbox://fbip.clzueqatu71po1mo56ryrbjl1-9rohu" //era_3_labels
-            });
-            map.addLayer(  {
-                "id": "era-3-labels",
-                "source": "era-3-labels",
-                "source-layer": "era_3_labels",
-                "type": "symbol",
-                "paint": {
-                "text-color": "#7f2ead",
-                "text-halo-color": "rgba(255, 255, 255, 0.88)",
-                "text-halo-width": 1,
-                "text-halo-blur": 0.5
-                },
-                "layout": {
-                "text-field": [
-                    "to-string",
-                    [
-                    "get",
-                    "label"
-                    ]
-                ],
-                "text-font": [
-                    "Source Sans Pro Bold",
-                    "Arial Unicode MS Regular"
-                ]
-                }
-            });
-            map.setLayoutProperty('era-3-labels', 'visibility', 'none');
-            
-        };
-
 
         // Move the map
         if (story.views[activeViewID].extent){
