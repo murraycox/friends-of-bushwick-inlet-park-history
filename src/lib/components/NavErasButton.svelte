@@ -73,7 +73,7 @@
 
     /* Styles for .era-pre-colonial */
     .era-pre-1600s .story-navigation-button {
-        background-image: url($lib/images/icons/era1_icon_5199C7.svg);
+        background-image: url($lib/images/icons/era1_icon_grey.svg);
         border-color: #5199C7;
     }
     .era-pre-1600s.active .story-navigation-button, .era-pre-1600s:hover .story-navigation-button {
@@ -86,12 +86,12 @@
 
     /* Styles for .era-early-european-settlement */
     .era-early-european-settlement .story-navigation-button {
-        background-image: url($lib/images/icons/era2_icon_70AC00.svg);
-        border-color: #70AC00;
+        background-image: url($lib/images/icons/era2_icon_grey.svg);
     }
     
     .era-early-european-settlement.active .story-navigation-button, .era-early-european-settlement:hover .story-navigation-button {
         background-image: url($lib/images/icons/era2_icon_70AC00_inverted.svg);
+        border-color: #70AC00;
     }
 
     .story-navigation-button-and-label.era-early-european-settlement, .era-early-european-settlement.active .story-navigation-button, .era-early-european-settlement:hover .story-navigation-button {
@@ -100,12 +100,12 @@
   
     /* Styles for .era-urban-industrial */
     .era-urban-industrial .story-navigation-button {
-        background-image: url($lib/images/icons/era3_icon_9762AF.svg);
-        border-color: #9762AF;
+        background-image: url($lib/images/icons/era3_icon_grey.svg);
     }
     
     .era-urban-industrial.active .story-navigation-button, .era-urban-industrial:hover .story-navigation-button {
         background-image: url($lib/images/icons/era3_icon_9762AF_inverted.svg);
+        border-color: #9762AF;
     }
 
     .story-navigation-button-and-label.era-urban-industrial, .era-urban-industrial.active .story-navigation-button, .era-urban-industrial:hover .story-navigation-button {
@@ -114,12 +114,12 @@
     
     /* Styles for .era-migration */
     .era-deindustrialization .story-navigation-button {
-        background-image: url($lib/images/icons/era4_icon_D0B000.svg);
-        border-color: #D0B000;
+        background-image: url($lib/images/icons/era4_icon_grey.svg);
     }
     
     .era-deindustrialization:hover .story-navigation-button {
         background-image: url($lib/images/icons/era4_icon_D0B000_inverted.svg);
+        border-color: #D0B000;
     }
 
     .story-navigation-button-and-label.era-deindustrialization, .story-navigation-button-and-label.era-deindustrialization:hover .story-navigation-button {
@@ -128,11 +128,11 @@
 
     /* Styles for .era-activism-deindustrialization */
     .era-the-future .story-navigation-button {
-        background-image: url($lib/images/icons/era5_icon_E36900.svg);
-        border-color: #E36900;
+        background-image: url($lib/images/icons/era5_icon_grey.svg);
     }
     .era-the-future.active .story-navigation-button, .era-the-future:hover .story-navigation-button {
         background-image: url($lib/images/icons/era5_icon_E36900_inverted.svg);
+        border-color: #E36900;
     }
 
     .story-navigation-button-and-label.era-the-future, .era-the-future.active .story-navigation-button, .era-the-future:hover .story-navigation-button {
