@@ -174,7 +174,8 @@
             accessToken: MAPBOX_PUBLIC_TOKEN,
             style: story.baseMap.mapbox.style, //'mapbox://styles/fbip/cm03wuvt700av01qve4td1x0q', //story.views.intro.mapbox.style, // `mapbox://styles/fbip/clyhpvk0l01mp01qohk3w15tr`,
             center: [initialState.lng, initialState.lat],
-            zoom: initialState.zoom
+            zoom: initialState.zoom,
+            logoPosition: 'bottom-right'
         });
 
         map.on('load', function () {
@@ -412,10 +413,10 @@
         }
 
         #story-narrative-container {
-            top: 100px;
-            right: 40px;
+            top: 90px;
+            right: 20px;
             background-color:rgba(255,255,255,0.8);
-            border: 1px solid lightgray;
+            border: 1px solid gray;
             border-radius: 15px;
             height: 60%;
             width: 30%;
@@ -440,7 +441,7 @@
 
     }
 
-    @media screen and (min-width: 1200px) {
+    /* @media screen and (min-width: 1200px) {
 
         #story-narrative-container {
             right: 80px;
@@ -450,6 +451,6 @@
             left: 150px;
         }
 
-    }
+    } */
 
 </style>
