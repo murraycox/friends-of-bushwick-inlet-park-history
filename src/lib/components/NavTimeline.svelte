@@ -46,8 +46,8 @@
 
     const TIMELINE_ANCHOR_LENGTH = 20;
 
-    const TIMELINE_CHAPTER_RADIUS = 6;
-    const TIMELINE_ERA_RADIUS = 7;
+    const TIMELINE_CHAPTER_RADIUS = 9;
+    const TIMELINE_ERA_RADIUS = 12;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
     const TIMELINE_TITLE_WIDTH = 80;
@@ -203,8 +203,9 @@
                         class:era={(eraOrActiveChapter.type == "era")}
                         class:chapter={(eraOrActiveChapter.type == "chapter")}
                         class="{`era-${eraOrActiveChapter.type == "era"? eraOrActiveChapter.id : eraOrActiveChapter.eraID }`}"
+                        class:active-era={((eraOrActiveChapter.type == "era" && eraOrActiveChapter.id == activeEraID) || (eraOrActiveChapter.type == "chapter" && eraOrActiveChapter.eraID == activeEraID))}
                         stroke-width=1
-                        stroke="grey"
+                        stroke="#707070"
                         on:mouseover={() => onMouseOver(eraOrActiveChapter.id)}
                         on:mouseleave={() => onMouseLeave(eraOrActiveChapter.id)}
                         on:click={() => {
@@ -237,11 +238,11 @@
     #timeline-container {
         font-family: 'Public Sans', sans-serif;
         position: absolute;
-        bottom: 25px;
+        bottom: 10px;
         right: 300px;
         max-width: 600px;
-        min-width: 300px;
-        width: calc(35%);
+        min-width: 400px;
+        width: calc(30%);
         /* box-sizing: border-box; */
         height: 95px;
     }
@@ -288,6 +289,8 @@
     :global(#timeline .timeline-background) {
         fill: white;
         fill-opacity: 0.4;
+        stroke-width: 1px;
+        stroke: lightgrey;
     }
 
     /* Styles for .era-pre-colonial */
@@ -345,31 +348,36 @@
     }
 
     /* Styles for .era-pre-colonial */
-    #timeline circle.era-pre-1600s, .timeline-title-container.era-pre-1600s {
+    #timeline circle {
+        fill: #9D9D9D; /* for circle */
+    }
+
+    /* Styles for .era-pre-colonial */
+    #timeline circle.active-era.era-pre-1600s, .timeline-title-container.era-pre-1600s {
         fill: #5199C7; /* for circle */
         background-color: #5199C7; /* for div */
     }
 
     /* Styles for .era-early-european-settlement */
-    #timeline circle.era-early-european-settlement, .timeline-title-container.era-early-european-settlement {
+    #timeline circle.active-era.era-early-european-settlement, .timeline-title-container.era-early-european-settlement {
         fill: #70AC00;
         background-color: #70AC00; /* for div */
     }    
 
     /* Styles for era-urban-industrial-era */
-    #timeline circle.era-urban-industrial, .timeline-title-container.era-urban-industrial {
+    #timeline circle.active-era.era-urban-industrial, .timeline-title-container.era-urban-industrial {
         fill: #9762AF;
         background-color: #9762AF; /* for div */
     }
     
     /* Styles for .era-migration */
-    #timeline circle.era-deindustrialization, .timeline-title-container.era-deindustrialization  {
+    #timeline circle.active-era.era-deindustrialization, .timeline-title-container.era-deindustrialization  {
         fill: #D0B000;
         background-color: #D0B000; /* for div */
     } 
 
     /* Styles for .era-activism-deindustrialization */
-    #timeline circle.era-the-future, .timeline-title-container.era-the-future {
+    #timeline circle.active-era.era-the-future, .timeline-title-container.era-the-future {
         fill: #E36900;
         background-color: #E36900; /* for div */
     }
@@ -408,17 +416,17 @@
     /* Mobile first positioning */
 
     #timeline-container {
-        left: 40px;
+        left: 20px;
     }
 
-    @media screen and (min-width: 1200px) {
+    /* @media screen and (min-width: 1200px) {
 
         #timeline-container {
             left: 80px;
         }
     
 
-    }
+    } */
 
 
 </style>

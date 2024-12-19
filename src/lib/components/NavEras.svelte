@@ -105,8 +105,8 @@
     @media (min-width: 768px){
   
         #story-navigation {
-            left: 40px;
-            top: 44px;
+            left: 20px;
+            top: 24px;
             width: fit-content;
             flex-direction: column;
             background-color: inherit;
@@ -116,12 +116,12 @@
 
     }
     
-    @media (min-width: 1200px){
+    /* @media (min-width: 1200px){
 
         #story-navigation {
             left: 80px;
         } 
 
-    }
+    } */
 
 </style>
