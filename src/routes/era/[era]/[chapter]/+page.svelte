@@ -8,6 +8,21 @@
 
 	export let data; //Get data from +page.server.js
 
+    // Get the previous and next chapter (if they exist)
+    // Get the current era in the context of the "story"
+    const thisEra = story.eras[$page.params.era];
+    const thisChapter = thisEra.chapters[$page.params.chapter];
+    let thisChapterIndexInStory = null;
+    const thisEraChapterArray = Object.values(thisEra.chapters);
+    thisEraChapterArray.forEach((chapter, index) => {
+        console.log(`chapter: ${JSON.stringify(chapter)}, index: ${index}`);
+        if (chapter.id == thisChapter.id) 
+            thisChapterIndexInStory = index;
+    });
+    console.log(`thisChapterIndexInStory: ${thisChapterIndexInStory}`);
+    const lastChapter = thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1];
+    const nextChapter = thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1];
+
 </script>
 
 <NavEras 
@@ -28,11 +43,12 @@
         {@html data.chapter.content}
         <div id="story-footer-navigation">
             <div id="story-footer-navigation-back">
-                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">Previous chapter or back to era map</div>
+                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">{lastChapter ? lastChapter.name : "back to era map"}</div>
             </div>
             <div id="story-footer-navigation-next">
                 <div id="story-footer-navigation-next-label">GO TO THE NEXT CHAPTER</div>
-                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter name</div>
+                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}</div>
+                <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
             </div>
         </div>
     </div>
