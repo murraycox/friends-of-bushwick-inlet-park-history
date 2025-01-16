@@ -284,21 +284,25 @@
     </div>
     {#if story.views[activeViewID].story}
         <div id="story-narrative-container">
-            <div id="story-narrative">
-                <h1 use:onScroll={onStop}>
-                    {story.views[activeViewID].name}
-                </h1>
-                    {#each story.views[activeViewID].story as storyElement}
-                        {#if storyElement.type == "h"}
-                            {#if storyElement.stop}
-                                <h2 use:onScroll={onStop} data-id={storyElement.stop}>{@html storyElement.text}</h2>
-                            {:else}
-                                <h2>{@html storyElement.text}</h2>
+            <div id="story-narrative-viewport">
+                <div id="story-narrative">
+                    <h1 use:onScroll={onStop}>
+                        {story.views[activeViewID].name}
+                    </h1>
+                        {#each story.views[activeViewID].story as storyElement}
+                            {#if storyElement.type == "h"}
+                                {#if storyElement.stop}
+                                    <h2 use:onScroll={onStop} data-id={storyElement.stop}>{@html storyElement.text}</h2>
+                                {:else}
+                                    <h2>{@html storyElement.text}</h2>
+                                {/if}
+                            {:else if storyElement.type == "p"}
+                                <p>{@html storyElement.text}</p>
                             {/if}
-                        {:else if storyElement.type == "p"}
-                            <p>{@html storyElement.text}</p>
-                        {/if}
-                    {/each}
+                        {/each}
+                </div>
+            </div>
+            <div id="story-narrative-button-down">
             </div>
         </div>
     {/if}
@@ -336,6 +340,14 @@
         height: 40%;
         width: 100%;
         border-bottom: 1px solid lightgray;
+    }
+
+    #story-narrative-viewport {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         opacity: 0.9;
         background-color: white;
         padding: 10px;
@@ -348,6 +360,16 @@
 
     #story-narrative {
         padding: 5px 10px;
+    }
+
+    #story-narrative-button-down {
+        height: 48px;
+        width: 48px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        background-image: url($lib/images/icons/down.svg);
+        cursor: pointer;
     }
 
 
@@ -415,12 +437,15 @@
         #story-narrative-container {
             top: 90px;
             right: 20px;
-            background-color:rgba(255,255,255,0.8);
-            border: 1px solid gray;
-            border-radius: 15px;
             height: 60%;
             width: 30%;
             min-width: 250px;
+        }
+
+        #story-narrative-viewport {
+            background-color:rgba(255,255,255,0.8);
+            border: 1px solid gray;
+            border-radius: 15px;
         }
 
         #story-context-container {
