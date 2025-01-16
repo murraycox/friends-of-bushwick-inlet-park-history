@@ -206,7 +206,7 @@
            "nyc-historical-waterline"
          ],
          "mapbox": {
-            "style": "clyhpvk0l01mp01qohk3w15tr"
+            "style": "cm5hh8q4d002501qocc4o6w20"
          },
          "story": [
             {"type":"p", "text":"In 1855, the town of Bushwick (which at that time included all of Greenpoint) and the (newly minted) City of Williamsburgh became part of the City of Brooklyn. For the 235 years prior to the merger, what we now call North Brooklyn existed as a physically and politically separate place, growing from settlements of a few dozen families to (in the case of Williamsburgh) a city of over 50,000 people. Most of that growth happened in the 30 or so years from 1825 to 1855 – for the two centuries prior to that Williamsburg, Greenpoint and Bushwick were thinly populated agricultural communities heavily reliant on enslaved labor serving the city of New York across the East River."}
@@ -306,20 +306,20 @@
                "name":"Greenpoint Urbanizes",
                "link":"/era/early-european-settlement/greenpoint-urbanizes"
             },
-            "changing-the-creek":{
-               "id":"changing-the-creek",
-               "name":"Changing the Creek",
-               "link":"/era/early-european-settlement/changing-the-creek"
-            },
             "early-industrialization":{
                "id":"early-industrialization",
                "name":"Early Industrialization",
                "link":"/era/early-european-settlement/early-industrialization"
             },
-            "williamsburgh-becomes-a-city":{
-               "id":"williamsburgh-becomes-a-city",
+            "williamsburg-becomes-a-city":{
+               "id":"williamsburg-becomes-a-city",
                "name":"Williamsburgh Becomes a City",
-               "link":"/era/early-european-settlement/williamsburgh-becomes-a-city"
+               "link":"/era/early-european-settlement/williamsburg-becomes-a-city"
+            },
+            "ecological-impact":{
+               "id":"ecological-impact",
+               "name":"Ecological Impact",
+               "link":"/era/early-european-settlement/ecological-impact"
             }
           }
        },
