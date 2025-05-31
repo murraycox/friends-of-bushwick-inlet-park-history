@@ -1,18 +1,30 @@
-<script>
+<script lang="ts">
 
     import { createEventDispatcher } from 'svelte';
 
     import { base } from '$app/paths';
 
-    export let navigateToMap = null;
-    export let navigateToPage = null;
-    export let viewID = null;
-    export let eraID = null;
-    export let buttonText = null;
-    export let labelText = null;
-    export let active = false;
+  interface Props {
+    navigateToMap?: any;
+    navigateToPage?: any;
+    viewID?: any;
+    eraID?: any;
+    buttonText?: any;
+    labelText?: any;
+    active?: boolean;
+  }
 
-    let hover = false;
+  let {
+    navigateToMap = null,
+    navigateToPage = null,
+    viewID = null,
+    eraID = null,
+    buttonText = null,
+    labelText = null,
+    active = false
+  }: Props = $props();
+
+    let hover = $state(false);
 
     const dispatch = createEventDispatcher();
 
@@ -40,10 +52,10 @@
   
 </script>
 
-    <a on:click={e => onClick(e)} on:mouseleave={onMouseLeave}>
+    <a onclick={e => onClick(e)} onmouseleave={onMouseLeave}>
         <div class="{`story-navigation-button-and-label era-${eraID}`}" class:hover={hover} class:active={active}>
             <div class="story-navigation-button">
-                {#if buttonText }
+                {#if buttonText}
                     {buttonText}
                 {/if}
             </div>

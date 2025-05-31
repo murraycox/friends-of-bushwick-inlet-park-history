@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import { onMount, createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
@@ -6,10 +6,19 @@
     import { json, geoAlbers, geoPath } from  "d3";
     import { tile } from "d3-tile";
 
-    export let urlPath;
-    export let urlExtension;
-    export let projection; //get the overall projection from the Maps component?
-    export let visible = false;
+    interface Props {
+        urlPath: any;
+        urlExtension: any;
+        projection: any; //get the overall projection from the Maps component?
+        visible?: boolean;
+    }
+
+    let {
+        urlPath,
+        urlExtension,
+        projection,
+        visible = false
+    }: Props = $props();
 
     const dispatch = createEventDispatcher();
 

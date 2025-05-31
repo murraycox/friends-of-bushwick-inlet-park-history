@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
     import NavEras from "$lib/components/NavEras.svelte";
     import NavTimeline from "$lib/components/NavTimeline.svelte";
@@ -6,7 +6,7 @@
     import story from '$lib/data/story.json';
 	import styles from '$lib/styles.js';
 
-	export let data; //Get data from +page.server.js
+    let { data } = $props();
 
     // Get the previous and next chapter (if they exist)
     // Get the current era in the context of the "story"
@@ -43,11 +43,10 @@
         {@html data.chapter.content}
         <div id="story-footer-navigation">
             <div id="story-footer-navigation-back">
-                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">{lastChapter ? lastChapter.name : "back to era map"}</div>
+                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button"><div id="button-left"></div>{lastChapter ? lastChapter.name : "back to era map"}</div>
             </div>
             <div id="story-footer-navigation-next">
-                <div id="story-footer-navigation-next-label">GO TO THE NEXT CHAPTER</div>
-                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}</div>
+                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
                 <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
             </div>
         </div>
@@ -88,7 +87,24 @@
         background-color: grey;
         color: white;
         border-radius: 99px; /* large border to make ends round */
-        padding: 5px 15px;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    #button-left {
+        height: 24px;
+        width: 22px;
+        background-image: url($lib/images/icons/left.svg);
+        margin: 5px 10px 5px 0;
+    }
+
+    #button-right {
+        height: 24px;
+        width: 26px;
+        background-image: url($lib/images/icons/right.svg);
+        margin: 5px 0 5px 10px;
     }
 
     #story-narrative-content, #story-controller, #story-narrative {

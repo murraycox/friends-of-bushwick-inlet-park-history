@@ -9,9 +9,9 @@
 
     import story from '$lib/data/story.json';
 
-    let navEras;
-    let navTimeline;
-    let maps;
+    let navEras = $state();
+    let navTimeline = $state();
+    let maps = $state();
 
     let activeViewID = "intro";
     let activeView = story.views[activeViewID];
@@ -86,7 +86,7 @@
     };
     
 </script>
-<svelte:window on:popstate={popState}/>
+<svelte:window onpopstate={popState}/>
 <NavEras 
     bind:this={navEras}
     on:navigate={onNavigate}

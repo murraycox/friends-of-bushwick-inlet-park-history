@@ -16,7 +16,7 @@
     const MAPBOX_PUBLIC_TOKEN = "pk.eyJ1IjoiZmJpcCIsImEiOiJjbHloaXg2NGYwNHJvMmtvc2w0dzFlNXEwIn0.OCmKB39yza8-rECY_XBQNw"
 
     let map;
-    let mapContainer;
+    let mapContainer = $state();
     let lng, lat, zoom;
 
     const addedLayers = [];
@@ -29,7 +29,7 @@
 
     import styles from '$lib/styles.js';
 
-    export let story = {};
+    let { story } = $props();
 
     export function onChapterMouseOver(event){
         console.log("MapsMapbox:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -81,6 +81,7 @@
 
     export function onNavigate(event){
         console.log(`Maps:onNavigate(event:${JSON.stringify(event.detail)})`);
+        //console.log(`story: ${JSON.stringify(story)}`);
         //Updating the current view should automatically change the visibility of the maps?
         //activeView = story.eras[event.detail.id].view;
         activeViewID = event.detail.viewID;
@@ -117,7 +118,8 @@
                                     'source': layer['source-layer'],
                                     'source-layer': layer['source-layer'],
                                     "type": layer.type,
-                                    "paint": layer.paint
+                                    "paint": layer.paint,
+                                    "filter": layer.filter? layer.filter : true
                                 };
                                 if (layer.layout)
                                     newLayer.layout = layer.layout;
@@ -154,9 +156,9 @@
 
     // let zoom;
 
-    let activeViewID = story.intialView;
-    let activeEraID = null;
-    let activeStopID = null;
+    let activeViewID = $state(story.intialView);
+    let activeEraID = $state(null);
+    let activeStopID = $state(null);
 
 	let projection;
 
@@ -261,11 +263,11 @@
 </script>
 
 <div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}"
-    style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
+    style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
 >
     <div id="header">
         <div id="story-context-container">
-            {#if activeEraID }
+            {#if activeEraID}
                 <!-- <div id="era-short-label">
                     {story.eras[activeEraID].shortLabel}
                 </div> -->
@@ -306,7 +308,7 @@
             </div>
         </div>
     {/if}
-    <div class="map" bind:this="{mapContainer}" />
+    <div class="map" bind:this="{mapContainer}"></div>
 </div>
 <style>
 
@@ -392,16 +394,16 @@
 
     /* Styles for .era-pre-colonial */
     .era-pre-1600s #story-narrative h1, .era-pre-1600s #story-narrative h2, .era-pre-1600s #era-long-label {
-        color: var(--color-era-pre-1600s) !important;
+        color: var(--color-era-1) !important;
     }
 
     /* .era-pre-1600s #era-short-label {
-        background-color: var(--color-era-pre-1600s) !important;
+        background-color: var(--color-era-1) !important;
     } */
 
     /* Styles for .era-early-european-settlement */
     .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2, .era-early-european-settlement #era-long-label {
-        color: var(--color-era-early-european-settlement) !important;
+        color: var(--color-era-2) !important;
     }    
 
     /* .era-early-european-settlement #era-short-label {
@@ -410,7 +412,7 @@
 
     /* Styles for .era-urban-industrial-era */
     .era-urban-industrial #story-narrative h1, .era-urban-industrial #story-narrative h2, .era-urban-industrial #era-long-label {
-        color: var(--color-era-urban-industrial) !important;
+        color: var(--color-era-3) !important;
     } 
 
     /* .era-urban-industrial #era-short-label {
@@ -419,12 +421,12 @@
     
     /* Styles for .era-migration */
     .era-era-migration #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
-        color: #D0B000;
+        color: var(--color-era-4) !important;
     } 
 
     /* Styles for .era-activism-deindustrialization */
     .era-activism-deindustrialization #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
-        color: #E36900;
+        color: var(--color-era-5) !important;
     } 
 
     @media screen and (min-width: 768px) {

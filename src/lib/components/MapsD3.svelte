@@ -12,7 +12,7 @@
 
     import styles from '$lib/styles.js';
 
-    export let story = {};
+    let { story = {} } = $props();
 
     export function onChapterMouseOver(event){
         console.log("Maps:onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -45,23 +45,23 @@
         };
     };
 
-    let refs = [];
+    let refs = $state([]);
     let interactiveMap;
-    let svgMap;
-    let gMap;
+    let svgMap = $state();
+    let gMap = $state();
 
     let mapWidth;
     let mapHeight;
 
     let zoom;
 
-    let activeViewID = story.intialView;
-    let activeEraID = null;
-    let activeStopID = null;
+    let activeViewID = $state(story.intialView);
+    let activeEraID = $state(null);
+    let activeStopID = $state(null);
 
-	let projection;
+	let projection = $state();
 
-    let isLoading = true;
+    let isLoading = $state(true);
 
     const ZOOM_DURATION = 2500;
 
@@ -191,7 +191,7 @@
 <div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}"
     style="--color-era-urban-industrial: {styles.colorEraUrbanIndustrial}; --color-era-pre-1600s: {styles.colorEraPre1600s}; --color-era-early-european-settlement: {styles.colorEraEarlyEuropeanSettlement}"
 >
-    {#if activeEraID }
+    {#if activeEraID}
         <div id="story-context-container">
             <div id="era-short-label">
                 {story.eras[activeEraID].shortLabel}
@@ -223,9 +223,9 @@
     {/if}
     <svg bind:this={svgMap} id="map-svg" class:story={story.views[activeViewID].story != null}>
         <g bind:this={gMap}>   
-            {#if !isLoading }      
+            {#if !isLoading}      
                 {#each Object.values(story.maps) as map, i }
-                    {#if (activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id)) }
+                    {#if (activeStopID == null && story.views[activeViewID].maps && story.views[activeViewID].maps.includes(map.id)) || (activeStopID && story.views[activeViewID].stops[activeStopID].maps && story.views[activeViewID].stops[activeStopID].maps.includes(map.id))}
                     {#if map.type == "shapefile"}
                         {#if map.interactive}
                             <Map 

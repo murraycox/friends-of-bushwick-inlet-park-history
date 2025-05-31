@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import { goto, pushState } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -7,12 +7,12 @@
     import NavTimeline from "$lib/components/NavTimeline.svelte";
     import MapsMapbox from "$lib/components/MapsMapbox.svelte"
 
-	export let data; //set up in the +page.server.js
+    let { data } = $props();
     const story = data.story
 
-    let navEras;
-    let navTimeline;
-    let maps;
+    let navEras = $state();
+    let navTimeline = $state();
+    let maps = $state();
 
     let activeViewID = "intro";
     let activeView = story.views[activeViewID];
@@ -87,7 +87,7 @@
     };
     
 </script>
-<svelte:window on:popstate={popState}/>
+<svelte:window onpopstate={popState}/>
 <NavEras 
     bind:this={navEras}
     on:navigate={onNavigate}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
 	import { onMount, createEventDispatcher } from 'svelte';
     import { base } from '$app/paths';
@@ -7,10 +7,15 @@
 	import * as d3 from 'd3';
 
 	import { error } from '@sveltejs/kit';
+	import { parse } from 'svelte/compiler';
 
-    export let eras;
-    export let navigateWithinMap = true;
-    export let activeEraID = null;
+    interface Props {
+        eras: any;
+        navigateWithinMap?: boolean;
+        activeEraID?: any;
+    }
+
+    let { eras, navigateWithinMap = true, activeEraID = $bindable(null) }: Props = $props();
 
     export function onMapFeatureMouseOver(event){
         console.log("NavTimeline:onMapFeatureMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -50,22 +55,24 @@
     const TIMELINE_ERA_RADIUS = 12;
 
     const TIMELINE_PADDING = 25; //LEFT and RIGHT padding
-    const TIMELINE_TITLE_WIDTH = 80;
+    const TIMELINE_TITLE_WIDTH = 100;
 
-    let gTimeline; //DOM group
+    const TIMELINE_X_DISTANCE_BETWEEN_NODES = 40;
+
+    let gTimeline = $state(); //DOM group
     
-    let currentWidth;
+    let currentWidth = $state();
 
-    let erasAndActiveChapters = [];
+    let erasAndActiveChapters = $state([]);
 
-    let xTimeline = d3.scaleLinear()
-            .domain([0, erasAndActiveChapters.length-1]);
+    let xTimeline = $state(d3.scaleLinear()
+            .domain([0, erasAndActiveChapters.length-1]));
 
     onMount(() => {
         console.log("NavTimeline:onMount")
         //setupTimeline("The story of Bushwick Inlet", erasAndChapters);
         redrawTimeline();
-        window.addEventListener('resize', redrawTimeline);
+        // window.addEventListener('resize', redrawTimeline);
     });
 
     function recalculateActiveChapters() {
@@ -145,6 +152,12 @@
     
     function redrawTimeline(){
 
+        //const currentTimelineContainerWidth = parseInt(d3.select('#timeline-container').style('width'), 10);
+        //When all of the nodes are closed, this will be TIMELINE_PADDING = 25 TIMELINE_X_DISTANCE_BETWEEN_NODES = 40
+        // (25 * 2) + ((5 - 1) * 40) = 210
+        const newTimelineContainerWidth = (TIMELINE_PADDING * 2) + ((erasAndActiveChapters.length-1) * TIMELINE_X_DISTANCE_BETWEEN_NODES)
+        d3.select('#timeline-container').style('width', newTimelineContainerWidth + 'px');
+
         currentWidth = parseInt(d3.select('#timeline').style('width'), 10);
         console.log(currentWidth);
         //We only need to update the range (the domain doesn't change), but we recreate the whole object to force it to render
@@ -156,7 +169,10 @@
 
 </script>
 
-<div id="timeline-container" class="position-fixed">
+<div 
+    id="timeline-container" 
+    class="position-fixed"
+>
     <div id="timeline-titles">
         {#each erasAndActiveChapters as eraOrActiveChapter,i}
         <div 
@@ -170,7 +186,7 @@
         </div>
         {/each}
     </div>
-    <div id="timeline">
+    <div id="timeline" class:no-active-era={(!activeEraID)}>
         <svg width="100%" height="100%">
             <g bind:this={gTimeline}>
                 <!-- Background of the timeline -->
@@ -196,25 +212,6 @@
                     class="timeline-era-and-chapter-group"
                     transform={`translate(${xTimeline(i)},${(TIMELINE_MARGIN_TOP + (TIMELINE_HEIGHT/2) - TIMELINE_ANCHOR_LENGTH)})`}
                 >
-                    <circle 
-                        cx=0
-                        cy={TIMELINE_ANCHOR_LENGTH}
-                        r={eraOrActiveChapter.type == "era" ? TIMELINE_ERA_RADIUS : TIMELINE_CHAPTER_RADIUS}
-                        class:era={(eraOrActiveChapter.type == "era")}
-                        class:chapter={(eraOrActiveChapter.type == "chapter")}
-                        class="{`era-${eraOrActiveChapter.type == "era"? eraOrActiveChapter.id : eraOrActiveChapter.eraID }`}"
-                        class:active-era={((eraOrActiveChapter.type == "era" && eraOrActiveChapter.id == activeEraID) || (eraOrActiveChapter.type == "chapter" && eraOrActiveChapter.eraID == activeEraID))}
-                        stroke-width=1
-                        stroke="#707070"
-                        on:mouseover={() => onMouseOver(eraOrActiveChapter.id)}
-                        on:mouseleave={() => onMouseLeave(eraOrActiveChapter.id)}
-                        on:click={() => {
-                            if (eraOrActiveChapter.type == "chapter")
-                                onChapterClick(eraOrActiveChapter.id)
-                            else
-                                onEraClick(eraOrActiveChapter.id, eraOrActiveChapter.name);
-                        }}
-                    />
                     <line 
                         class="timeline-node-anchors"
                         id={`anchor-${eraOrActiveChapter.id}`}
@@ -225,6 +222,26 @@
                         stroke-width=1
                         stroke="grey"
                     />
+                    <circle 
+                        cx=0
+                        cy={TIMELINE_ANCHOR_LENGTH}
+                        r={eraOrActiveChapter.type == "era" ? TIMELINE_ERA_RADIUS : TIMELINE_CHAPTER_RADIUS}
+                        class:era={(eraOrActiveChapter.type == "era")}
+                        class:chapter={(eraOrActiveChapter.type == "chapter")}
+                        class="{`era-${eraOrActiveChapter.type == "era"? eraOrActiveChapter.id : eraOrActiveChapter.eraID }`}"
+                        class:active-era={((eraOrActiveChapter.type == "era" && eraOrActiveChapter.id == activeEraID) || (eraOrActiveChapter.type == "chapter" && eraOrActiveChapter.eraID == activeEraID))}
+                        stroke-width=1
+                        stroke="#707070"
+                        onmouseover={() => onMouseOver(eraOrActiveChapter.id)}
+                        onmouseleave={() => onMouseLeave(eraOrActiveChapter.id)}
+                        onclick={() => {
+                            if (eraOrActiveChapter.type == "chapter")
+                                onChapterClick(eraOrActiveChapter.id)
+                            else
+                                onEraClick(eraOrActiveChapter.id, eraOrActiveChapter.name);
+                        }}
+                    />
+
                 </g>                    
                 {/each}
             </g>
@@ -240,9 +257,9 @@
         position: absolute;
         bottom: 10px;
         right: 300px;
-        max-width: 600px;
-        min-width: 400px;
-        width: calc(30%);
+        /* max-width: 600px;
+        min-width: 400px; */
+        width: 210px; /* calc(30%); */
         /* box-sizing: border-box; */
         height: 95px;
     }
@@ -334,7 +351,7 @@
         align-items: center;
         text-align: center;
         height: 43px;
-        width: 80px;
+        width: 100px;
         border: 1px solid #53A3D5;
         border-radius: 10px;
         font-size: 0.60em;
@@ -353,35 +370,34 @@
     }
 
     /* Styles for .era-pre-colonial */
-    #timeline circle.active-era.era-pre-1600s, .timeline-title-container.era-pre-1600s {
-        fill: #5199C7; /* for circle */
-        background-color: #5199C7; /* for div */
+    #timeline.no-active-era circle.era-pre-1600s, #timeline circle.active-era.era-pre-1600s, .timeline-title-container.era-pre-1600s {
+        fill: var(--color-era-1); /* for circle */
+        background-color: var(--color-era-1); /* for div */
     }
 
     /* Styles for .era-early-european-settlement */
-    #timeline circle.active-era.era-early-european-settlement, .timeline-title-container.era-early-european-settlement {
-        fill: #70AC00;
-        background-color: #70AC00; /* for div */
+    #timeline.no-active-era circle.era-early-european-settlement, #timeline circle.active-era.era-early-european-settlement, .timeline-title-container.era-early-european-settlement {
+        fill: var(--color-era-2);
+        background-color: var(--color-era-2); /* for div */
     }    
 
     /* Styles for era-urban-industrial-era */
-    #timeline circle.active-era.era-urban-industrial, .timeline-title-container.era-urban-industrial {
-        fill: #9762AF;
-        background-color: #9762AF; /* for div */
+    #timeline.no-active-era circle.era-urban-industrial, #timeline circle.active-era.era-urban-industrial, .timeline-title-container.era-urban-industrial {
+        fill: var(--color-era-3);
+        background-color: var(--color-era-3); /* for div */
     }
     
     /* Styles for .era-migration */
-    #timeline circle.active-era.era-deindustrialization, .timeline-title-container.era-deindustrialization  {
-        fill: #D0B000;
-        background-color: #D0B000; /* for div */
+    #timeline.no-active-era circle.era-deindustrialization, #timeline circle.active-era.era-deindustrialization, .timeline-title-container.era-deindustrialization  {
+        fill: var(--color-era-4);
+        background-color: var(--color-era-4); /* for div */
     } 
 
     /* Styles for .era-activism-deindustrialization */
-    #timeline circle.active-era.era-the-future, .timeline-title-container.era-the-future {
-        fill: #E36900;
-        background-color: #E36900; /* for div */
+    #timeline.no-active-era circle.era-the-future, #timeline circle.active-era.era-the-future, .timeline-title-container.era-the-future {
+        fill: var(--color-era-5);
+        background-color: var(--color-era-5); /* for div */
     }
-
 
     #timeline div.era { 
         display: inline-block;

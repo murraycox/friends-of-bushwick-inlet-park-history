@@ -1,19 +1,34 @@
-<script>
+<script lang="ts">
 
     import { onMount, createEventDispatcher } from 'svelte';
     import { json, geoPath } from  "d3";
     import { base } from '$app/paths';
 
-    export let path;
-    export let projection; //get the overall projection from the Maps component?
-    export let id;
-    export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
-    export let visible = false;
-    export let filterOnContext = false;
-    export let activeViewID;
-    export let activeEraID;
-    export let activeStopID;
-    export let labelField = "label";
+    interface Props {
+        path: any;
+        projection: any; //get the overall projection from the Maps component?
+        id: any;
+        interactive?: boolean; //whether to track mouse events like mouseenter, mouseout and mousemove
+        visible?: boolean;
+        filterOnContext?: boolean;
+        activeViewID: any;
+        activeEraID: any;
+        activeStopID: any;
+        labelField?: string;
+    }
+
+    let {
+        path = $bindable(),
+        projection,
+        id,
+        interactive = false,
+        visible = false,
+        filterOnContext = false,
+        activeViewID,
+        activeEraID,
+        activeStopID,
+        labelField = "label"
+    }: Props = $props();
 
     export function onChapterMouseOver(event){
         console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -25,8 +40,8 @@
         highlightedChapterID = null;
     }
 
-    let dataset = [];
-    let highlightedChapterID = null;
+    let dataset = $state([]);
+    let highlightedChapterID = $state(null);
 
     const dispatch = createEventDispatcher();
 
@@ -112,9 +127,9 @@
                 transform={`translate(${projection(data.geometry.coordinates)})`}
                 dy=".35em"
                 class:hover={interactive && data.properties && data.properties.chapter && highlightedChapterID==data.properties.chapter}
-                on:mouseover={onFeatureMouseOver(data)} 
-                on:mouseout={onFeatureMouseOut(data)} 
-                on:click={onFeatureClick(data)}
+                onmouseover={onFeatureMouseOver(data)} 
+                onmouseout={onFeatureMouseOut(data)} 
+                onclick={onFeatureClick(data)}
             >
                 {data.properties[labelField]}
             </text>

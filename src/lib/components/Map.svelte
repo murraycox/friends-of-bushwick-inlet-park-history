@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import { onMount, createEventDispatcher } from 'svelte';
     import { json, geoAlbers, geoPath } from  "d3";
@@ -6,17 +6,33 @@
 
     import { base } from '$app/paths';
 
-    export let url = "";
-    export let topoJson = false;
-    export let topoJsonObjectsName = "";
-    export let projection; //get the overall projection from the Maps component?
-    export let id;
-    export let interactive = false; //whether to track mouse events like mouseenter, mouseout and mousemove
-    export let visible = false;
-    export let geometryType = "polygons";
-    export let activeViewID;
-    export let activeEraID;
-    export let activeStopID;
+    interface Props {
+        url?: string;
+        topoJson?: boolean;
+        topoJsonObjectsName?: string;
+        projection: any; //get the overall projection from the Maps component?
+        id: any;
+        interactive?: boolean; //whether to track mouse events like mouseenter, mouseout and mousemove
+        visible?: boolean;
+        geometryType?: string;
+        activeViewID: any;
+        activeEraID: any;
+        activeStopID: any;
+    }
+
+    let {
+        url = "",
+        topoJson = false,
+        topoJsonObjectsName = "",
+        projection,
+        id,
+        interactive = false,
+        visible = false,
+        geometryType = "polygons",
+        activeViewID,
+        activeEraID,
+        activeStopID
+    }: Props = $props();
 
     export function onChapterMouseOver(event){
         console.log("Map(id: " + id + "):onChapterMouseOver(event:" + JSON.stringify(event.detail) + ")");
@@ -28,9 +44,9 @@
         highlightedChapterID = null;
     }
 
-    let dataset = [];
-    let path = null;
-    let highlightedChapterID = null;
+    let dataset = $state([]);
+    let path = $state(null);
+    let highlightedChapterID = $state(null);
 
     const dispatch = createEventDispatcher();
 
@@ -123,7 +139,7 @@
         {#if interactive}
             {data.properties.chapter}
             {highlightedChapterID}
-            <path class="{`feature-${data.properties.id}`}" d={path(data)} class:hover={interactive && data.properties && data.properties.chapter && (highlightedChapterID==data.properties.chapter)} on:mouseover={onFeatureMouseOver(data)} on:mouseout={onFeatureMouseOut(data)} on:click={onFeatureClick(data)}/>
+            <path class="{`feature-${data.properties.id}`}" d={path(data)} class:hover={interactive && data.properties && data.properties.chapter && (highlightedChapterID==data.properties.chapter)} onmouseover={onFeatureMouseOver(data)} onmouseout={onFeatureMouseOut(data)} onclick={onFeatureClick(data)}/>
         {:else}
             <path class="{`feature-${data.properties.id}`}" d={path(data)}/>
         {/if}

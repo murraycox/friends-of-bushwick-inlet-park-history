@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation';
@@ -8,8 +8,12 @@
 
     import NavErasButton from "$lib/components/NavErasButton.svelte";
 
-    export let navigateWithinMap = true;
-    export let activeEraID = null;
+  interface Props {
+    navigateWithinMap?: boolean;
+    activeEraID?: any;
+  }
+
+  let { navigateWithinMap = true, activeEraID = $bindable(null) }: Props = $props();
 
     //exported "method" called by parent
     export function navigate(event){
