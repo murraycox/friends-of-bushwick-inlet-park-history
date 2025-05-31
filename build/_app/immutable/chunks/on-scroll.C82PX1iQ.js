@@ -1,1 +1,0 @@
-function i(r,o){const t=new IntersectionObserver(s,{threshold:1});t.observe(r);function s(c){const n=c.find(e=>e.isIntersecting);if(n){const e=n.target.dataset.id;o(e)}}return{destroy:()=>t.disconnect()}}export{i as o};
