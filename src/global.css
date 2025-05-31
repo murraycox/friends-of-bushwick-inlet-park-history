@@ -1,0 +1,12 @@
+:root {
+    --color-era-1: #5199C7; /* pre-1600s */
+    --color-era-2: #70AC00; /* early-european-settlement */
+    --color-era-3: #9762AF; /* urban-industrial */
+    --color-era-4: #D0B000; /* deindustrialization  */
+    --color-era-5: #E36900; /* future */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
