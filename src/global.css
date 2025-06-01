@@ -1,4 +1,5 @@
 :root {
+    --color-intro: #707070; /* Intro */
     --color-era-1: #5199C7; /* pre-1600s */
     --color-era-2: #70AC00; /* early-european-settlement */
     --color-era-3: #9762AF; /* urban-industrial */
