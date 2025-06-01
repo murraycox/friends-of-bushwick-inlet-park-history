@@ -260,6 +260,14 @@
 
     };
 
+    let storyNarrative = $state(null); // This variable will hold the reference
+    function scrollNarrativeDown(){
+        if (storyNarrative){
+            storyNarrative
+                .lastElementChild
+                .scrollIntoView({ behavior: 'smooth', block: 'end' });    
+    }};
+
 </script>
 
 <div id="map" class="{`view-${activeViewID}`} {`era-${activeEraID}`} {`stop-${activeStopID}`}"
@@ -276,7 +284,7 @@
                 </div>
             {:else}
                 <div id="era-long-label">
-                    Introduction
+                    The History of Bushwick Inlet Park
                 </div>
             {/if}
         </div>
@@ -287,7 +295,7 @@
     {#if story.views[activeViewID].story}
         <div id="story-narrative-container">
             <div id="story-narrative-viewport">
-                <div id="story-narrative">
+                <div id="story-narrative" bind:this={storyNarrative}>
                     <h1 use:onScroll={onStop}>
                         {story.views[activeViewID].name}
                     </h1>
@@ -304,7 +312,7 @@
                         {/each}
                 </div>
             </div>
-            <div id="story-narrative-button-down">
+            <div id="story-narrative-button-down" onclick={scrollNarrativeDown}>
             </div>
         </div>
     {/if}
@@ -388,8 +396,8 @@
     }
 
     /* Styles for .view-intro */
-    .view-intro #story-narrative h1, .view-intro #story-narrative h2 {
-        color: #83BC6E;
+    .view-intro #story-narrative h1, .view-intro #story-narrative h2, .view-intro #era-long-label  {
+        color: var(--color-intro) !important;
     }
 
     /* Styles for .era-pre-colonial */
@@ -454,7 +462,7 @@
             display: block;
             position: absolute;
             z-index: 999;
-            top: 15px;
+            top: 22px;
             height: 50px;
             left: 110px;
         }
