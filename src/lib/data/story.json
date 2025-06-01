@@ -99,7 +99,7 @@
     "views": {
       "intro": {
          "id": "intro",
-         "name": "Bushwick Inlet Park History Project",
+         "name": "Introduction to the Bushwick Inlet Park History",
          "extent":{
             "nwLng": -73.980,
             "nwLat": 40.740,
