@@ -121,7 +121,7 @@ export async function load({ params }) {
     };
 
 
-  // convert description to HTML
+  // convert content to HTML
   if (chapterData.content)
     chapterData.content = documentToHtmlString(chapterData.content.json, renderOptions(chapterData.content.links));
 

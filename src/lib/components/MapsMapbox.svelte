@@ -1,5 +1,6 @@
 <script lang="ts">
-    
+    // import IntersectionObserver from './IntersectionObserver.svelte';
+
     import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
     import { geoAlbers, geoMercator, geoPath } from "d3";
@@ -160,6 +161,9 @@
     let activeEraID = $state(null);
     let activeStopID = $state(null);
 
+    let storyNarrative = $state(null); // This variable will hold the reference
+
+
 	let projection;
 
     let isLoading = true;
@@ -201,7 +205,77 @@
 
         });
 
+        if (storyNarrative) {
+
+            observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // The header is now in view
+                            console.log(`Header is in view!:${entry.target.innerText}`);
+                            //find the stop in the current view
+                            if (story.views[activeViewID].stops){
+                                Object.values(story.views[activeViewID].stops).forEach(stop => {
+                                    // console.log(`Comparing: stop heading "${stop.heading}" to narrative header "${entry.target.innerText}"`);
+                                    if (stop.heading == entry.target.innerText){
+                                        console.log(`We found stop: ${stop.id}!`);   
+                                        if (stop.extent)                             
+                                            moveMap(stop.extent);
+
+                                        story.views[activeViewID].mapbox.layers.forEach(layer => {
+                                            if (layer.id.substring(0, 2) == "h-") {
+                                                console.log(`Sending hover vibes to layer ${layer.id}`);
+                                                map.setFilter(
+                                                    `${activeViewID}-${layer.id}`, 
+                                                    [
+                                                        "match",
+                                                        ["get", "chapter"],
+                                                        [stop.heading],
+                                                        true,
+                                                        false
+                                                    ]
+                                                );
+                                                map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'visible'); //should be 'visible', but may be hidden in the MapBox style?
+                                            };
+                                        });
+
+
+
+                                    }
+                                });
+                            }
+                        } else {
+                            // The header is no longer in view
+                            // console.log('Header is out of view!');
+                        }
+                    });
+                }, {
+                    // Optional options for the observer
+                    // root: null, // Defaults to the viewport
+                    // rootMargin: '0px', // No margin around the root
+                    // threshold: 0.1 // Trigger when 10% of the header is visible
+                });
+
+          const storyNarrativeHeaders = storyNarrative.querySelectorAll('h1,h2');
+          if (storyNarrativeHeaders) {
+            console.log(storyNarrativeHeaders);
+            storyNarrativeHeaders.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Clean up the event listener when the component unmounts
+            // return () => {
+            //   storyNarrativeHeaders.removeEventListener('scroll', handleScroll);
+            // };
+          }
+        }
     });
+
+    let observer; //we set this up in the onMount
+
+    const handleScroll = () => {
+        // Your scroll event logic here
+        console.log('Heading scrolled!');
+    };
 
     // onDestroy(() => {
     //     map.remove();
@@ -260,7 +334,6 @@
 
     };
 
-    let storyNarrative = $state(null); // This variable will hold the reference
     function scrollNarrativeDown(){
         if (storyNarrative){
             storyNarrative
@@ -296,10 +369,15 @@
         <div id="story-narrative-container">
             <div id="story-narrative-viewport">
                 <div id="story-narrative" bind:this={storyNarrative}>
-                    <h1 use:onScroll={onStop}>
+                    <!-- <h1 use:onScroll={onStop}>
+                        {story.views[activeViewID].name}
+                    </h1> -->
+                    <h1>
                         {story.views[activeViewID].name}
                     </h1>
-                        {#each story.views[activeViewID].story as storyElement}
+                        {@html story.views[activeViewID].introContent}
+
+                        <!-- {#each story.views[activeViewID].story as storyElement}
                             {#if storyElement.type == "h"}
                                 {#if storyElement.stop}
                                     <h2 use:onScroll={onStop} data-id={storyElement.stop}>{@html storyElement.text}</h2>
@@ -309,7 +387,7 @@
                             {:else if storyElement.type == "p"}
                                 <p>{@html storyElement.text}</p>
                             {/if}
-                        {/each}
+                        {/each} -->
                 </div>
             </div>
             <div id="story-narrative-button-down" onclick={scrollNarrativeDown}>
@@ -358,7 +436,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        opacity: 0.9;
+        opacity: 0.95;
         background-color: white;
         padding: 10px;
 
@@ -382,6 +460,9 @@
         cursor: pointer;
     }
 
+    :global(#story-narrative img) {
+        width: 100%;
+    }
 
     #story-narrative h1 {
         font-size: 2em;
@@ -396,12 +477,12 @@
     }
 
     /* Styles for .view-intro */
-    .view-intro #story-narrative h1, .view-intro #story-narrative h2, .view-intro #era-long-label  {
+    .view-intro #story-narrative h1, :global(.view-intro #story-narrative h2), .view-intro #era-long-label  {
         color: var(--color-intro) !important;
     }
 
     /* Styles for .era-pre-colonial */
-    .era-pre-1600s #story-narrative h1, .era-pre-1600s #story-narrative h2, .era-pre-1600s #era-long-label {
+    .era-pre-1600s #story-narrative h1, :global(.era-pre-1600s #story-narrative h2), .era-pre-1600s #era-long-label {
         color: var(--color-era-1) !important;
     }
 
@@ -410,7 +491,7 @@
     } */
 
     /* Styles for .era-early-european-settlement */
-    .era-early-european-settlement #story-narrative h1, .era-early-european-settlement #story-narrative h2, .era-early-european-settlement #era-long-label {
+    .era-early-european-settlement #story-narrative h1, :global(.era-early-european-settlement #story-narrative h2), .era-early-european-settlement #era-long-label {
         color: var(--color-era-2) !important;
     }    
 
@@ -419,7 +500,7 @@
     } */
 
     /* Styles for .era-urban-industrial-era */
-    .era-urban-industrial #story-narrative h1, .era-urban-industrial #story-narrative h2, .era-urban-industrial #era-long-label {
+    .era-urban-industrial #story-narrative h1, :global(.era-urban-industrial #story-narrative h2), .era-urban-industrial #era-long-label {
         color: var(--color-era-3) !important;
     } 
 
@@ -428,12 +509,12 @@
     } */
     
     /* Styles for .era-migration */
-    .era-era-migration #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
+    .era-era-migration #story-narrative h1, :global(.era-era-pre-colonial #story-narrative h2) {
         color: var(--color-era-4) !important;
     } 
 
     /* Styles for .era-activism-deindustrialization */
-    .era-activism-deindustrialization #story-narrative h1, .era-era-pre-colonial #story-narrative h2 {
+    .era-activism-deindustrialization #story-narrative h1, :global(.era-era-pre-colonial #story-narrative h2) {
         color: var(--color-era-5) !important;
     } 
 
