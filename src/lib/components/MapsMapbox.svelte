@@ -143,7 +143,14 @@
             moveMap(story.views[activeViewID].extent);
         };
 
-
+        // Setup observer if we are on the Intro, remove it otherwise.
+        if (observer) {
+            observer.disconnect();
+            if (activeViewID == "intro") {
+                console.log(`onNavigate: Setting up the Observer`)
+                setUpObserver();
+            }
+        }
 
     };
 
@@ -253,24 +260,31 @@
                     // root: null, // Defaults to the viewport
                     // rootMargin: '0px', // No margin around the root
                     // threshold: 0.1 // Trigger when 10% of the header is visible
-                });
-
-          const storyNarrativeHeaders = storyNarrative.querySelectorAll('h1,h2');
-          if (storyNarrativeHeaders) {
-            console.log(storyNarrativeHeaders);
-            storyNarrativeHeaders.forEach(element => {
-                observer.observe(element);
-            });
-
+                }
+            );
+            setUpObserver();
             // Clean up the event listener when the component unmounts
             // return () => {
             //   storyNarrativeHeaders.removeEventListener('scroll', handleScroll);
             // };
-          }
         }
     });
 
     let observer; //we set this up in the onMount
+
+    function setUpObserver() {
+          
+        if (observer && storyNarrative) {
+
+            const storyNarrativeHeaders = storyNarrative.querySelectorAll('h1,h2');
+            if (storyNarrativeHeaders) {
+                console.log(`setUpObserver: storyNarrativeHeaders: ${storyNarrativeHeaders}`);
+                storyNarrativeHeaders.forEach(element => {
+                    observer.observe(element);
+                });
+            }
+        }
+    };
 
     const handleScroll = () => {
         // Your scroll event logic here
