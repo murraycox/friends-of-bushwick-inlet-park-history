@@ -11,36 +11,60 @@ export async function load({ params }) {
   const query = `
   {
     chapterCollection(where: {slug:"${params.era}/${params.chapter}"}, limit: 1) {
-        items{
+      items{
+        id
+        name
+        headlineImage {
+          url
+          title
+          description
+        }
+        era {
           id
           name
-          era {
-            id
-            name
-            slug
-          }
-          content {
-              json
-                # all referenced assets/entries
-              # links { ... }
-              links {
-                  assets {
-                      block {
-                          title
-                          description
-                          url
-                          sys {
-                              id
-                          }
-                      }
-                  },
-
+          slug
+        }
+        content {
+          json
+            # all referenced assets/entries
+          # links { ... }
+          links {
+            assets {
+              block {
+                  title
+                  description
+                  url
+                  sys {
+                      id
+                  }
               }
+            },
+            entries {
+              block {
+                sys {
+                  id
+                }
+                sys {
+                  id
+                }
+                __typename
+                ... on SpecialImage {
+                  name
+                    imagesCollection {
+                      items {
+                        title
+                        description
+                        url
+                      }
+                    }
+                }
+              }
+            }
           }
         }
       }
-    }  
-  `;
+    }
+  }`;
 
   const response = await contentfulFetch(query);
 
@@ -78,14 +102,15 @@ export async function load({ params }) {
           assetMap.set(asset.sys.id, asset);
         }
       
-        // // create an entry map
-        // const entryBlockMap = new Map();
-        // // loop through the block linked entries and add them to the map
-        // for (const entry of links.entries.block) {
-        //   entryBlockMap.set(entry.sys.id, entry);
-        // }
+        // create an entry map
+        const entryBlockMap = new Map();
+        // loop through the block linked entries and add them to the map
+        for (const entry of links.entries.block) {
+          entryBlockMap.set(entry.sys.id, entry);
+        }
       
-        //  // loop through the inline linked entries and add them to the map
+        // const entryMap = new Map();
+        // //  // loop through the inline linked entries and add them to the map
         // for (const entry of links.entries.inline) {
         //   entryMap.set(entry.sys.id, entry);
         // }
@@ -104,6 +129,27 @@ export async function load({ params }) {
             //     return <a href={`/blog/${entry.slug}`}>{entry.title}</a>;
             //   }
             // },
+            [BLOCKS.EMBEDDED_ENTRY]: (node, children) => {
+              // find the entry in the entryMap by ID
+              const entry = entryBlockMap.get(node.data.target.sys.id);
+              // render the entries as needed by looking at the __typename 
+              // referenced in the GraphQL query
+              if (entry.__typename === "SpecialImage") {
+                return (
+                  `<div class="side-by-side-image">
+                    ${entry.imagesCollection.items.map((item) =>{
+                      return(
+                        `<figure class="figure">
+                          <img src="${item.url}" class="figure-img" alt="${item.title}">
+                          <figcaption class="figure-caption">${item.description}</figcaption>
+                         </figure>
+                      `)
+                    }).join('')
+                    }
+                  </div>`
+                );
+              }
+            },
             [BLOCKS.EMBEDDED_ASSET]: (node, next) => {
               // find the asset in the assetMap by ID
               const asset = assetMap.get(node.data.target.sys.id);

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+    
+    import { base } from '$app/paths';
+
     import NavEras from "$lib/components/NavEras.svelte";
     import NavTimeline from "$lib/components/NavTimeline.svelte";
 	
@@ -20,8 +23,8 @@
             thisChapterIndexInStory = index;
     });
     console.log(`thisChapterIndexInStory: ${thisChapterIndexInStory}`);
-    const lastChapter = thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1];
-    const nextChapter = thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1];
+    let lastChapter = $derived(thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1]);
+    let nextChapter = $derived(thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1]);
 
 </script>
 
@@ -40,14 +43,29 @@
             </div>
             <h1>{data.chapter.name}</h1>
         </div>
-        {@html data.chapter.content}
+        {#if data.chapter.headlineImage }
+            <figure class="figure">
+                <img src="{data.chapter.headlineImage.url}" class="figure-img" alt="{data.chapter.headlineImage.title}">
+                <figcaption class="figure-caption">{data.chapter.headlineImage.description}</figcaption>
+            </figure>
+        {/if}
+        <div id="content-container">
+            {@html data.chapter.content}
+        </div>
         <div id="story-footer-navigation">
             <div id="story-footer-navigation-back">
-                <div id="story-footer-navigation-back-button" class="story-footer-navigation-button"><div id="button-left"></div>{lastChapter ? lastChapter.name : "back to era map"}</div>
+                <a href="{lastChapter ? lastChapter.link : base==''?'/':base}">
+                    <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">
+                        <div id="button-left"></div>
+                        {lastChapter ? lastChapter.name : "back to era map"}
+                    </div>
+                </a>
             </div>
             <div id="story-footer-navigation-next">
-                <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
-                <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
+                <a href="{nextChapter ? nextChapter.link : base==''?'/':base}">
+                    <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
+                    <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
+                </a>
             </div>
         </div>
     </div>
@@ -66,7 +84,11 @@
         font-size: .7em;
         display: flex;
         flex-direction: row;
-        align-items: baseline;
+        align-items: center;
+    }
+
+    #story-footer-navigation a {
+        text-decoration: none;
     }
 
     #story-footer-navigation-next {
@@ -90,7 +112,7 @@
         padding: 0 15px;
         display: flex;
         flex-direction: row;
-        align-items: baseline;
+        align-items: center;
     }
 
     #button-left {
@@ -203,34 +225,30 @@
     margin-block-end: 30px;
     }
 
+    #story-narrative #content-container {
+        margin: 0 5%;
+    }
 
     #story-narrative :global(p) {
-    margin: 0 10%;
     font-size: 1em;
     line-height: 1.5em;
     font-weight: 100;
     margin-block-start: 0.75em;
     margin-block-end: 2em;
     color: #212121;
+    margin: 0 5%;
     }
 
     .text-padding-right{
         padding-right: 10%;
     }
 
-    .images-container-side-by-side {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    }
-
-    .image-container-side-by-side {
-    margin: 5px;
-    }
-
-
     #story-narrative :global(.figure) {
-    padding-bottom: 200px;
+        padding-bottom: 80px;
+    }
+
+    #story-narrative #content-container :global(.figure) {
+        padding-top: 80px;
     }
     
 	/* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
@@ -238,6 +256,7 @@
         text-align: left!important;
         color: black;
         font-size: .7em;
+        font-weight: 200;
     }
 
     #story-narrative :global(.figure-img) {
@@ -245,6 +264,23 @@
         height: auto;
     }
 
+    #story-narrative :global(.side-by-side-image){
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #story-narrative #content-container :global(.side-by-side-image .figure) {
+        padding-top: 0;
+    }
+
+    #story-narrative #content-container :global(.side-by-side-image .figure:first-child) {
+        padding-top: 80px;
+    }
+
+    #story-narrative :global(.side-by-side-image .figure) {
+        width: 100%;
+    }
     /* Mobile first positioning */
 
     #story-container {
@@ -265,7 +301,32 @@
 
         #story-narrative {
             margin: 0 124px 0 124px;
-        }   
+        } 
+        
+        #story-narrative :global(.side-by-side-image) {
+            flex-direction: row;
+        }
+
+        #story-narrative :global(.side-by-side-image .figure) {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        #story-narrative :global(.side-by-side-image .figure:first-child) {
+            margin-left: 0;
+        }
+
+        #story-narrative #content-container :global(.side-by-side-image) {
+            padding-top: 80px;
+        }
+
+        #story-narrative #content-container :global(.side-by-side-image .figure:first-child) {
+            padding-top: 0;
+        }
+
+        #story-narrative :global(.side-by-side-image .figure:last-child) {
+            margin-right: 0;
+        }
 
     }
 
@@ -275,9 +336,9 @@
         #story-narrative {
             width: 900px;
             margin: 0 auto;
-    }
+        }
 
-}
+    }
 
 
 </style>
