@@ -39,7 +39,7 @@
         </div>
         <div id="story-footer-navigation">
             <div id="story-footer-navigation-back">
-                <a href="{data.lastChapter ? data.lastChapter.link : base==''?'/':base}">
+                <a href="{(base=='' ? '/' : base) + (data.lastChapter ? data.lastChapter.link : '')}">
                     <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">
                         <div id="button-left"></div>
                         {data.lastChapter ? data.lastChapter.name : "back to era map"}
@@ -47,7 +47,7 @@
                 </a>
             </div>
             <div id="story-footer-navigation-next">
-                <a href="{data.nextChapter ? data.nextChapter.link : base==''?'/':base}">
+                <a href="{(base=='' ? '/' : base) + (data.nextChapter ? data.nextChapter.link : '')}">
                     <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{data.nextChapter ? data.nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
                     <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
                 </a>
