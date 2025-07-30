@@ -171,8 +171,28 @@ export async function load({ params }) {
   if (chapterData.content)
     chapterData.content = documentToHtmlString(chapterData.content.json, renderOptions(chapterData.content.links));
 
+  // Get the previous and next chapter (if they exist)
+  // Get the current era in the context of the "story"
+  const thisEra = story.eras[params.era];
+  const thisChapter = thisEra.chapters[params.chapter];
+  let thisChapterIndexInStory = null;
+  const thisEraChapterArray = Object.values(thisEra.chapters);
+  thisEraChapterArray.forEach((chapter, index) => {
+      console.log(`chapter: ${JSON.stringify(chapter)}, index: ${index}`);
+      if (chapter.id == thisChapter.id) 
+          thisChapterIndexInStory = index;
+  });
+  //console.log(`thisChapterIndexInStory: ${thisChapterIndexInStory}`);
+  const lastChapter = thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1];
+  const nextChapter = thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1];
+
+
+
+
   return {
     chapter: chapterData,
+    lastChapter: lastChapter,
+    nextChapter: nextChapter
   };
 
 };

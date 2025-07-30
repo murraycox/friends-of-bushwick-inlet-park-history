@@ -11,21 +11,6 @@
 
     let { data } = $props();
 
-    // Get the previous and next chapter (if they exist)
-    // Get the current era in the context of the "story"
-    const thisEra = story.eras[$page.params.era];
-    const thisChapter = thisEra.chapters[$page.params.chapter];
-    let thisChapterIndexInStory = null;
-    const thisEraChapterArray = Object.values(thisEra.chapters);
-    thisEraChapterArray.forEach((chapter, index) => {
-        console.log(`chapter: ${JSON.stringify(chapter)}, index: ${index}`);
-        if (chapter.id == thisChapter.id) 
-            thisChapterIndexInStory = index;
-    });
-    console.log(`thisChapterIndexInStory: ${thisChapterIndexInStory}`);
-    let lastChapter = $derived(thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1]);
-    let nextChapter = $derived(thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1]);
-
 </script>
 
 <NavEras 
@@ -54,16 +39,16 @@
         </div>
         <div id="story-footer-navigation">
             <div id="story-footer-navigation-back">
-                <a href="{lastChapter ? lastChapter.link : base==''?'/':base}">
+                <a href="{data.lastChapter ? data.lastChapter.link : base==''?'/':base}">
                     <div id="story-footer-navigation-back-button" class="story-footer-navigation-button">
                         <div id="button-left"></div>
-                        {lastChapter ? lastChapter.name : "back to era map"}
+                        {data.lastChapter ? data.lastChapter.name : "back to era map"}
                     </div>
                 </a>
             </div>
             <div id="story-footer-navigation-next">
-                <a href="{nextChapter ? nextChapter.link : base==''?'/':base}">
-                    <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{nextChapter ? nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
+                <a href="{data.nextChapter ? data.nextChapter.link : base==''?'/':base}">
+                    <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">{data.nextChapter ? data.nextChapter.name : "back to next era map"}<div id="button-right"></div></div>
                     <!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
                 </a>
             </div>
