@@ -136,9 +136,9 @@
                "id": "start",
                "heading": "Introduction to the Bushwick Inlet Park History",
                "extent":{
-                  "nwLng": -73.980,
+                  "nwLng": -73.970,
                   "nwLat": 40.740,
-                  "seLng": -73.94,
+                  "seLng": -73.93,
                   "seLat": 40.695
                 },
                 "maps": [
@@ -154,9 +154,9 @@
                "id": "when-it-is-completed",
                "heading": "Bushwick Inlet Park",
                "extent":{
-                  "nwLng": -73.96480845,
+                    "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                 "maps": [
@@ -172,9 +172,9 @@
                "id": "motiva",
                "heading": "Motiva",
                "extent":{
-                  "nwLng": -73.96480845,
+                  "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                "maps": [
@@ -190,9 +190,9 @@
                "id": "bayside-oil",
                "heading": "Bayside Oil",
                "extent":{
-                  "nwLng": -73.96480845,
+                  "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                "maps": []
@@ -201,9 +201,9 @@
                "id": "50-kent-ave",
                "heading": "50 Kent Avenue",
                "extent":{
-                  "nwLng": -73.96480845,
+                  "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                "maps": []
@@ -212,9 +212,9 @@
                "id": "citistorage",
                "heading": "CitiStorage",
                "extent":{
-                  "nwLng": -73.96480845,
+                  "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                "maps": []
@@ -223,9 +223,9 @@
                "id": "north-brooklyn-parks-headquarters-and-community-house",
                "heading": "North Brooklyn Parks headquarters and community house",
                "extent":{
-                  "nwLng": -73.96480845,
+                  "nwLng": -73.96280845,
                   "nwLat": 40.72729899,
-                  "seLng": -73.95572544,
+                  "seLng": -73.95372544,
                   "seLat": 40.71944572
                 },
                "maps": []
