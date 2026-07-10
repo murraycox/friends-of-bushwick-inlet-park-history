@@ -1,131 +1,111 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 
-    import { createEventDispatcher } from 'svelte';
-    import { goto } from '$app/navigation';
-    
-    import { page } from '$app/stores';
-    import { base } from '$app/paths';
+	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 
-    import NavErasButton from "$lib/components/NavErasButton.svelte";
+	import NavErasButton from '$lib/components/NavErasButton.svelte';
 
-  interface Props {
-    navigateWithinMap?: boolean;
-    activeEraID?: any;
-  }
+	interface Props {
+		navigateWithinMap?: boolean;
+		activeEraID?: any;
+	}
 
-  let { navigateWithinMap = true, activeEraID = $bindable(null) }: Props = $props();
+	let { navigateWithinMap = true, activeEraID = $bindable(null) }: Props = $props();
 
-    //exported "method" called by parent
-    export function navigate(event){
-        console.log(`NavEras:navigate(event:${JSON.stringify(event.detail)})`);
-        //Updating the current view should automatically change the visibility of the maps?
-        activeViewID = event.detail.viewID;
-        activeEraID = event.detail.eraID;
-        //activeStopID = null; //until we move through the story
-    };
+	//exported "method" called by parent
+	export function navigate(event) {
+		console.log(`NavEras:navigate(event:${JSON.stringify(event.detail)})`);
+		//Updating the current view should automatically change the visibility of the maps?
+		activeViewID = event.detail.viewID;
+		activeEraID = event.detail.eraID;
+		//activeStopID = null; //until we move through the story
+	}
 
-    let activeViewID = "intro";
-    let activeStopID = null;
+	let activeViewID = 'intro';
+	let activeStopID = null;
 
-    const dispatch = createEventDispatcher();
-    
+	const dispatch = createEventDispatcher();
 
+	//dispatch function called by children
+	function onNavigate(event) {
+		console.log(`NavEras:onNavigate(event: ${JSON.stringify(event)}`);
 
-    //dispatch function called by children
-    function onNavigate(event) {
-        console.log(`NavEras:onNavigate(event: ${JSON.stringify(event)}`);
+		//Tell the page to change view
+		if (navigateWithinMap) {
+			dispatch('navigate', event.detail);
+		} else {
+			console.log(`NavEras:onNavigate(): navigating to map view ${event.detail.viewID}`);
 
-        //Tell the page to change view
-        if (navigateWithinMap) {
-            dispatch('navigate', event.detail);
-        } else {
-            goto(`${base==''?'/':base}`);
-        };
-    };
-
+			goto(`${base == '' ? '/' : `${base}/`}#/view/${encodeURIComponent(event.detail.viewID)}`);
+		}
+	}
 </script>
 
 <div id="story-navigation" class="position-fixed">
-    <NavErasButton
-        viewID="intro"
-        buttonText="Intro"
-        on:navigate={onNavigate}
-    />
-    <NavErasButton
-        eraID="pre-1600s"
-        active={activeEraID=="pre-1600s"}
-        labelText="pre 1600s"
-        on:navigate={onNavigate}
-    />
-    <NavErasButton
-        eraID="early-european-settlement"
-        active={activeEraID=="early-european-settlement"}
-        labelText="1620-1855"
-        on:navigate={onNavigate}
-    />
-    <NavErasButton
-        eraID="urban-industrial"
-        active={activeEraID=="urban-industrial"}
-        labelText="1855-1950"
-        on:navigate={onNavigate}
-    />
-    <NavErasButton
-        eraID="deindustrialization"
-        labelText="1950-2005"
-        on:navigate={onNavigate}
-    />
-    <NavErasButton
-        eraID="the-future"
-        labelText="2005-Future"
-        on:navigate={onNavigate}
-    />
-</div>  
+	<NavErasButton viewID="intro" buttonText="Intro" on:navigate={onNavigate} />
+	<NavErasButton
+		eraID="pre-1600s"
+		active={activeEraID == 'pre-1600s'}
+		labelText="pre 1600s"
+		on:navigate={onNavigate}
+	/>
+	<NavErasButton
+		eraID="early-european-settlement"
+		active={activeEraID == 'early-european-settlement'}
+		labelText="1620-1855"
+		on:navigate={onNavigate}
+	/>
+	<NavErasButton
+		eraID="urban-industrial"
+		active={activeEraID == 'urban-industrial'}
+		labelText="1855-1950"
+		on:navigate={onNavigate}
+	/>
+	<NavErasButton eraID="deindustrialization" labelText="1950-2005" on:navigate={onNavigate} />
+	<NavErasButton eraID="the-future" labelText="2005-Future" on:navigate={onNavigate} />
+</div>
 
 <style>
+	/* Mobile first positioning */
 
+	#story-navigation {
+		top: 0;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		z-index: 9999;
+		background-color: white;
+		padding: 5px 20px;
+		border-bottom: 1px solid lightgray;
+		opacity: 0.9;
+	}
 
-    /* Mobile first positioning */
+	/* Mobile first */
 
-    #story-navigation {
-        top: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        z-index: 9999;
-        background-color: white;
-        padding: 5px 20px;
-        border-bottom: 1px solid lightgray;
-        opacity: 0.9;
-    }
+	/* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
 
-    /* Mobile first */
-    
-    /* Breakpoints at 576px, 768px, 992px, and 1200px (Bootstrap). */
+	@media (min-width: 576px) {
+	}
 
-    @media (min-width: 576px){
+	@media (min-width: 768px) {
+		#story-navigation {
+			left: 20px;
+			top: 24px;
+			width: fit-content;
+			flex-direction: column;
+			background-color: inherit;
+			padding: 0;
+			border-bottom: none;
+		}
+	}
 
-    }
-
-    @media (min-width: 768px){
-  
-        #story-navigation {
-            left: 20px;
-            top: 24px;
-            width: fit-content;
-            flex-direction: column;
-            background-color: inherit;
-            padding: 0;
-            border-bottom: none;
-        }
-
-    }
-    
-    /* @media (min-width: 1200px){
+	/* @media (min-width: 1200px){
 
         #story-navigation {
             left: 80px;
         } 
 
     } */
-
 </style>

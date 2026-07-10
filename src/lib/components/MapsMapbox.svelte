@@ -2,6 +2,10 @@
 	// import IntersectionObserver from './IntersectionObserver.svelte';
 
 	import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte';
+
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+
 	import { geoAlbers, geoMercator, geoPath } from 'd3';
 	import * as d3 from 'd3';
 
@@ -29,7 +33,9 @@
 
 	import styles from '$lib/styles.js';
 
-	let { story } = $props();
+	let { story, initialViewID = 'intro', initialEraID = null } = $props();
+
+	const dispatch = createEventDispatcher();
 
 	export function onChapterMouseOver(event) {
 		console.log('MapsMapbox:onChapterMouseOver(event:' + JSON.stringify(event.detail) + ')');
@@ -164,8 +170,8 @@
 
 	// let zoom;
 
-	let activeViewID = $state(story.intialView);
-	let activeEraID = $state(null);
+	let activeViewID = $state(initialViewID);
+	let activeEraID = $state(initialEraID);
 	let activeStopID = $state(null);
 
 	let storyNarrative = $state(null); // This variable will hold the reference
@@ -207,12 +213,9 @@
 			wetlands_small_img.onload = () => map.addImage('wetlands_small', wetlands_small_img);
 			wetlands_small_img.src = wetlands_small_svg;
 
-			onNavigate({
-				detail: {
-					viewID: 'intro',
-					eraID: null
-				}
-			});
+			console.log('MapsMapbox: map loaded');
+
+			dispatch('ready');
 		});
 
 		if (storyNarrative) {
@@ -413,9 +416,92 @@
 		});
 	}
 
+	function getFirstEraID() {
+		console.log(`routes/map:getFirstEraID()`);
+
+		const firstEraID = Object.keys(story.eras)[0] ?? null;
+
+		console.log(`routes/map:getFirstEraID():${firstEraID}`);
+
+		return firstEraID;
+	}
+
+	function getFirstChapterForEra(eraID) {
+		console.log(`routes/map:getFirstChapterForEra(eraID:${eraID})`);
+
+		const era = story.eras[eraID];
+
+		if (!era) {
+			console.log(`routes/map:getFirstChapterForEra(): Could not find era ${eraID}`);
+
+			return null;
+		}
+
+		const firstChapter = Object.values(era.chapters ?? {})[0] ?? null;
+
+		console.log(`routes/map:getFirstChapterForEra():${JSON.stringify(firstChapter)}`);
+
+		return firstChapter;
+	}
+
+	function navigateToNextContent() {
+		console.log(
+			`routes/map:navigateToNextContent(activeViewID:${activeViewID}, activeEraID:${activeEraID})`
+		);
+
+		/*
+		 * From Intro, go to the first era map view.
+		 */
+		if (activeViewID == 'intro') {
+			const firstEraID = getFirstEraID();
+
+			if (!firstEraID) {
+				console.log(`routes/map:navigateToNextContent(): No first era found`);
+
+				return;
+			}
+
+			const firstEra = story.eras[firstEraID];
+
+			console.log(
+				`routes/map:navigateToNextContent(): Intro to first era ${firstEraID}, view ${firstEra.view}`
+			);
+
+			onNavigate({
+				detail: {
+					viewID: firstEra.view,
+					eraID: firstEraID
+				}
+			});
+
+			return;
+		}
+
+		/*
+		 * From an era map view, go to that era's first chapter.
+		 */
+		if (activeEraID) {
+			const firstChapter = getFirstChapterForEra(activeEraID);
+
+			if (!firstChapter) {
+				console.log(`routes/map:navigateToNextContent(): No chapter found for era ${activeEraID}`);
+
+				return;
+			}
+
+			console.log(
+				`routes/map:navigateToNextContent(): Era ${activeEraID} to first chapter ${firstChapter.link}`
+			);
+
+			goto(`${base}${firstChapter.link}`);
+		}
+	}
+
 	function handleDownButtonClick() {
 		if (isAtBottom) {
 			console.log('Next button clicked');
+			navigateToNextContent();
+
 			return;
 		}
 
@@ -491,8 +577,9 @@
 				<div
 					id="story-narrative-button-down"
 					class:next-button={isAtBottom}
-					onclick={scrollNarrativeDown}
+					onclick={handleDownButtonClick}
 				></div>
+
 				<!-- <button
                 id="story-narrative-button-down"
                 class:next-button={isAtBottom}
