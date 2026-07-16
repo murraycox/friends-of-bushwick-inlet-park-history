@@ -263,6 +263,7 @@
 <NavTimeline
 	bind:this={navTimeline}
 	eras={story.eras}
+	activeEraID={initialEraID}
 	on:chapterMouseOver={onChapterMouseOver}
 	on:chapterMouseLeave={onChapterMouseLeave}
 	on:navigate={onNavigate}

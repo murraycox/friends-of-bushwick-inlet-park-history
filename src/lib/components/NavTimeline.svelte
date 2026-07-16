@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { tick, createEventDispatcher } from 'svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { fade } from 'svelte/transition';
 
 	import * as d3 from 'd3';
 
@@ -31,13 +32,20 @@
 		onChapterClick(event.detail.featureID);
 	}
 
-	export function onNavigate(event) {
+	export async function onNavigate(event) {
 		console.log(`NavTimeline:onNavigate(event:${JSON.stringify(event.detail)})`);
 
 		activeEraID = event.detail.eraID;
 
 		recalculateActiveChapters();
 		redrawTimeline();
+
+		// The very first onNavigate() call (whether it's the deep-linked/refreshed initial era,
+		// which arrives asynchronously once the map is ready, or the default intro state) should
+		// render instantly. Only arm the nav-change transitions once that first render has
+		// committed, so every navigation after it animates.
+		await tick();
+		navAnimationsEnabled = true;
 	}
 
 	const dispatch = createEventDispatcher();
@@ -60,16 +68,14 @@
 
 	let currentWidth = $state();
 
+	// Suppresses nav-change transitions until the first onNavigate() call has committed, so
+	// refreshing the page (or deep-linking straight into a later era) renders in its final
+	// position instantly instead of animating in.
+	let navAnimationsEnabled = $state(false);
+
 	let erasAndActiveChapters = $state([]);
 
 	let xTimeline = $state(d3.scaleLinear().domain([0, erasAndActiveChapters.length - 1]));
-
-	onMount(() => {
-		console.log('NavTimeline:onMount');
-		//setupTimeline("The story of Bushwick Inlet", erasAndChapters);
-		redrawTimeline();
-		// window.addEventListener('resize', redrawTimeline);
-	});
 
 	function recalculateActiveChapters() {
 		console.log(`NavTimeline:recalculateActiveChapters(activeEraID:${activeEraID})`);
@@ -90,7 +96,12 @@
 	}
 	console.log(erasAndActiveChapters.length);
 
+	// Run synchronously (not just in onMount) so that when activeEraID arrives as an initial prop
+	// (e.g. the chapter page passes $page.params.era directly), the very first render already has
+	// the correct chapter list and position scale, instead of flashing the "no active era" layout
+	// for a frame while onMount catches up.
 	recalculateActiveChapters();
+	redrawTimeline();
 
 	function onMouseOver(id) {
 		console.log('NavTimeline:onMouseOver(id:' + JSON.stringify(id) + ')');
@@ -143,14 +154,12 @@
 	}
 
 	function redrawTimeline() {
-		//const currentTimelineContainerWidth = parseInt(d3.select('#timeline-container').style('width'), 10);
 		//When all of the nodes are closed, this will be TIMELINE_PADDING = 25 TIMELINE_X_DISTANCE_BETWEEN_NODES = 40
 		// (25 * 2) + ((5 - 1) * 40) = 210
-		const newTimelineContainerWidth =
+		// Computed directly (not read back from the DOM) so this can run synchronously before the
+		// component has even mounted, and so it isn't affected by the width transition's timing.
+		currentWidth =
 			TIMELINE_PADDING * 2 + (erasAndActiveChapters.length - 1) * TIMELINE_X_DISTANCE_BETWEEN_NODES;
-		d3.select('#timeline-container').style('width', newTimelineContainerWidth + 'px');
-
-		currentWidth = parseInt(d3.select('#timeline').style('width'), 10);
 		console.log(currentWidth);
 		//We only need to update the range (the domain doesn't change), but we recreate the whole object to force it to render
 		xTimeline = d3
@@ -160,13 +169,20 @@
 	}
 </script>
 
-<div id="timeline-container" class="position-fixed">
+<div
+	id="timeline-container"
+	class="position-fixed"
+	class:ready={navAnimationsEnabled}
+	style={`width:${currentWidth}px`}
+>
 	<div id="timeline-titles">
-		{#each erasAndActiveChapters as eraOrActiveChapter, i}
+		{#each erasAndActiveChapters as eraOrActiveChapter, i (eraOrActiveChapter.id)}
 			<div
 				id={'title-' + eraOrActiveChapter.id}
 				class="timeline-title-container {`era-${eraOrActiveChapter.type == 'era' ? eraOrActiveChapter.id : eraOrActiveChapter.eraID}`}"
 				style={`left:${xTimeline(i) - TIMELINE_TITLE_WIDTH / 2}px`}
+				in:fade={{ duration: navAnimationsEnabled ? 250 : 0, delay: navAnimationsEnabled ? 150 : 0 }}
+				out:fade={{ duration: 150 }}
 			>
 				<div class="story-controller-timeline-era-title">
 					{eraOrActiveChapter.name}
@@ -196,10 +212,12 @@
 					stroke-width="1"
 					stroke="grey"
 				/>
-				{#each erasAndActiveChapters as eraOrActiveChapter, i}
+				{#each erasAndActiveChapters as eraOrActiveChapter, i (eraOrActiveChapter.id)}
 					<g
 						class="timeline-era-and-chapter-group"
 						transform={`translate(${xTimeline(i)},${TIMELINE_MARGIN_TOP + TIMELINE_HEIGHT / 2 - TIMELINE_ANCHOR_LENGTH})`}
+						in:fade={{ duration: navAnimationsEnabled ? 250 : 0, delay: navAnimationsEnabled ? 150 : 0 }}
+						out:fade={{ duration: 150 }}
 					>
 						<line
 							class="timeline-node-anchors"
@@ -434,7 +452,40 @@
         #timeline-container {
             left: 80px;
         }
-    
+
 
     } */
+
+	/* Nav-change animations only apply once the initial layout has painted, so refreshing the
+	   page (or deep-linking straight into a later era) renders in its final position instantly
+	   instead of replaying a "navigation" that never happened. */
+	#timeline-container.ready {
+		transition: width 0.4s ease;
+	}
+
+	:global(#timeline-container.ready .timeline-background) {
+		transition:
+			width 0.4s ease,
+			fill 0.3s ease;
+	}
+
+	:global(#timeline-container.ready line) {
+		transition:
+			x1 0.4s ease,
+			x2 0.4s ease;
+	}
+
+	:global(#timeline-container.ready .timeline-era-and-chapter-group) {
+		transition: transform 0.4s ease;
+	}
+
+	:global(#timeline-container.ready circle) {
+		transition:
+			fill 0.3s ease,
+			r 0.3s ease;
+	}
+
+	#timeline-container.ready .timeline-title-container {
+		transition: left 0.4s ease;
+	}
 </style>
