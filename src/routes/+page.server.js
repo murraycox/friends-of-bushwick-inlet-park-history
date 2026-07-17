@@ -18,13 +18,6 @@ export async function load({ params }) {
 	const tilesetsService = Tilesets({ accessToken: MAPBOX_STYLES_AND_TILESETS_TOKEN });
 	const tilesetsResponse = await tilesetsService.listTilesets().send();
 
-	const tilesetsBody = JSON.stringify(tilesetsResponse.body);
-	console.log(
-		tilesetsBody.includes(MAPBOX_STYLES_AND_TILESETS_TOKEN)
-			? '❌ Token found in listTilesets response'
-			: '✅ Token NOT found in listTilesets response'
-	);
-
 	const tilesets = tilesetsResponse.body;
 
 	const stylesService = Style({ accessToken: MAPBOX_STYLES_AND_TILESETS_TOKEN });
@@ -38,13 +31,6 @@ export async function load({ params }) {
 			);
 
 			const styleResponse = await stylesService.getStyle({ styleId: view.mapbox.style }).send();
-
-			const body = JSON.stringify(styleResponse.body);
-			console.log(
-				body.includes(MAPBOX_STYLES_AND_TILESETS_TOKEN)
-					? `❌ Token found in getStyle response for ${view.id}`
-					: `✅ Token NOT found in getStyle response for ${view.id}`
-			);
 
 			const layers = styleResponse.body.layers;
 
@@ -147,7 +133,6 @@ export async function load({ params }) {
 	}
 
 	const eraCollectionIntroContentResponse = await contentfulFetch(eraCollectionIntroContentQuery);
-	console.log(eraCollectionIntroContentResponse);
 
 	if (!eraCollectionIntroContentResponse.ok) {
 		console.log(eraCollectionIntroContentResponse);
@@ -171,16 +156,6 @@ export async function load({ params }) {
 			// story.views[era.id].introContent = documentToHtmlString(era.introContent.json);
 		}
 	});
-
-	// console.log(items);
-
-	const storyJson = JSON.stringify(story);
-
-	if (storyJson.includes(MAPBOX_STYLES_AND_TILESETS_TOKEN)) {
-		console.log('❌ Token found in story returned to client');
-	} else {
-		console.log('✅ Token NOT found in returned story');
-	}
 
 	return {
 		story: story
