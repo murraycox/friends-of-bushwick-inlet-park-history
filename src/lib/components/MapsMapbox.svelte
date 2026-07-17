@@ -6,6 +6,9 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 
+	import narrativeMaximizeIcon from '$lib/images/icons/narrative-maximize.svg';
+	import narrativeMinimizeIcon from '$lib/images/icons/narrative-minimize.svg';
+
 	import { geoAlbers, geoMercator, geoPath } from 'd3';
 	import * as d3 from 'd3';
 
@@ -542,7 +545,11 @@
 				aria-label={isNarrativeMinimized ? 'Maximize narrative' : 'Minimize narrative'}
 				title={isNarrativeMinimized ? 'Maximize' : 'Minimize'}
 			>
-				{isNarrativeMinimized ? '+' : '−'}
+				{#if isNarrativeMinimized}
+					<img src={narrativeMaximizeIcon} alt="" />
+				{:else}
+					<img src={narrativeMinimizeIcon} alt="" />
+				{/if}
 			</button>
 
 			<div
@@ -661,12 +668,16 @@
 		z-index: 1000;
 		width: 30px;
 		height: 30px;
-		border-radius: 50%;
-		border: 1px solid gray;
-		background: white;
+		padding: 0;
+		border: none;
+		background: none;
 		cursor: pointer;
-		font-size: 22px;
-		line-height: 1;
+	}
+
+	#story-narrative-minmax-button img {
+		display: block;
+		width: 100%;
+		height: 100%;
 	}
 
 	#story-narrative-viewport {
@@ -798,7 +809,7 @@
 			display: block;
 			position: absolute;
 			z-index: 999;
-			top: 22px;
+			top: 29px;
 			height: 50px;
 			left: 110px;
 		}
