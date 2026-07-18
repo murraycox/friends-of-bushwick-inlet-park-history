@@ -13,9 +13,15 @@
 		eras: any;
 		navigateWithinMap?: boolean;
 		activeEraID?: any;
+		activeChapterID?: any;
 	}
 
-	let { eras, navigateWithinMap = true, activeEraID = $bindable(null) }: Props = $props();
+	let {
+		eras,
+		navigateWithinMap = true,
+		activeEraID = $bindable(null),
+		activeChapterID = null
+	}: Props = $props();
 
 	export function onMapFeatureMouseOver(event) {
 		console.log('NavTimeline:onMapFeatureMouseOver(event:' + JSON.stringify(event.detail) + ')');
@@ -239,6 +245,11 @@
 							class:active-era={(eraOrActiveChapter.type == 'era' &&
 								eraOrActiveChapter.id == activeEraID) ||
 								(eraOrActiveChapter.type == 'chapter' && eraOrActiveChapter.eraID == activeEraID)}
+							class:current-chapter={eraOrActiveChapter.type == 'chapter' &&
+								eraOrActiveChapter.id == activeChapterID}
+							class:current-era={eraOrActiveChapter.type == 'era' &&
+								eraOrActiveChapter.id == activeEraID &&
+								navigateWithinMap}
 							stroke-width="1"
 							stroke="#707070"
 							onmouseover={() => onMouseOver(eraOrActiveChapter.id)}
@@ -412,6 +423,120 @@
 	.timeline-title-container.era-the-future {
 		fill: var(--color-era-5);
 		background-color: var(--color-era-5); /* for div */
+	}
+
+	/* Thicker stroke on the active dot only. SVG strokes are centered on the path, so widening
+	   the stroke without shrinking r would make the dot's outer edge bigger than the other
+	   (unselected) dots — r is reduced by half the stroke-width increase (1px -> 3px is +2, so
+	   r drops by 1) to keep the outer edge the same size as every other dot. */
+	#timeline circle.current-chapter {
+		stroke-width: 3;
+		r: 8px;
+	}
+
+	#timeline circle.current-era {
+		stroke-width: 3;
+		r: 11px;
+	}
+
+	/* The current chapter's dot: white fill with the era colour as its stroke instead of fill.
+	   These need a higher-specificity selector than the .active-era fill rules above to win. */
+	#timeline circle.current-chapter.active-era.era-pre-1600s {
+		fill: white;
+		stroke: var(--color-era-1);
+	}
+
+	#timeline circle.current-chapter.active-era.era-early-european-settlement {
+		fill: white;
+		stroke: var(--color-era-2);
+	}
+
+	#timeline circle.current-chapter.active-era.era-urban-industrial {
+		fill: white;
+		stroke: var(--color-era-3);
+	}
+
+	#timeline circle.current-chapter.active-era.era-deindustrialization {
+		fill: white;
+		stroke: var(--color-era-4);
+	}
+
+	#timeline circle.current-chapter.active-era.era-the-future {
+		fill: white;
+		stroke: var(--color-era-5);
+	}
+
+	/* The active era's own dot, same treatment as current-chapter, but only when navigating
+	   within the map (see the navigateWithinMap check on the current-era class binding) — the
+	   chapter page keeps the era dot's normal solid fill. */
+	#timeline circle.current-era.active-era.era-pre-1600s {
+		fill: white;
+		stroke: var(--color-era-1);
+	}
+
+	#timeline circle.current-era.active-era.era-early-european-settlement {
+		fill: white;
+		stroke: var(--color-era-2);
+	}
+
+	#timeline circle.current-era.active-era.era-urban-industrial {
+		fill: white;
+		stroke: var(--color-era-3);
+	}
+
+	#timeline circle.current-era.active-era.era-deindustrialization {
+		fill: white;
+		stroke: var(--color-era-4);
+	}
+
+	#timeline circle.current-era.active-era.era-the-future {
+		fill: white;
+		stroke: var(--color-era-5);
+	}
+
+	/* Hovering any node previews the same active-state styling, regardless of whether it's
+	   actually the current era/chapter. Reverts automatically on mouse-leave via :hover. */
+	#timeline circle.era.era-pre-1600s:hover,
+	#timeline circle.chapter.era-pre-1600s:hover {
+		fill: white;
+		stroke: var(--color-era-1);
+		stroke-width: 3;
+	}
+
+	#timeline circle.era.era-early-european-settlement:hover,
+	#timeline circle.chapter.era-early-european-settlement:hover {
+		fill: white;
+		stroke: var(--color-era-2);
+		stroke-width: 3;
+	}
+
+	#timeline circle.era.era-urban-industrial:hover,
+	#timeline circle.chapter.era-urban-industrial:hover {
+		fill: white;
+		stroke: var(--color-era-3);
+		stroke-width: 3;
+	}
+
+	#timeline circle.era.era-deindustrialization:hover,
+	#timeline circle.chapter.era-deindustrialization:hover {
+		fill: white;
+		stroke: var(--color-era-4);
+		stroke-width: 3;
+	}
+
+	#timeline circle.era.era-the-future:hover,
+	#timeline circle.chapter.era-the-future:hover {
+		fill: white;
+		stroke: var(--color-era-5);
+		stroke-width: 3;
+	}
+
+	#timeline circle.era:hover {
+		r: 11px;
+	}
+
+	#timeline circle.chapter:hover {
+		r: 8px;
 	}
 
 	#timeline div.era {

@@ -60,7 +60,12 @@
 	</div>
 	<div class="story-narrative-footer"></div>
 </div>
-<NavTimeline eras={story.eras} navigateWithinMap={false} activeEraID={$page.params.era} />
+<NavTimeline
+	eras={story.eras}
+	navigateWithinMap={false}
+	activeEraID={$page.params.era}
+	activeChapterID={$page.params.chapter}
+/>
 
 <style>
 	#story-footer-navigation {
