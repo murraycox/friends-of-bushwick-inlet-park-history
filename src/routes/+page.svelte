@@ -259,6 +259,7 @@
 	on:featureMouseOver={onMapFeatureMouseOver}
 	on:featureMouseOut={onMapFeatureMouseOut}
 	on:featureClick={onFeatureClick}
+	on:navigate={onNavigate}
 />
 <NavTimeline
 	bind:this={navTimeline}

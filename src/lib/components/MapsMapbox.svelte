@@ -527,11 +527,9 @@
 				`routes/map:navigateToNextContent(): Intro to first era ${firstEraID}, view ${firstEra.view}`
 			);
 
-			onNavigate({
-				detail: {
-					viewID: firstEra.view,
-					eraID: firstEraID
-				}
+			dispatch('navigate', {
+				viewID: firstEra.view,
+				eraID: firstEraID
 			});
 
 			return;
