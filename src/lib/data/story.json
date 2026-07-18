@@ -390,7 +390,7 @@
 				"founding-of-williamsburgh": {
 					"id": "founding-of-williamsburgh",
 					"name": "Founding of Williamsburgh",
-					"link": "/era/early-european-settlement/the-founding-of-williamsburgh"
+					"link": "/era/early-european-settlement/founding-of-williamsburgh"
 				},
 				"early-industrialization": {
 					"id": "early-industrialization",
@@ -417,8 +417,8 @@
 			"link": null,
 			"view": "urban-industrial",
 			"chapters": {
-				"williamsburg-insdustrializes": {
-					"id": "williamsburg-insdustrializes",
+				"williamsburg-industrializes": {
+					"id": "williamsburg-industrializes",
 					"name": "Williamsburg & Greenpoint Industrialize",
 					"link": "/era/urban-industrial/williamsburg-industrializes"
 				},
@@ -521,7 +521,7 @@
 				"the-future-c": {
 					"id": "the-future-c",
 					"name": "The Future",
-					"link": "/era/the-future/the-future"
+					"link": "/era/the-future/the-future-c"
 				}
 			}
 		}
