@@ -19,6 +19,8 @@
 
 	import water2_larger_svg from '$lib/images/mapbox/water2_larger.svg';
 	import wetlands_small_svg from '$lib/images/mapbox/wetlands_small.svg';
+	import water_era3_png from '$lib/images/mapbox/water-era3.png';
+	import bricks_purple_png from '$lib/images/mapbox/bricks_purple.png';
 
 	const mapboxPublicToken = import.meta.env.VITE_MAPBOX_PUBLIC_TOKEN;
 
@@ -27,6 +29,12 @@
 	let lng, lat, zoom;
 
 	const addedLayers = [];
+
+	// h- layers stay visibility:'visible' at all times (see onNavigate) so Mapbox GL fetches
+	// their tile data as soon as the view loads instead of only on first hover, which otherwise
+	// causes a pop-in delay the first time a chapter is highlighted. This filter matches no
+	// chapter, so nothing renders until a real chapter filter is applied on hover.
+	const HIDE_ALL_CHAPTERS_FILTER = ['==', ['get', 'chapter'], '__no_chapter_selected__'];
 
 	lng = -73.94;
 	lat = 40.72;
@@ -67,7 +75,6 @@
 					true,
 					false
 				]);
-				map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'visible'); //should be 'visible', but may be hidden in the MapBox style?
 			}
 		});
 	}
@@ -78,8 +85,38 @@
 		story.views[activeViewID].mapbox.layers.forEach((layer) => {
 			if (layer.id.substring(0, 2) == 'h-') {
 				console.log(`Removing hover vibes from layer ${layer.id}`);
-				map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'none'); //should be 'visible', but may be hidden in the MapBox style?
+				// h- layers are always visibility:'visible' (see onNavigate); hide by filter instead.
+				map.setFilter(`${activeViewID}-${layer.id}`, HIDE_ALL_CHAPTERS_FILTER);
 			}
+		});
+	}
+
+	function logInteractiveLayerChapters(viewID, eraID) {
+		const layers = story.views[viewID]?.mapbox?.layers;
+		if (!layers) return;
+
+		const hLayers = layers.filter((layer) => layer.sourceId && layer.id.substring(0, 2) === 'h-');
+		if (hLayers.length === 0) return;
+
+		const validChapterIds = eraID ? Object.keys(story.eras[eraID]?.chapters ?? {}) : [];
+
+		hLayers.forEach((layer) => {
+			const sourceLayerName = layer['source-layer'];
+			const features = map.querySourceFeatures(sourceLayerName, { sourceLayer: sourceLayerName });
+
+			const rows = features.map((feature) => {
+				const chapter = feature.properties?.chapter ?? '(none)';
+				return {
+					featureId: feature.id,
+					chapter,
+					knownChapter: validChapterIds.includes(chapter)
+				};
+			});
+
+			console.log(
+				`🐛 h-layer "${layer.id}" (view: ${viewID}): ${features.length} features loaded. Valid chapters for era "${eraID}": ${validChapterIds.join(', ')}`
+			);
+			console.table(rows);
 		});
 	}
 
@@ -140,6 +177,12 @@
 									'visibility',
 									layer.visibility
 								); //should be 'visible', but may be hidden in the MapBox style?
+							} else {
+								// Force visible (ignoring whatever the Mapbox style says) so tiles load
+								// eagerly; hide by filter instead. Runs on every navigate, including
+								// revisits, since re-navigating hides all previously added layers above.
+								map.setLayoutProperty(`${activeViewID}-${layer.id}`, 'visibility', 'visible');
+								map.setFilter(`${activeViewID}-${layer.id}`, HIDE_ALL_CHAPTERS_FILTER);
 							}
 						}
 					}
@@ -147,6 +190,8 @@
 			});
 			console.log(`Mapbox Layers for View ${activeViewID}:\n${debugMapboxLayersForActiveView}`);
 		}
+
+		map.once('idle', () => logInteractiveLayerChapters(activeViewID, activeEraID));
 
 		// Move the map
 		if (story.views[activeViewID].extent) {
@@ -215,6 +260,18 @@
 			let wetlands_small_img = new Image(30, 30);
 			wetlands_small_img.onload = () => map.addImage('wetlands_small', wetlands_small_img);
 			wetlands_small_img.src = wetlands_small_svg;
+
+			// These two are PNG crops taken directly from the urban-industrial style's own sprite
+			// atlas (exported at @2x), so we load them at their natural size and tell Mapbox they're
+			// @2x via pixelRatio, instead of forcing a fixed size like the SVGs above.
+			let water_era3_img = new Image();
+			water_era3_img.onload = () => map.addImage('water-era3', water_era3_img, { pixelRatio: 2 });
+			water_era3_img.src = water_era3_png;
+
+			let bricks_purple_img = new Image();
+			bricks_purple_img.onload = () =>
+				map.addImage('bricks_purple', bricks_purple_img, { pixelRatio: 2 });
+			bricks_purple_img.src = bricks_purple_png;
 
 			console.log('MapsMapbox: map loaded');
 

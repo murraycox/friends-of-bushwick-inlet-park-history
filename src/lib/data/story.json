@@ -417,8 +417,8 @@
 			"link": null,
 			"view": "urban-industrial",
 			"chapters": {
-				"williamsburg-greenpoint-industrialize": {
-					"id": "williamsburg-greenpoint-industrialize",
+				"williamsburg-insdustrializes": {
+					"id": "williamsburg-insdustrializes",
 					"name": "Williamsburg & Greenpoint Industrialize",
 					"link": "/era/urban-industrial/williamsburg-industrializes"
 				},

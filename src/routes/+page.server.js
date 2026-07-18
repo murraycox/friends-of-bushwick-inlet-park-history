@@ -42,6 +42,8 @@ export async function load({ params }) {
 							break;
 						}
 					}
+				} else if (typeof layer.source === 'string' && layer.source.startsWith('mapbox://')) {
+					layer.sourceId = layer.source.replace('mapbox://', '');
 				}
 			});
 
