@@ -233,6 +233,19 @@
 		margin: 0 5%;
 	}
 
+	#story-narrative :global(p),
+	#story-narrative :global(h2),
+	#story-narrative :global(h3),
+	#story-narrative :global(h4) {
+		margin: 0 5%;
+	}
+
+	#story-narrative :global(h2),
+	#story-narrative :global(h3),
+	#story-narrative :global(h4) {
+		margin-top: 40px;
+	}
+
 	.text-padding-right {
 		padding-right: 10%;
 	}
