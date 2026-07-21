@@ -186,7 +186,10 @@
 	}
 
 	.era-pre-1600s #story-narrative #story-context-container,
-	.era-pre-1600s #story-narrative :global(h1) {
+	.era-pre-1600s #story-narrative :global(h1),
+	.era-pre-1600s #story-narrative :global(h2),
+	.era-pre-1600s #story-narrative :global(h3),
+	.era-pre-1600s #story-narrative :global(h4) {
 		color: var(--color-era-pre-1600s);
 	}
 
@@ -195,7 +198,10 @@
 	}
 
 	.era-early-european-settlement #story-narrative #story-context-container,
-	.era-early-european-settlement #story-narrative :global(h1) {
+	.era-early-european-settlement #story-narrative :global(h1),
+	.era-early-european-settlement #story-narrative :global(h2),
+	.era-early-european-settlement #story-narrative :global(h3),
+	.era-early-european-settlement #story-narrative :global(h4) {
 		color: var(--color-era-early-european-settlement);
 	}
 
@@ -204,7 +210,10 @@
 	}
 
 	.era-urban-industrial #story-narrative #story-context-container,
-	.era-urban-industrial #story-narrative :global(h1) {
+	.era-urban-industrial #story-narrative :global(h1),
+	.era-urban-industrial #story-narrative :global(h2),
+	.era-urban-industrial #story-narrative :global(h3),
+	.era-urban-industrial #story-narrative :global(h4) {
 		color: var(--color-era-urban-industrial);
 	}
 
@@ -246,6 +255,13 @@
 		margin-top: 40px;
 	}
 
+	#story-narrative :global(h2:has(+ .figure)),
+	#story-narrative :global(h3:has(+ .figure)),
+	#story-narrative :global(h4:has(+ .figure)) {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
 	.text-padding-right {
 		padding-right: 10%;
 	}
@@ -256,6 +272,12 @@
 
 	#story-narrative #content-container :global(.figure) {
 		padding-top: 80px;
+	}
+
+	#story-narrative #content-container :global(h2 + .figure),
+	#story-narrative #content-container :global(h3 + .figure),
+	#story-narrative #content-container :global(h4 + .figure) {
+		padding-top: 0;
 	}
 
 	/* let's define these for all images so we don't need to add bootstrap classes like img-fluid and text-center */
