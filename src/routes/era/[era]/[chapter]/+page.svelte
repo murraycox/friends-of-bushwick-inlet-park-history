@@ -167,7 +167,7 @@
 	}
 
 	#story-context-container {
-		margin-top: 40px;
+		margin-top: 25px;
 		margin-bottom: 30px;
 	}
 

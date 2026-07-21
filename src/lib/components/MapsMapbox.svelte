@@ -866,7 +866,7 @@
 			display: block;
 			position: absolute;
 			z-index: 999;
-			top: 29px;
+			top: 14px;
 			height: 50px;
 			left: 110px;
 		}
