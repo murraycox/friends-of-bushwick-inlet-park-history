@@ -50,7 +50,7 @@
 			<div id="story-footer-navigation-next">
 				<a href={base + (data.nextChapter ? data.nextChapter.link : '/')}>
 					<div id="story-footer-navigation-next-button" class="story-footer-navigation-button">
-						{data.nextChapter ? data.nextChapter.name : 'back to next era map'}
+						{data.nextChapter ? data.nextChapter.name : 'next era'}
 						<div id="button-right"></div>
 					</div>
 					<!-- <div id="story-footer-navigation-next-button" class="story-footer-navigation-button">Next chapter or back to next era map</div> -->
@@ -247,6 +247,7 @@
 	#story-narrative :global(h3),
 	#story-narrative :global(h4) {
 		margin: 0 5%;
+		margin-bottom: 0.5rem;
 	}
 
 	#story-narrative :global(h2),

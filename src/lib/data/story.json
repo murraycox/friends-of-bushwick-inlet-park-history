@@ -417,10 +417,10 @@
 			"link": null,
 			"view": "urban-industrial",
 			"chapters": {
-				"williamsburg-industrializes": {
-					"id": "williamsburg-industrializes",
+				"williamsburg-greenpoint-industrialize": {
+					"id": "williamsburg-greenpoint-industrialize",
 					"name": "Williamsburg & Greenpoint Industrialize",
-					"link": "/era/urban-industrial/williamsburg-industrializes"
+					"link": "/era/urban-industrial/williamsburg-greenpoint-industrialize"
 				},
 				"transportation-demographics": {
 					"id": "transportation-demographics",
