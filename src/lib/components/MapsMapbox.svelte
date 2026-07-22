@@ -518,6 +518,66 @@
 		return firstChapter;
 	}
 
+	function getLastChapterForEra(eraID) {
+		console.log(`routes/map:getLastChapterForEra(eraID:${eraID})`);
+
+		const era = story.eras[eraID];
+
+		if (!era) {
+			console.log(`routes/map:getLastChapterForEra(): Could not find era ${eraID}`);
+
+			return null;
+		}
+
+		const chapters = Object.values(era.chapters ?? {});
+
+		return chapters[chapters.length - 1] ?? null;
+	}
+
+	function getPreviousEraID(eraID) {
+		console.log(`routes/map:getPreviousEraID(eraID:${eraID})`);
+
+		const eraIDs = Object.keys(story.eras);
+		const index = eraIDs.indexOf(eraID);
+
+		if (index <= 0) return null;
+
+		return eraIDs[index - 1];
+	}
+
+	let firstChapterForActiveEra = $derived(
+		activeEraID ? getFirstChapterForEra(activeEraID) : null
+	);
+
+	function navigateBack() {
+		console.log(`routes/map:navigateBack(activeEraID:${activeEraID})`);
+
+		if (!activeEraID) return;
+
+		const previousEraID = getPreviousEraID(activeEraID);
+
+		if (!previousEraID) {
+			console.log(`routes/map:navigateBack(): No previous era. Navigating to intro.`);
+
+			dispatch('navigate', {
+				viewID: 'intro',
+				eraID: null
+			});
+
+			return;
+		}
+
+		const lastChapter = getLastChapterForEra(previousEraID);
+
+		if (!lastChapter) {
+			console.log(`routes/map:navigateBack(): No last chapter found for era ${previousEraID}`);
+
+			return;
+		}
+
+		goto(`${base}${lastChapter.link}`);
+	}
+
 	function navigateToNextContent() {
 		console.log(
 			`routes/map:navigateToNextContent(activeViewID:${activeViewID}, activeEraID:${activeEraID})`
@@ -657,6 +717,29 @@
 						</div>
 					{/if}
 
+					{#if activeEraID}
+						<div id="era-footer-nav" class={`era-${activeEraID}`}>
+							<hr />
+							<div id="era-footer-nav-buttons">
+								<button
+									type="button"
+									id="era-footer-back-button"
+									onclick={navigateBack}
+									aria-label="Back"
+								></button>
+								{#if firstChapterForActiveEra}
+									<button
+										type="button"
+										id="era-footer-next-button"
+										onclick={() => goto(`${base}${firstChapterForActiveEra.link}`)}
+									>
+										{firstChapterForActiveEra.name}
+									</button>
+								{/if}
+							</div>
+						</div>
+					{/if}
+
 					<!-- {#each story.views[activeViewID].story as storyElement}
                             {#if storyElement.type == "h"}
                                 {#if storyElement.stop}
@@ -670,7 +753,7 @@
                         {/each} -->
 				</div>
 			</div>
-			{#if !isNarrativeMinimized}
+			{#if !isNarrativeMinimized && !activeEraID}
 				<!-- <div id="story-narrative-button-down" onclick={scrollNarrativeDown}></div> -->
 				<div
 					id="story-narrative-button-down"
@@ -876,7 +959,8 @@
 		color: var(--color-era-5) !important;
 	}
 
-	#start-here hr {
+	#start-here hr,
+	#era-footer-nav hr {
 		border: none;
 		border-top: 2px dashed lightgrey;
 		margin: 40px 0 25px;
@@ -924,6 +1008,69 @@
 
 	#start-here-era.era-the-future #start-here-era-label {
 		color: #e36900;
+	}
+
+	#era-footer-nav-buttons {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	#era-footer-back-button {
+		flex: 0 0 auto;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		border: none;
+		cursor: pointer;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 20px;
+		background-image: url($lib/images/icons/left.svg);
+	}
+
+	#era-footer-next-button {
+		border: none;
+		border-radius: 99px;
+		padding: 0 20px;
+		height: 48px;
+		color: white;
+		font-weight: 700;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background-repeat: no-repeat;
+		background-position: right 20px center;
+		background-size: 20px;
+		padding-right: 50px;
+		background-image: url($lib/images/icons/right.svg);
+	}
+
+	#era-footer-nav.era-pre-1600s #era-footer-back-button,
+	#era-footer-nav.era-pre-1600s #era-footer-next-button {
+		background-color: #5199c7;
+	}
+
+	#era-footer-nav.era-early-european-settlement #era-footer-back-button,
+	#era-footer-nav.era-early-european-settlement #era-footer-next-button {
+		background-color: #70ac00;
+	}
+
+	#era-footer-nav.era-urban-industrial #era-footer-back-button,
+	#era-footer-nav.era-urban-industrial #era-footer-next-button {
+		background-color: #9762af;
+	}
+
+	#era-footer-nav.era-deindustrialization #era-footer-back-button,
+	#era-footer-nav.era-deindustrialization #era-footer-next-button {
+		background-color: #d0b000;
+	}
+
+	#era-footer-nav.era-the-future #era-footer-back-button,
+	#era-footer-nav.era-the-future #era-footer-next-button {
+		background-color: #e36900;
 	}
 
 	@media screen and (min-width: 768px) {
