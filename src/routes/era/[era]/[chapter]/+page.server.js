@@ -184,13 +184,17 @@ export async function load({ params }) {
   const lastChapter = thisChapterIndexInStory == 0 ? null : thisEraChapterArray[thisChapterIndexInStory-1];
   const nextChapter = thisChapterIndexInStory == thisEraChapterArray.length - 1 ? null : thisEraChapterArray[thisChapterIndexInStory+1];
 
-
-
+  // Get the next era (if it exists), for navigating out of this era's chapters
+  const eraIDs = Object.keys(story.eras);
+  const thisEraIndex = eraIDs.indexOf(params.era);
+  const nextEra = thisEraIndex == eraIDs.length - 1 ? null : story.eras[eraIDs[thisEraIndex + 1]];
 
   return {
     chapter: chapterData,
     lastChapter: lastChapter,
-    nextChapter: nextChapter
+    nextChapter: nextChapter,
+    eraView: thisEra.view,
+    nextEra: nextEra
   };
 
 };
