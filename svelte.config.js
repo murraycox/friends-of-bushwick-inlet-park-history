@@ -12,9 +12,18 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
-		paths: {	
+		paths: {
 			//base: process.argv.includes('dev') ? '' : '/build' //: process.env.BASE_PATH
             base: process.env.NODE_ENV === 'production' ? process.env.BASE_PATH : ''
+		},
+		prerender: {
+			handleMissingId: ({ id, message }) => {
+				// Links like /#/view/pre-1600s target the client-side hash router on the root
+				// page (see +page.svelte), not a real in-page anchor, so no matching element
+				// id will ever exist. Anything else is a genuinely missing anchor.
+				if (id.startsWith('/view/')) return;
+				throw new Error(message);
+			}
 		}
 	}
 };
