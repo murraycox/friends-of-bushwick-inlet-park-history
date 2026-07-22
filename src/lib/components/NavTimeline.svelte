@@ -25,12 +25,13 @@
 
 	export function onMapFeatureMouseOver(event) {
 		console.log('NavTimeline:onMapFeatureMouseOver(event:' + JSON.stringify(event.detail) + ')');
-		onMouseOver(event.detail.featureID);
+		// Map features always correspond to chapters, never eras.
+		onMouseOver({ type: 'chapter', id: event.detail.featureID });
 	}
 
 	export function onMapFeatureMouseOut(event) {
 		console.log('NavTimeline:onMapFeatureMouseOut(event:' + JSON.stringify(event.detail) + ')');
-		onMouseLeave(event.detail.featureID);
+		onMouseLeave({ type: 'chapter', id: event.detail.featureID });
 	}
 
 	export function onMapFeatureClick(event) {
@@ -109,40 +110,55 @@
 	recalculateActiveChapters();
 	redrawTimeline();
 
-	function onMouseOver(id) {
-		console.log('NavTimeline:onMouseOver(id:' + JSON.stringify(id) + ')');
+	// Eras and chapters are flattened into one array for the timeline, and their ids aren't
+	// guaranteed unique across that combined namespace (e.g. an era and a chapter can share an
+	// id). This key namespaces by type so Svelte keys / DOM ids never collide; it's purely an
+	// internal rendering concern and never leaks into story.json ids, links, or the CMS slug.
+	function nodeKey(eraOrActiveChapter) {
+		return `${eraOrActiveChapter.type}-${eraOrActiveChapter.id}`;
+	}
 
-		d3.selectAll('#title-' + id + ', #anchor-' + id).classed('visible', true);
+	function onMouseOver(eraOrActiveChapter) {
+		console.log('NavTimeline:onMouseOver(id:' + JSON.stringify(eraOrActiveChapter.id) + ')');
 
-		// Dispatch the id of the chapter to the parent (Map page)
-		dispatch('chapterMouseOver', {
-			id: id
-		});
+		const key = nodeKey(eraOrActiveChapter);
+		d3.selectAll('#title-' + key + ', #anchor-' + key).classed('visible', true);
+
+		// Only chapters have map features to highlight; era ids aren't chapter ids.
+		if (eraOrActiveChapter.type == 'chapter') {
+			dispatch('chapterMouseOver', {
+				id: eraOrActiveChapter.id
+			});
+		}
 
 		//TODO highlight matching features on the map
 		// d3.selectAll(".map ." + d.id)
 		//     .classed("selected", true);
 	}
 
-	function onMouseLeave(id) {
-		console.log('NavTimeline:onMouseLeave(id:' + JSON.stringify(id) + ')');
+	function onMouseLeave(eraOrActiveChapter) {
+		console.log('NavTimeline:onMouseLeave(id:' + JSON.stringify(eraOrActiveChapter.id) + ')');
 
+		const key = nodeKey(eraOrActiveChapter);
 		d3.timeout(function () {
-			d3.selectAll('#title-' + id + ', #anchor-' + id).classed('visible', false);
+			d3.selectAll('#title-' + key + ', #anchor-' + key).classed('visible', false);
 		}, 100);
 
-		dispatch('chapterMouseLeave', {
-			id: id
-		});
+		if (eraOrActiveChapter.type == 'chapter') {
+			dispatch('chapterMouseLeave', {
+				id: eraOrActiveChapter.id
+			});
+		}
 	}
 
 	function onChapterClick(id) {
-		// lookup the chapter
-		Object.values(eras).forEach((era) => {
-			Object.values(era.chapters).forEach((chapter) => {
-				if (chapter.link && chapter.id == id) window.location = base + chapter.link;
-			});
-		});
+		// Chapter nodes in the timeline only ever belong to the active era, so scope the lookup
+		// accordingly instead of searching every era (which could match the wrong chapter if two
+		// chapters in different eras happen to share an id).
+		const chapter = activeEraID
+			? Object.values(eras[activeEraID]?.chapters ?? {}).find((chapter) => chapter.id == id)
+			: null;
+		if (chapter?.link) window.location = base + chapter.link;
 	}
 
 	function onEraClick(id) {
@@ -182,9 +198,9 @@
 	style={`width:${currentWidth}px`}
 >
 	<div id="timeline-titles">
-		{#each erasAndActiveChapters as eraOrActiveChapter, i (eraOrActiveChapter.id)}
+		{#each erasAndActiveChapters as eraOrActiveChapter, i (nodeKey(eraOrActiveChapter))}
 			<div
-				id={'title-' + eraOrActiveChapter.id}
+				id={'title-' + nodeKey(eraOrActiveChapter)}
 				class="timeline-title-container {`era-${eraOrActiveChapter.type == 'era' ? eraOrActiveChapter.id : eraOrActiveChapter.eraID}`}"
 				style={`left:${xTimeline(i) - TIMELINE_TITLE_WIDTH / 2}px`}
 				in:fade={{ duration: navAnimationsEnabled ? 250 : 0, delay: navAnimationsEnabled ? 150 : 0 }}
@@ -218,7 +234,7 @@
 					stroke-width="1"
 					stroke="grey"
 				/>
-				{#each erasAndActiveChapters as eraOrActiveChapter, i (eraOrActiveChapter.id)}
+				{#each erasAndActiveChapters as eraOrActiveChapter, i (nodeKey(eraOrActiveChapter))}
 					<g
 						class="timeline-era-and-chapter-group"
 						transform={`translate(${xTimeline(i)},${TIMELINE_MARGIN_TOP + TIMELINE_HEIGHT / 2 - TIMELINE_ANCHOR_LENGTH})`}
@@ -227,7 +243,7 @@
 					>
 						<line
 							class="timeline-node-anchors"
-							id={`anchor-${eraOrActiveChapter.id}`}
+							id={`anchor-${nodeKey(eraOrActiveChapter)}`}
 							x1="0"
 							y1="0"
 							x2="0"
@@ -252,8 +268,8 @@
 								navigateWithinMap}
 							stroke-width="1"
 							stroke="#707070"
-							onmouseover={() => onMouseOver(eraOrActiveChapter.id)}
-							onmouseleave={() => onMouseLeave(eraOrActiveChapter.id)}
+							onmouseover={() => onMouseOver(eraOrActiveChapter)}
+							onmouseleave={() => onMouseLeave(eraOrActiveChapter)}
 							onclick={() => {
 								if (eraOrActiveChapter.type == 'chapter') onChapterClick(eraOrActiveChapter.id);
 								else onEraClick(eraOrActiveChapter.id, eraOrActiveChapter.name);

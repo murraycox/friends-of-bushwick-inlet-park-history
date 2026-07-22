@@ -455,10 +455,10 @@
 					"name": "Redlining and Depopulation",
 					"link": "/era/deindustrialization/redlining-and-depopulation"
 				},
-				"deindustrialization-c": {
-					"id": "deindustrialization-c",
+				"deindustrialization": {
+					"id": "deindustrialization",
 					"name": "Deindustrialization",
-					"link": "/era/deindustrialization/deindustrialization-c"
+					"link": "/era/deindustrialization/deindustrialization"
 				},
 				"civic-dumping-ground": {
 					"id": "civic-dumping-ground",
@@ -488,7 +488,7 @@
 					"name": "BIP Master Plan",
 					"link": "/era/the-future/bip-master-plan"
 				},
-				"mpj": {
+				"marsha-p-johnson": {
 					"id": "marsha-p-johnson",
 					"name": "Marsha P Johnson",
 					"link": "/era/the-future/marsha-p-johnson"
@@ -518,10 +518,10 @@
 					"name": "Making Connections",
 					"link": "/era/the-future/making-connections"
 				},
-				"the-future-c": {
-					"id": "the-future-c",
+				"the-future": {
+					"id": "the-future",
 					"name": "The Future",
-					"link": "/era/the-future/the-future-c"
+					"link": "/era/the-future/the-future"
 				}
 			}
 		}
