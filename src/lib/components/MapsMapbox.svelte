@@ -9,6 +9,8 @@
 	import narrativeMaximizeIcon from '$lib/images/icons/narrative-maximize.svg';
 	import narrativeMinimizeIcon from '$lib/images/icons/narrative-minimize.svg';
 
+	import NavErasButton from '$lib/components/NavErasButton.svelte';
+
 	import { geoAlbers, geoMercator, geoPath } from 'd3';
 	import * as d3 from 'd3';
 
@@ -486,6 +488,18 @@
 		return firstEraID;
 	}
 
+	const firstEraID = getFirstEraID();
+	const firstEra = firstEraID ? story.eras[firstEraID] : null;
+
+	function navigateToFirstEra() {
+		if (!firstEra) return;
+
+		dispatch('navigate', {
+			viewID: firstEra.view,
+			eraID: firstEraID
+		});
+	}
+
 	function getFirstChapterForEra(eraID) {
 		console.log(`routes/map:getFirstChapterForEra(eraID:${eraID})`);
 
@@ -620,6 +634,28 @@
 						{story.views[activeViewID].name}
 					</h1>
 					{@html story.views[activeViewID].introContent}
+
+					{#if activeViewID === 'intro' && firstEra}
+						<div id="start-here">
+							<hr />
+							<div id="start-here-label">START HERE</div>
+							<div id="start-here-era" class={`era-${firstEraID}`}>
+								<NavErasButton
+									eraID={firstEraID}
+									viewID={firstEra.view}
+									active={true}
+									on:navigate={(event) => dispatch('navigate', event.detail)}
+								/>
+								<button
+									type="button"
+									id="start-here-era-label"
+									onclick={navigateToFirstEra}
+								>
+									{firstEra.shortLabel}
+								</button>
+							</div>
+						</div>
+					{/if}
 
 					<!-- {#each story.views[activeViewID].story as storyElement}
                             {#if storyElement.type == "h"}
@@ -838,6 +874,56 @@
 	.era-activism-deindustrialization #story-narrative h1,
 	:global(.era-era-pre-colonial #story-narrative h2) {
 		color: var(--color-era-5) !important;
+	}
+
+	#start-here hr {
+		border: none;
+		border-top: 2px dashed lightgrey;
+		margin: 40px 0 25px;
+	}
+
+	#start-here-label {
+		color: #8d8e8e;
+		font-weight: 700;
+		font-size: 0.7em;
+		letter-spacing: 0.05em;
+		margin-bottom: 10px;
+	}
+
+	#start-here-era {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	#start-here-era-label {
+		background: none;
+		border: none;
+		padding: 0;
+		margin-left: 10px;
+		font-size: 1em;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	#start-here-era.era-pre-1600s #start-here-era-label {
+		color: #5199c7;
+	}
+
+	#start-here-era.era-early-european-settlement #start-here-era-label {
+		color: #70ac00;
+	}
+
+	#start-here-era.era-urban-industrial #start-here-era-label {
+		color: #9762af;
+	}
+
+	#start-here-era.era-deindustrialization #start-here-era-label {
+		color: #d0b000;
+	}
+
+	#start-here-era.era-the-future #start-here-era-label {
+		color: #e36900;
 	}
 
 	@media screen and (min-width: 768px) {
