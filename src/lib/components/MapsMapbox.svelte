@@ -727,15 +727,6 @@
 									onclick={navigateBack}
 									aria-label="Back"
 								></button>
-								{#if firstChapterForActiveEra}
-									<button
-										type="button"
-										id="era-footer-next-button"
-										onclick={() => goto(`${base}${firstChapterForActiveEra.link}`)}
-									>
-										{firstChapterForActiveEra.name}
-									</button>
-								{/if}
 							</div>
 						</div>
 					{/if}
@@ -753,22 +744,25 @@
                         {/each} -->
 				</div>
 			</div>
-			{#if !isNarrativeMinimized && !activeEraID}
-				<!-- <div id="story-narrative-button-down" onclick={scrollNarrativeDown}></div> -->
-				<div
+			{#if !isNarrativeMinimized}
+				<button
+					type="button"
 					id="story-narrative-button-down"
-					class:next-button={isAtBottom}
+					class={activeEraID ? `era-${activeEraID}` : ''}
+					class:next-button={isAtBottom && !activeEraID}
+					class:era-next-button={isAtBottom && !!activeEraID}
 					onclick={handleDownButtonClick}
-				></div>
-
-				<!-- <button
-                id="story-narrative-button-down"
-                class:next-button={isAtBottom}
-                on:click={handleDownButtonClick}
-                aria-label={isAtBottom ? "Next" : "Scroll down"}
-                >
-                ↓
-                </button> -->
+					aria-label={isAtBottom
+						? activeEraID && firstChapterForActiveEra
+							? `Next: ${firstChapterForActiveEra.name}`
+							: 'Next'
+						: 'Scroll down'}
+				>
+					{#if isAtBottom && activeEraID && firstChapterForActiveEra}
+						<span id="story-narrative-button-down-label">{firstChapterForActiveEra.name}</span>
+					{/if}
+					<span id="story-narrative-button-down-icon"></span>
+				</button>
 			{/if}
 		</div>
 	{/if}
@@ -873,22 +867,110 @@
 		padding: 5px 10px;
 	}
 
+	/* The circle's corner radius (24px, i.e. height / 2) never changes: only
+	   width/padding/color animate, so it always reads as the same "capsule"
+	   whether it's a plain circle or expanded into a labeled pill. */
+	/* right/bottom mirror era-footer-back-button's left/bottom offset exactly
+	   (viewport padding + narrative padding), so the two buttons sit level
+	   with each other once scrolled to the bottom. */
 	#story-narrative-button-down {
 		height: 48px;
 		width: 48px;
 		position: absolute;
-		right: 10px;
-		bottom: 10px;
-		background-image: url($lib/images/icons/down.svg);
+		right: 21px;
+		bottom: 17px;
+		background-color: white;
+		border: 1.5px solid #9d9d9d;
+		border-radius: 24px;
+		padding: 0;
+		display: flex;
+		align-items: center;
 		cursor: pointer;
+		font-family: inherit;
+		overflow: hidden;
+		transition:
+			width 0.25s ease,
+			padding-left 0.25s ease,
+			padding-right 0.25s ease,
+			background-color 0.25s ease,
+			border-color 0.25s ease;
 	}
 
-	#story-narrative-button-down {
-		transition: transform 0.2s ease;
+	/* Same left.svg glyph used by era-footer-back-button (unmirrored) reused
+	   here for both the scroll-down indicator and the era "next" state, via
+	   CSS mask so it can be rotated and recolored instead of swapping image
+	   files. Rotating -90deg turns "left" into "down"; rotating -180deg turns
+	   "left" into "right" (the glyph is vertically symmetric, so -180deg reads
+	   identically to +180deg/a horizontal mirror, but keeps both states within
+	   90deg of each other so the transition animates the short way). */
+	#story-narrative-button-down-icon {
+		position: absolute;
+		top: 50%;
+		right: 14px;
+		width: 20px;
+		height: 20px;
+		background-color: #9d9d9d;
+		-webkit-mask-image: url($lib/images/icons/left.svg);
+		mask-image: url($lib/images/icons/left.svg);
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: center;
+		mask-position: center;
+		-webkit-mask-size: 20px;
+		mask-size: 20px;
+		transform: translateY(-50%) rotate(-90deg);
+		transition:
+			transform 0.25s ease,
+			background-color 0.25s ease,
+			right 0.25s ease;
 	}
 
-	#story-narrative-button-down.next-button {
-		transform: rotate(-90deg);
+	#story-narrative-button-down.next-button #story-narrative-button-down-icon,
+	#story-narrative-button-down.era-next-button #story-narrative-button-down-icon {
+		transform: translateY(-50%) rotate(-180deg);
+	}
+
+	#story-narrative-button-down.era-next-button #story-narrative-button-down-icon {
+		background-color: white;
+		right: 20px;
+	}
+
+	/* Era views: instead of just rotating, the same button widens, takes on the
+	   era color and swaps in the next chapter name once scrolled to the bottom. */
+	#story-narrative-button-down.era-next-button {
+		width: auto;
+		min-width: 48px;
+		max-width: 280px;
+		padding-left: 20px;
+		padding-right: 50px;
+		border-color: transparent;
+	}
+
+	#story-narrative-button-down-label {
+		color: white;
+		font-weight: 700;
+		font-size: 0.85em;
+		white-space: nowrap;
+	}
+
+	#story-narrative-button-down.era-pre-1600s.era-next-button {
+		background-color: #5199c7;
+	}
+
+	#story-narrative-button-down.era-early-european-settlement.era-next-button {
+		background-color: #70ac00;
+	}
+
+	#story-narrative-button-down.era-urban-industrial.era-next-button {
+		background-color: #9762af;
+	}
+
+	#story-narrative-button-down.era-deindustrialization.era-next-button {
+		background-color: #d0b000;
+	}
+
+	#story-narrative-button-down.era-the-future.era-next-button {
+		background-color: #e36900;
 	}
 
 	:global(#story-narrative img) {
@@ -1030,46 +1112,23 @@
 		background-image: url($lib/images/icons/left.svg);
 	}
 
-	#era-footer-next-button {
-		border: none;
-		border-radius: 99px;
-		padding: 0 20px;
-		height: 48px;
-		color: white;
-		font-weight: 700;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		background-repeat: no-repeat;
-		background-position: right 20px center;
-		background-size: 20px;
-		padding-right: 50px;
-		background-image: url($lib/images/icons/right.svg);
-	}
-
-	#era-footer-nav.era-pre-1600s #era-footer-back-button,
-	#era-footer-nav.era-pre-1600s #era-footer-next-button {
+	#era-footer-nav.era-pre-1600s #era-footer-back-button {
 		background-color: #5199c7;
 	}
 
-	#era-footer-nav.era-early-european-settlement #era-footer-back-button,
-	#era-footer-nav.era-early-european-settlement #era-footer-next-button {
+	#era-footer-nav.era-early-european-settlement #era-footer-back-button {
 		background-color: #70ac00;
 	}
 
-	#era-footer-nav.era-urban-industrial #era-footer-back-button,
-	#era-footer-nav.era-urban-industrial #era-footer-next-button {
+	#era-footer-nav.era-urban-industrial #era-footer-back-button {
 		background-color: #9762af;
 	}
 
-	#era-footer-nav.era-deindustrialization #era-footer-back-button,
-	#era-footer-nav.era-deindustrialization #era-footer-next-button {
+	#era-footer-nav.era-deindustrialization #era-footer-back-button {
 		background-color: #d0b000;
 	}
 
-	#era-footer-nav.era-the-future #era-footer-back-button,
-	#era-footer-nav.era-the-future #era-footer-next-button {
+	#era-footer-nav.era-the-future #era-footer-back-button {
 		background-color: #e36900;
 	}
 
